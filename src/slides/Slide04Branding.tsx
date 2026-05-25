@@ -18,7 +18,7 @@ const presenceCards = [
   },
 ]
 
-export default function Slide04Branding({ step }: SlideProps) {
+export default function Slide04Branding({ action }: SlideProps) {
   return (
     <div className="s-frame">
       <div className="s-hero">
@@ -37,8 +37,8 @@ export default function Slide04Branding({ step }: SlideProps) {
         </div>
       </div>
 
-      <div key={step} className="s-content">
-        {step === 0 && (
+      <div key={action} className="s-content">
+        {action === 'Presença' && (
           <>
             <div className="act-tag">O ponto cego</div>
             <h2 className="act-title">
@@ -76,7 +76,7 @@ export default function Slide04Branding({ step }: SlideProps) {
           </>
         )}
 
-        {step === 1 && (
+        {action === 'Declaração' && (
           <>
             <div className="act-tag">A coerência como estratégia</div>
             <h2 className="act-title">

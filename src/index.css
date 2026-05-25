@@ -416,8 +416,25 @@ body {
   border: 1px solid var(--border);
   overflow: hidden;
   position: relative;
-  transition: background 0.3s, border-color 0.3s;
+  transition: background 0.3s, border-color 0.3s, opacity 0.3s;
   cursor: default;
+}
+
+.layers.has-active .layer:not(.active) {
+  opacity: 0.32;
+}
+
+.layer.active {
+  background: rgba(167, 139, 250, 0.07);
+  border-color: rgba(167, 139, 250, 0.25);
+}
+
+.layer.active .layer-title {
+  color: var(--text);
+}
+
+.layer.active .layer-label {
+  color: rgba(167, 139, 250, 0.55);
 }
 
 .layer:hover {

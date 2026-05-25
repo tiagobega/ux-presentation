@@ -5,9 +5,9 @@ const SLIDE_LABELS = SLIDE_CONFIG.map((s) => s.label)
 interface NavProps {
   current: number
   total: number
-  step: number
-  stepLabel: string
-  totalSteps: number
+  action: string
+  actionIndex: number
+  totalActions: number
   isFirst: boolean
   isLast: boolean
   onPrev: () => void
@@ -19,9 +19,9 @@ interface NavProps {
 export default function Nav({
   current,
   total,
-  step,
-  stepLabel,
-  totalSteps,
+  action,
+  actionIndex,
+  totalActions,
   isFirst,
   isLast,
   onPrev,
@@ -30,8 +30,8 @@ export default function Nav({
   onQR,
 }: NavProps) {
   const slideProgress = current / total
-  const stepProgress = (step + 1) / totalSteps / total
-  const progress = (slideProgress + stepProgress) * 100
+  const actionProgress = (actionIndex + 1) / totalActions / total
+  const progress = (slideProgress + actionProgress) * 100
 
   return (
     <nav className="pres-nav">
@@ -56,7 +56,7 @@ export default function Nav({
           ←
         </button>
         <span className="pres-counter">
-          {stepLabel} · {step + 1}/{totalSteps}
+          {action} · {actionIndex + 1}/{totalActions}
         </span>
         <button className="pres-btn" onClick={onNext} disabled={isLast} aria-label="Próximo">
           →

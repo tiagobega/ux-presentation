@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 
-export function useRemoteControl(onCommand: (action: 'prev' | 'next') => void) {
+export function useRemoteControl(onCommand: (action: string) => void) {
   const ref = useRef(onCommand)
   useEffect(() => { ref.current = onCommand })
 
@@ -11,7 +11,7 @@ export function useRemoteControl(onCommand: (action: 'prev' | 'next') => void) {
     es.onmessage = (e) => {
       try {
         const { action } = JSON.parse(e.data) as { action: string }
-        if (action === 'prev' || action === 'next') ref.current(action)
+        if (action) ref.current(action)
       } catch { /* ignore */ }
     }
     return () => es.close()

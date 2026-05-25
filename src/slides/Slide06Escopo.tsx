@@ -41,7 +41,7 @@ const timeline = [
   },
 ]
 
-export default function Slide06Escopo({ step }: SlideProps) {
+export default function Slide06Escopo({ action }: SlideProps) {
   return (
     <div className="s-frame">
       <div className="s-hero">
@@ -60,8 +60,8 @@ export default function Slide06Escopo({ step }: SlideProps) {
         </div>
       </div>
 
-      <div key={step} className="s-content">
-        {step === 0 && (
+      <div key={action} className="s-content">
+        {action === 'Módulos' && (
           <>
             <div className="act-tag">Situação atual por módulo</div>
             <table className="scope-table">
@@ -87,7 +87,7 @@ export default function Slide06Escopo({ step }: SlideProps) {
           </>
         )}
 
-        {step === 1 && (
+        {action === 'Entrega' && (
           <>
             <div className="act-tag">Como entregar</div>
             <h2 className="act-title">Sequência de entrega.</h2>
@@ -108,7 +108,7 @@ export default function Slide06Escopo({ step }: SlideProps) {
           </>
         )}
 
-        {step === 2 && (
+        {action === 'Próximo Passo' && (
           <div className="cta">
             <div className="cta-tag">Próximo passo</div>
             <div className="cta-title">Contratar o especialista UX.</div>

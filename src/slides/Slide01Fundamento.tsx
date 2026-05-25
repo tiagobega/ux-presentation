@@ -28,10 +28,7 @@ const layers = [
   },
 ]
 
-export default function Slide01Fundamento({ step }: SlideProps) {
-  const visibleLayers = layers.slice(0, Math.min(step + 1, 4))
-  const showConclusion = step === 4
-
+export default function Slide01Fundamento({ action }: SlideProps) {
   return (
     <div className="s-frame">
       <div className="s-hero">
@@ -49,7 +46,7 @@ export default function Slide01Fundamento({ step }: SlideProps) {
         </div>
       </div>
 
-      <div key={step} className="s-content">
+      <div className="s-content">
         <div className="act-tag">O que construímos</div>
         <h2 className="act-title">
           Uma cadeia completa,
@@ -57,10 +54,10 @@ export default function Slide01Fundamento({ step }: SlideProps) {
           da captura à execução.
         </h2>
 
-        <div className="layers">
-          {visibleLayers.map((layer, i) => (
+        <div className="layers has-active">
+          {layers.map((layer) => (
             <Fragment key={layer.title}>
-              <div className="layer">
+              <div className={`layer${action === layer.title ? ' active' : ''}`}>
                 <div className="layer-accent" style={{ background: layer.accent }} />
                 <div className="layer-body">
                   <div className="layer-label">{layer.label}</div>
@@ -68,34 +65,28 @@ export default function Slide01Fundamento({ step }: SlideProps) {
                   <div className="layer-desc">{layer.desc}</div>
                 </div>
               </div>
-              {(i < visibleLayers.length - 1 || showConclusion) && (
-                <div className="conn">
-                  <span>↓</span>
-                </div>
-              )}
+              <div className="conn">
+                <span>↓</span>
+              </div>
             </Fragment>
           ))}
-          {showConclusion && (
-            <div className="layer conclusion">
-              <div className="layer-accent" />
-              <div className="layer-body">
-                <div className="layer-label">Destino</div>
-                <div className="layer-title">Execução.</div>
-                <div className="layer-desc">
-                  O objetivo final de qualquer dado coletado. Cidades têm problemas que não podem
-                  ignorar — a Intelicity garante que elas tenham o que precisam para resolvê-los.
-                </div>
+          <div className={`layer conclusion${action === 'Execução' ? ' active' : ''}`}>
+            <div className="layer-accent" />
+            <div className="layer-body">
+              <div className="layer-label">Destino</div>
+              <div className="layer-title">Execução.</div>
+              <div className="layer-desc">
+                O objetivo final de qualquer dado coletado. Cidades têm problemas que não podem
+                ignorar — a Intelicity garante que elas tenham o que precisam para resolvê-los.
               </div>
             </div>
-          )}
+          </div>
         </div>
 
-        {showConclusion && (
-          <div className="ic-operates">
-            <div className="ic-dot" />
-            INTELICITY OPERA EM TODAS AS CAMADAS
-          </div>
-        )}
+        <div className="ic-operates">
+          <div className="ic-dot" />
+          INTELICITY OPERA EM TODAS AS CAMADAS
+        </div>
       </div>
     </div>
   )

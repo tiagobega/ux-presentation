@@ -49,7 +49,7 @@ const risks = [
   },
 ]
 
-export default function Slide02Desafio({ step }: SlideProps) {
+export default function Slide02Desafio({ action }: SlideProps) {
   return (
     <div className="s-frame">
       <div className="s-hero">
@@ -68,8 +68,8 @@ export default function Slide02Desafio({ step }: SlideProps) {
         </div>
       </div>
 
-      <div key={step} className="s-content">
-        {step === 0 && (
+      <div key={action} className="s-content">
+        {action === 'Personas' && (
           <>
             <div className="act-tag">O problema real</div>
             <h2 className="act-title">
@@ -95,7 +95,7 @@ export default function Slide02Desafio({ step }: SlideProps) {
           </>
         )}
 
-        {step === 1 && (
+        {action === 'Riscos' && (
           <>
             <div className="act-tag">O risco de não agir agora</div>
             <h2 className="act-title">

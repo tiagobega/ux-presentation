@@ -49,7 +49,7 @@ const sideStack = [
   },
 ]
 
-export default function Slide05StackIC({ step }: SlideProps) {
+export default function Slide05StackIC({ action }: SlideProps) {
   return (
     <div className="s-frame">
       <div className="s-hero">
@@ -68,8 +68,8 @@ export default function Slide05StackIC({ step }: SlideProps) {
         </div>
       </div>
 
-      <div key={step} className="s-content">
-        {step === 0 && (
+      <div key={action} className="s-content">
+        {action === 'Pipeline' && (
           <>
             <div className="act-tag">O fluxo de valor</div>
             <h2 className="act-title">
@@ -99,7 +99,7 @@ export default function Slide05StackIC({ step }: SlideProps) {
           </>
         )}
 
-        {step === 1 && (
+        {action === 'Produtos' && (
           <>
             <div className="act-tag">Produtos transversais</div>
             <h2 className="act-title">

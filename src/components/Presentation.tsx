@@ -15,56 +15,72 @@ const SLIDES: ComponentType<SlideProps>[] = [Slide01, Slide02, Slide03, Slide04,
 
 export default function Presentation() {
   const [slide, setSlide] = useState(0)
-  const [step, setStep] = useState(0)
+  const [action, setAction] = useState<string>(SLIDE_CONFIG[0].actions[0])
   const [slideDirection, setSlideDirection] = useState<'fwd' | 'bwd'>('fwd')
   const [showQR, setShowQR] = useState(false)
   const total = SLIDES.length
 
   const slideRef = useRef(slide)
-  const stepRef = useRef(step)
+  const actionRef = useRef(action)
   slideRef.current = slide
-  stepRef.current = step
+  actionRef.current = action
 
+  // Keyboard/swipe: cycles through actions within slide, then navigates slides
   const next = useCallback(() => {
     const s = slideRef.current
-    const t = stepRef.current
-    const totalSteps = SLIDE_CONFIG[s].stepLabels.length
-    if (t < totalSteps - 1) {
-      setStep(t + 1)
+    const a = actionRef.current
+    const actions = SLIDE_CONFIG[s].actions as readonly string[]
+    const idx = actions.indexOf(a)
+    if (idx < actions.length - 1) {
+      setAction(actions[idx + 1])
     } else if (s < total - 1) {
       setSlideDirection('fwd')
       setSlide(s + 1)
-      setStep(0)
+      setAction(SLIDE_CONFIG[s + 1].actions[0])
     }
   }, [total])
 
   const prev = useCallback(() => {
     const s = slideRef.current
-    const t = stepRef.current
-    if (t > 0) {
-      setStep(t - 1)
+    const a = actionRef.current
+    const actions = SLIDE_CONFIG[s].actions as readonly string[]
+    const idx = actions.indexOf(a)
+    if (idx > 0) {
+      setAction(actions[idx - 1])
     } else if (s > 0) {
       setSlideDirection('bwd')
-      const prevSlide = s - 1
-      setSlide(prevSlide)
-      setStep(SLIDE_CONFIG[prevSlide].stepLabels.length - 1)
+      const prevActions = SLIDE_CONFIG[s - 1].actions
+      setSlide(s - 1)
+      setAction(prevActions[prevActions.length - 1])
     }
   }, [])
 
   const gotoSlide = useCallback((i: number) => {
-    const s = slideRef.current
-    setSlideDirection(i > s ? 'fwd' : 'bwd')
+    setSlideDirection(i > slideRef.current ? 'fwd' : 'bwd')
     setSlide(i)
-    setStep(0)
+    setAction(SLIDE_CONFIG[i].actions[0])
   }, [])
 
-  const handleRemote = useCallback(
-    (action: 'prev' | 'next') => {
-      if (action === 'prev') prev()
-      else next()
-    },
-    [prev, next],
-  )
+  // Remote: named action = jump to that action; prev/next = navigate slides directly
+  const handleRemote = useCallback((cmd: string) => {
+    const s = slideRef.current
+    if (cmd === 'prev') {
+      if (s > 0) {
+        setSlideDirection('bwd')
+        setSlide(s - 1)
+        setAction(SLIDE_CONFIG[s - 1].actions[0])
+      }
+    } else if (cmd === 'next') {
+      if (s < total - 1) {
+        setSlideDirection('fwd')
+        setSlide(s + 1)
+        setAction(SLIDE_CONFIG[s + 1].actions[0])
+      }
+    } else {
+      const actions = SLIDE_CONFIG[s].actions as readonly string[]
+      if ((actions as string[]).includes(cmd)) setAction(cmd)
+    }
+  }, [total])
 
   useRemoteControl(handleRemote)
 
@@ -80,9 +96,7 @@ export default function Presentation() {
 
   useEffect(() => {
     let startX = 0
-    const onStart = (e: TouchEvent) => {
-      startX = e.touches[0].clientX
-    }
+    const onStart = (e: TouchEvent) => { startX = e.touches[0].clientX }
     const onEnd = (e: TouchEvent) => {
       if (showQR) return
       const diff = startX - e.changedTouches[0].clientX
@@ -97,28 +111,31 @@ export default function Presentation() {
     }
   }, [next, prev, showQR])
 
-  // Broadcast presentation state to mobile controller
+  // Broadcast state to mobile controller
   useEffect(() => {
     if (!import.meta.env.DEV) return
     const config = SLIDE_CONFIG[slide]
+    const actionIndex = (config.actions as readonly string[]).indexOf(action)
     fetch('/remote-update', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         slide,
-        step,
+        action,
+        actionIndex,
         slideLabel: config.label,
-        stepLabel: config.stepLabels[step],
-        totalSteps: config.stepLabels.length,
+        actions: config.actions,
         totalSlides: total,
       }),
     }).catch(() => {})
-  }, [slide, step, total])
+  }, [slide, action, total])
 
   const SlideComponent = SLIDES[slide]
   const config = SLIDE_CONFIG[slide]
-  const isFirst = slide === 0 && step === 0
-  const isLast = slide === total - 1 && step === config.stepLabels.length - 1
+  const actions = config.actions as readonly string[]
+  const actionIndex = actions.indexOf(action)
+  const isFirst = slide === 0 && actionIndex === 0
+  const isLast = slide === total - 1 && actionIndex === actions.length - 1
 
   return (
     <div className="presentation">
@@ -126,16 +143,16 @@ export default function Presentation() {
       <div className="slide-area">
         <div key={slide} className={`slide slide-${slideDirection}`}>
           <div className="slide-inner">
-            <SlideComponent step={step} />
+            <SlideComponent action={action} />
           </div>
         </div>
       </div>
       <Nav
         current={slide}
         total={total}
-        step={step}
-        stepLabel={config.stepLabels[step]}
-        totalSteps={config.stepLabels.length}
+        action={action}
+        actionIndex={actionIndex}
+        totalActions={actions.length}
         isFirst={isFirst}
         isLast={isLast}
         onPrev={prev}

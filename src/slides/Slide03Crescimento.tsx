@@ -39,7 +39,7 @@ const afterItems = [
   'Handoff claro elimina ambiguidade e reduz revisões',
 ]
 
-export default function Slide03Crescimento({ step }: SlideProps) {
+export default function Slide03Crescimento({ action }: SlideProps) {
   return (
     <div className="s-frame">
       <div className="s-hero">
@@ -57,8 +57,8 @@ export default function Slide03Crescimento({ step }: SlideProps) {
         </div>
       </div>
 
-      <div key={step} className="s-content">
-        {step === 0 && (
+      <div key={action} className="s-content">
+        {action === 'Modelo UX' && (
           <>
             <div className="act-tag">Como UX move o negócio</div>
             <h2 className="act-title">
@@ -77,7 +77,7 @@ export default function Slide03Crescimento({ step }: SlideProps) {
           </>
         )}
 
-        {step === 1 && (
+        {action === 'Comparativo' && (
           <>
             <div className="act-tag">Antes e depois</div>
             <h2 className="act-title">

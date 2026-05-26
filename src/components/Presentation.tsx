@@ -25,7 +25,6 @@ export default function Presentation() {
   slideRef.current = slide
   actionRef.current = action
 
-  // Keyboard/swipe: cycles through actions within slide, then navigates slides
   const next = useCallback(() => {
     const s = slideRef.current
     const a = actionRef.current
@@ -61,21 +60,12 @@ export default function Presentation() {
     setAction(SLIDE_CONFIG[i].actions[0])
   }, [])
 
-  // Remote: named action = jump to that action; prev/next = navigate slides directly
   const handleRemote = useCallback((cmd: string) => {
     const s = slideRef.current
     if (cmd === 'prev') {
-      if (s > 0) {
-        setSlideDirection('bwd')
-        setSlide(s - 1)
-        setAction(SLIDE_CONFIG[s - 1].actions[0])
-      }
+      if (s > 0) { setSlideDirection('bwd'); setSlide(s - 1); setAction(SLIDE_CONFIG[s - 1].actions[0]) }
     } else if (cmd === 'next') {
-      if (s < total - 1) {
-        setSlideDirection('fwd')
-        setSlide(s + 1)
-        setAction(SLIDE_CONFIG[s + 1].actions[0])
-      }
+      if (s < total - 1) { setSlideDirection('fwd'); setSlide(s + 1); setAction(SLIDE_CONFIG[s + 1].actions[0]) }
     } else {
       const actions = SLIDE_CONFIG[s].actions as readonly string[]
       if ((actions as string[]).includes(cmd)) setAction(cmd)
@@ -111,7 +101,6 @@ export default function Presentation() {
     }
   }, [next, prev, showQR])
 
-  // Broadcast state to mobile controller
   useEffect(() => {
     if (!import.meta.env.DEV) return
     const config = SLIDE_CONFIG[slide]
@@ -119,14 +108,7 @@ export default function Presentation() {
     fetch('/remote-update', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        slide,
-        action,
-        actionIndex,
-        slideLabel: config.label,
-        actions: config.actions,
-        totalSlides: total,
-      }),
+      body: JSON.stringify({ slide, action, actionIndex, slideLabel: config.label, actions: config.actions, totalSlides: total }),
     }).catch(() => {})
   }, [slide, action, total])
 
@@ -138,11 +120,11 @@ export default function Presentation() {
   const isLast = slide === total - 1 && actionIndex === actions.length - 1
 
   return (
-    <div className="presentation">
+    <div className="fixed inset-0 flex flex-col">
       <Background />
-      <div className="slide-area">
-        <div key={slide} className={`slide slide-${slideDirection}`}>
-          <div className="slide-inner">
+      <div className="flex-1 relative overflow-hidden">
+        <div key={slide} className={`absolute inset-0 overflow-hidden slide-${slideDirection}`}>
+          <div className="relative z-[1] h-full max-w-[860px] mx-auto px-8 pt-7 pb-6 flex flex-col">
             <SlideComponent action={action} />
           </div>
         </div>

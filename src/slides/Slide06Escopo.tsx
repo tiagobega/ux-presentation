@@ -41,18 +41,32 @@ const timeline = [
   },
 ]
 
+const badgeStyle: Record<string, string> = {
+  sd: 'bg-green-800/[0.07] text-green-700 border border-green-700/[0.2]',
+  sp: 'bg-yellow-700/[0.07] text-yellow-700 border border-yellow-700/[0.2]',
+  sn: 'bg-red-700/[0.07] text-red-700 border border-red-700/[0.2]',
+}
+
+const actTag = "font-mono text-[10px] tracking-[0.2em] text-purple/[0.45] uppercase mt-9 mb-3 flex items-center gap-3 after:content-[''] after:flex-1 after:h-px after:bg-text/[0.08]"
+const actTitle = 'text-[30px] font-bold text-text tracking-[-0.025em] leading-[1.1] mb-3'
+
+const thCls = 'font-mono text-[9px] tracking-[0.14em] text-purple/[0.45] text-left px-[13px] py-[9px] border-b border-text/[0.08] uppercase'
+const tdBase = 'px-[13px] py-[9px] border-b border-text/[0.05] align-top font-light text-[13px]'
+
 export default function Slide06Escopo({ action }: SlideProps) {
   return (
-    <div className="s-frame">
-      <div className="s-hero">
-        <div className="hero">
-          <div className="hero-eyebrow">Plano de ação</div>
-          <h1 className="hero-title">
+    <div className="flex-1 flex flex-col min-h-0">
+      <div className="flex-shrink-0">
+        <div className="pt-0 pb-4 border-b border-text/[0.08]">
+          <div className="font-mono text-[10px] tracking-[0.2em] text-purple/[0.45] mb-[18px] uppercase">
+            Plano de ação
+          </div>
+          <h1 className="text-[36px] font-bold leading-[1.05] text-text tracking-[-0.03em] mb-3">
             O que fazer.
             <br />
-            <em>Agora.</em>
+            <em className="not-italic text-purple">Agora.</em>
           </h1>
-          <p className="hero-sub">
+          <p className="text-[13px] font-light text-text/55 leading-[1.65] max-w-[540px]">
             O Fleets está em um ponto de inflexão. A base existe — mas crescer sem design system e
             sem UX estruturado transforma cada módulo novo em dívida. O investimento agora é
             preventivo e estratégico.
@@ -60,25 +74,27 @@ export default function Slide06Escopo({ action }: SlideProps) {
         </div>
       </div>
 
-      <div key={action} className="s-content">
+      <div key={action} className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden pb-5 step-reveal">
         {action === 'Módulos' && (
           <>
-            <div className="act-tag">Situação atual por módulo</div>
-            <table className="scope-table">
+            <div className={actTag}>Situação atual por módulo</div>
+            <table className="w-full border-collapse my-5 text-[13px]">
               <thead>
                 <tr>
-                  <th>Módulo</th>
-                  <th>Foco UX</th>
-                  <th>Status</th>
+                  <th className={thCls}>Módulo</th>
+                  <th className={thCls}>Foco UX</th>
+                  <th className={thCls}>Status</th>
                 </tr>
               </thead>
               <tbody>
                 {modules.map((m) => (
                   <tr key={m.name}>
-                    <td>{m.name}</td>
-                    <td>{m.focus}</td>
-                    <td>
-                      <span className={`sb ${m.badge}`}>{m.status}</span>
+                    <td className={`${tdBase} text-text/82 font-medium`}>{m.name}</td>
+                    <td className={`${tdBase} text-text/55`}>{m.focus}</td>
+                    <td className={tdBase}>
+                      <span className={`font-mono text-[10px] px-2 py-[3px] rounded-full whitespace-nowrap ${badgeStyle[m.badge]}`}>
+                        {m.status}
+                      </span>
                     </td>
                   </tr>
                 ))}
@@ -89,18 +105,24 @@ export default function Slide06Escopo({ action }: SlideProps) {
 
         {action === 'Entrega' && (
           <>
-            <div className="act-tag">Como entregar</div>
-            <h2 className="act-title">Sequência de entrega.</h2>
-            <div className="timeline">
+            <div className={actTag}>Como entregar</div>
+            <h2 className={actTitle}>Sequência de entrega.</h2>
+            <div className="my-5">
               {timeline.map((item) => (
-                <div key={item.step} className="tl-item">
-                  <div className="tl-marker">{item.step}</div>
+                <div key={item.step} className="flex gap-[18px] py-[14px] border-b border-text/[0.05]">
+                  <div className="w-7 h-7 rounded-full bg-purple/[0.08] border border-purple/[0.2] flex items-center justify-center flex-shrink-0 font-mono text-[10px] text-purple/60">
+                    {item.step}
+                  </div>
                   <div>
-                    <div className="tl-title">
+                    <div className="text-[14px] font-semibold text-text mb-1">
                       {item.title}
-                      <span className="phase-tag">{item.tag}</span>
+                      <span className="font-mono text-[9px] px-[7px] py-[2px] rounded-full border border-purple/[0.2] text-purple/45 ml-[7px]">
+                        {item.tag}
+                      </span>
                     </div>
-                    <div className="tl-body">{item.body}</div>
+                    <div className="text-[13px] font-light text-text/55 leading-[1.65]">
+                      {item.body}
+                    </div>
                   </div>
                 </div>
               ))}
@@ -109,10 +131,18 @@ export default function Slide06Escopo({ action }: SlideProps) {
         )}
 
         {action === 'Próximo Passo' && (
-          <div className="cta">
-            <div className="cta-tag">Próximo passo</div>
-            <div className="cta-title">Contratar o especialista UX.</div>
-            <div className="cta-body">
+          <div className="relative mt-9 p-[30px] border border-purple/[0.2] bg-purple/[0.04] overflow-hidden">
+            <div
+              className="absolute w-[280px] h-[280px] rounded-full top-[-80px] right-[-60px] pointer-events-none blur-[48px]"
+              style={{ background: 'radial-gradient(circle, rgba(139,92,246,0.1) 0%, transparent 70%)' }}
+            />
+            <div className="font-mono text-[10px] tracking-[0.2em] text-purple/[0.45] mb-[11px] uppercase relative z-[1]">
+              Próximo passo
+            </div>
+            <div className="text-[23px] font-bold text-text mb-[9px] tracking-[-0.02em] relative z-[1]">
+              Contratar o especialista UX.
+            </div>
+            <div className="text-[14px] font-light text-text/55 leading-[1.75] max-w-[520px] relative z-[1]">
               Não para deixar a plataforma bonita. Para garantir que os dados que a Intelicity
               captura com tanto esforço cheguem às pessoas certas, no formato certo — e que novas
               cidades consigam entender, confiar e fechar mais rápido.

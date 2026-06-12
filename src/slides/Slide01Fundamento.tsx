@@ -1,120 +1,115 @@
-import { Fragment } from 'react'
-import type { SlideProps } from './config'
+import { motion } from "motion/react";
+import type { SlideProps } from "./config";
+import type { LucideIcon } from "lucide-react";
+import { Layers, BarChart2, Smartphone, Monitor, FileText, Zap } from "lucide-react";
 
-const layers = [
-  {
-    accent: 'rgba(26,18,37,0.28)',
-    label: 'Fundamento técnico',
-    title: 'Dados',
-    desc: 'Capturados por dispositivos embarcados em campo. Brutos, contínuos, volumosos. Esse é o nosso diferencial — e não é trivial.',
-  },
-  {
-    accent: 'rgba(26,18,37,0.45)',
-    label: 'Inteligência',
-    title: 'Contexto',
-    desc: 'Dados processados por IA e validados por humanos. Padrões reconhecidos, anomalias identificadas, qualidade garantida.',
-  },
-  {
-    accent: 'rgba(26,18,37,0.62)',
-    label: 'Entrega',
-    title: 'Informação',
-    desc: 'Contexto organizado e entregue ao perfil certo, no formato certo. O dado vira resposta para uma pergunta real.',
-  },
-  {
-    accent: 'rgba(26,18,37,0.82)',
-    label: 'Clareza',
-    title: 'Decisão',
-    desc: 'Informação apresentada com clareza suficiente para gerar ação. Gestores entendem, justificam e comunicam.',
-  },
-]
+const easeOut: [number, number, number, number] = [0, 0, 0.2, 1];
+const easeIn: [number, number, number, number] = [0.66, 0, 0.33, 1];
 
-export default function Slide01Fundamento({ action }: SlideProps) {
-  const hasActive = true
+const up = (delay: number, ease: [number, number, number, number] = easeOut) => ({
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.4, ease, delay },
+});
 
+interface Problem {
+  Icon: LucideIcon;
+  title: string;
+  body: string;
+  solution: string;
+  impact: string;
+}
+
+const problems: Problem[] = [
+  {
+    Icon: Layers,
+    title: "Sem padrão visual entre módulos",
+    body: "Cada parte da plataforma foi construída em momentos diferentes. A experiência é fragmentada — mesmo que o produto técnico seja sólido.",
+    solution: "Design system com tokens, componentes e padrões documentados e versionados.",
+    impact: "Produto percebido como maduro em qualquer tela que o cliente abrir.",
+  },
+  {
+    Icon: BarChart2,
+    title: "O gestor vê dados, não consegue agir",
+    body: "Informação sem contexto de decisão é ruído. O gestor que não entende o que está vendo não renova, não expande, não indica.",
+    solution: "Dashboards por perfil com hierarquia visual clara e exportação pronta para apresentação.",
+    impact: "Gestor que entende o dado vira defensor do produto na câmara.",
+  },
+  {
+    Icon: Smartphone,
+    title: "O operador de campo trava e pede ajuda",
+    body: "Sem fluxo guiado, cada operação depende de memória ou ligação para o suporte. Isso não escala.",
+    solution: "Wizard por tipo de operação — instalação, verificação, manutenção — com checklist e confirmação.",
+    impact: "Operação autônoma que não depende de suporte para funcionar.",
+  },
+  {
+    Icon: Monitor,
+    title: "A demo não converte na primeira reunião",
+    body: "A demonstração é densa demais para quem vê pela primeira vez. O ciclo de vendas se alonga porque o prospect precisa de mais reuniões para entender o valor.",
+    solution: "Fluxo de onboarding e demo desenhado para mostrar valor em minutos, não horas.",
+    impact: "Reunião de vendas que já demonstra valor antes do contrato.",
+  },
+  {
+    Icon: FileText,
+    title: "Sem identidade de produto, cada peça começa do zero",
+    body: "Sem linguagem visual e vocabulário de produto definidos, agências e parceiros não trabalham com autonomia. Cada peça é lenta, cara e inconsistente.",
+    solution: "Stack IC com nomenclatura, cores e papéis definidos por produto.",
+    impact: "Comunicação produzida com velocidade e coerência por qualquer parceiro.",
+  },
+  {
+    Icon: Zap,
+    title: "O produto não fala por si",
+    body: "Quando alguém vê a plataforma pela primeira vez, precisa de alguém para explicar. Um produto maduro comunica valor sem mediação.",
+    solution: "UX e branding trabalhando juntos para que o produto seja autoexplicativo.",
+    impact: "Ciclo de venda mais curto e menor custo de onboarding.",
+  },
+];
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export default function Slide01Fundamento({ action: _ }: SlideProps) {
   return (
-    <div className="flex-1 flex flex-col min-h-0">
-      <div className="flex-shrink-0">
-        <div className="pt-0 pb-4 border-b border-text/[0.08]">
-          <div className="font-mono text-[10px] tracking-[0.2em] text-purple/[0.45] mb-[18px] uppercase">
-            Intelicity · Documento Estratégico · 2026
-          </div>
-          <h1 className="text-[36px] font-bold leading-[1.05] text-text tracking-[-0.03em] mb-3">
-            Capturar dados
-            <br />é o <em className="not-italic text-purple">começo.</em>
-          </h1>
-          <p className="text-[13px] font-light text-text/55 leading-[1.65] max-w-[540px]">
-            A maioria das cidades não tem dados de qualidade sobre o que acontece no seu
-            território. A Intelicity resolveu esse problema. Agora o desafio é o próximo: fazer
-            esses dados chegarem às pessoas certas, no formato certo, no momento certo.
-          </p>
-        </div>
+    <div className="flex-1 flex flex-col gap-6 min-h-0">
+      <div>
+        <motion.div
+          {...up(0.0)}
+          className="font-mono text-xs tracking-[0.2em] text-purple/45 mb-4 uppercase"
+        >
+          UX &amp; Branding · Os problemas
+        </motion.div>
+        <motion.h1
+          {...up(0.1)}
+          className="text-4xl font-bold leading-[1.05] text-text tracking-[-0.03em] mb-3"
+        >
+          O que está travando
+          <br />a Intelicity <em className="not-italic text-purple">agora.</em>
+        </motion.h1>
+        <motion.p {...up(0.22)} className="text-gray-950 leading-[1.65] max-w-[560px]">
+          Seis problemas que têm resposta — mas ainda não foram resolvidos. Cada um tem um custo
+          concreto hoje e uma solução clara quando UX e branding trabalham juntos.
+        </motion.p>
       </div>
 
-      <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden pb-5 step-reveal">
-        <div className="font-mono text-[10px] tracking-[0.2em] text-purple/[0.45] uppercase mt-9 mb-3 flex items-center gap-3 after:content-[''] after:flex-1 after:h-px after:bg-text/[0.08]">
-          O que construímos
-        </div>
-        <h2 className="text-[30px] font-bold text-text tracking-[-0.025em] leading-[1.1] mb-3">
-          Uma cadeia completa,
-          <br />
-          da captura à execução.
-        </h2>
-
-        <div className="flex flex-col gap-[2px] mt-7">
-          {layers.map((layer) => {
-            const isActive = action === layer.title
-            return (
-              <Fragment key={layer.title}>
-                <div
-                  className={`group layer-item flex items-stretch border overflow-hidden transition-all duration-300 cursor-default
-                    ${isActive ? 'bg-purple/[0.06] border-purple/[0.22]' : 'bg-black/[0.02] border-text/[0.08] hover:bg-purple/[0.05] hover:border-purple/[0.18]'}
-                    ${!isActive && hasActive ? 'opacity-[0.32]' : ''}`}
-                >
-                  <div className="w-1 flex-shrink-0 z-[1]" style={{ background: layer.accent }} />
-                  <div className="px-6 py-4 flex-1 z-[1] relative">
-                    <div className={`font-mono text-[9px] tracking-[0.16em] uppercase mb-[3px] transition-colors duration-300
-                      ${isActive ? 'text-purple/55' : 'text-text/[0.32] group-hover:text-purple/50'}`}>
-                      {layer.label}
-                    </div>
-                    <div className={`text-[20px] font-semibold tracking-[-0.015em] mb-1 transition-colors duration-300
-                      ${isActive ? 'text-text' : 'text-text/[0.62] group-hover:text-text'}`}>
-                      {layer.title}
-                    </div>
-                    <div className="text-[13px] font-light text-text/55 leading-[1.65] transition-colors duration-300 group-hover:text-text/[0.62]">
-                      {layer.desc}
-                    </div>
-                  </div>
-                </div>
-                <div className="h-4 flex items-center pl-8">
-                  <span className="font-mono text-[11px] text-purple/[0.28]">↓</span>
-                </div>
-              </Fragment>
-            )
-          })}
-
-          <div
-            className={`layer-conclusion layer-item flex items-stretch border overflow-hidden transition-all duration-300 mt-1 cursor-default
-              ${action === 'Execução' ? 'bg-purple/[0.08] border-purple/[0.28]' : 'bg-purple/[0.05] border-purple/[0.18] hover:bg-purple/[0.08] hover:border-purple/[0.28]'}`}
-          >
-            <div className="w-1 flex-shrink-0 z-[1] bg-purple shadow-[0_0_14px_rgba(124,58,237,0.35)]" />
-            <div className="px-6 py-4 flex-1 z-[1] relative">
-              <div className="font-mono text-[9px] tracking-[0.16em] text-text/[0.32] uppercase mb-[3px]">
-                Destino
+      <div className="flex-1 min-h-0 overflow-y-auto pb-4">
+        <div className="grid grid-cols-2 gap-2">
+          {problems.map((p, i) => (
+            <motion.div
+              key={p.title}
+              {...up(0.32 + i * 0.08, easeIn)}
+              className="p-5 bg-black/2 border border-text/8 flex flex-col gap-3"
+            >
+              <p.Icon className="size-4 text-purple/40" />
+              <div className="text-[13px] font-semibold text-text/85">{p.title}</div>
+              <div className="text-xs font-light text-gray-950 leading-[1.65]">{p.body}</div>
+              <div className="border-l-2 border-purple/30 bg-purple/6 px-3 py-2 text-xs text-purple/85 leading-[1.6] mt-auto">
+                {p.solution}
               </div>
-              <div className="text-[32px] font-bold text-text tracking-[-0.03em]">Execução.</div>
-              <div className="text-[14px] font-light text-text/52 mt-[5px] leading-[1.65]">
-                O objetivo final de qualquer dado coletado. Cidades têm problemas que não podem
-                ignorar — a Intelicity garante que elas tenham o que precisam para resolvê-los.
+              <div className="border-l-2 border-emerald-500/40 bg-emerald-500/[0.05] px-3 py-2 text-xs text-emerald-700/80 leading-[1.6]">
+                {p.impact}
               </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="mt-[22px] pt-4 border-t border-text/[0.08] font-mono text-[10px] text-purple/[0.32] tracking-[0.12em] flex items-center gap-[10px]">
-          <div className="w-[6px] h-[6px] rounded-full bg-purple/[0.45] shadow-[0_0_6px_rgba(124,58,237,0.25)] flex-shrink-0" />
-          INTELICITY OPERA EM TODAS AS CAMADAS
+            </motion.div>
+          ))}
         </div>
       </div>
     </div>
-  )
+  );
 }

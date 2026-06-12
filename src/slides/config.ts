@@ -1,31 +1,27 @@
 export const SLIDE_CONFIG = [
   {
-    label: 'Fundamento',
-    actions: ['Dados', 'Contexto', 'Informação', 'Decisão', 'Execução'],
+    label: 'Capa',
+    actions: ['Capa'],
   },
   {
-    label: 'O Desafio',
-    actions: ['Personas', 'Riscos'],
+    label: 'Os Problemas',
+    actions: ['Problemas'],
   },
   {
-    label: 'Crescimento',
-    actions: ['Modelo UX', 'Comparativo'],
+    label: 'Onde Estamos',
+    actions: ['Cadeia', 'Personas'],
   },
   {
-    label: 'Branding',
-    actions: ['Presença', 'Declaração'],
+    label: 'A Solução',
+    actions: ['Design System', 'Stack IC'],
   },
   {
-    label: 'Stack IC',
-    actions: ['Pipeline', 'Produtos'],
-  },
-  {
-    label: 'Escopo',
-    actions: ['Módulos', 'Entrega', 'Próximo Passo'],
+    label: 'Em Andamento',
+    actions: ['Fleets', 'Vision', 'SABESP'],
   },
 ] as const
 
-export type SlideIndex = 0 | 1 | 2 | 3 | 4 | 5
+export type SlideIndex = 0 | 1 | 2 | 3 | 4
 
 export interface SlideProps {
   action: string

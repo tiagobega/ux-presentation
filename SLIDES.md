@@ -36,14 +36,17 @@
 | # | Título | Steps | Case | Arquivo |
 |---|--------|-------|------|---------|
 | 0 | Como o produto fala por si. | Capa | — | `Slide00Capa.tsx` |
-| 1 | O problema não é falta de produto. É falta de coerência. | Diagnóstico · Caso Carnaval | Carnaval | `Slide1Coerencia.tsx` |
-| 2 | Mais dados não significam mais clareza. | Dados | Cidade assustada | `Slide2Dados.tsx` |
-| 3 | UX atravessa a cadeia inteira. | Cadeia | (amarra os 3) | `Slide3Cadeia.tsx` (SVG/`motion`) |
-| 4 | O que vendemos nem sempre é o que gera mais valor. | Valor | Mapas vs OS | `Slide4Valor.tsx` |
-| 5 | Quando a experiência falha, o custo aparece. | Custo | — | `Slide5Custo.tsx` |
-| 6 | Além da experiência, falta uma narrativa comum. | Narrativa | — | `Slide6Narrativa.tsx` |
-| 7 | Stack IC: a árvore do dado. | Stack IC | — | `Slide7StackIC.tsx` |
-| 8 | Onde o UX entra. | Foco | — | `Slide8Foco.tsx` |
+| 1 | Os problemas que enfrentamos hoje. | Diagnóstico | — | `Slide1Coerencia.tsx` |
+| 2 | Mais dados não significam mais clareza. | Situação · Perguntas | — (conceitual) | `Slide2Dados.tsx` |
+| 3 | UX atravessa a cadeia inteira. | Coleta→Contexto · Informação→Acompanhamento | — | `Slide3Cadeia.tsx` (esteira) |
+| 4 | Quando a experiência falha, a cadeia inteira sente. | Casos | Equipamento · Instalação · Carnaval | `Slide4Falhas.tsx` |
+| 5 | O mapa nem sempre precisa ser o protagonista. | Valor | Mapa × OS (reflexão) | `Slide5Valor.tsx` |
+| 6 | Quando a experiência falha, o custo aparece. | Custo | — | `Slide6Custo.tsx` |
+| 7 | Além da experiência, falta uma narrativa comum. | Narrativa | — | `Slide7Narrativa.tsx` |
+| 8 | Stack IC: a árvore do dado. | Stack IC | — | `Slide8StackIC.tsx` |
+| 9 | Uma identidade para cada produto. | Marcas | — | `Slide9Branding.tsx` (carrossel auto) |
+| 10 | Onde o UX entra. | Foco | — | `Slide10Foco.tsx` |
+| 11 | Citação de encerramento (Steve Jobs). | Fim | — | `Slide11Citacao.tsx` |
 
 ---
 
@@ -55,9 +58,8 @@
 ---
 
 ## Slide 1 — Os problemas que enfrentamos hoje
-**Steps:** Diagnóstico → Caso Carnaval
+**Steps:** Diagnóstico (single-step)
 
-### Step "Diagnóstico"
 Título: "Os problemas que enfrentamos **hoje.**" (destaque vermelho). Grid 3×2 com as 6 dores — tratadas em **vermelho** (ícone, borda e accent à esquerda), reforçando que são problemas:
 
 1. Produtos com experiências diferentes e confusas.
@@ -69,20 +71,17 @@ Título: "Os problemas que enfrentamos **hoje.**" (destaque vermelho). Grid 3×2
 
 **Frase de fechamento (centralizada):** "Temos produtos, dados e iniciativas com muito potencial. O desafio agora é fazer com que nossa evolução seja percebida como uma **experiência clara, consistente e conectada.**" *(o fecho em roxo cria a virada problema → solução)*
 
-### Step "Caso Carnaval" — slide de número-herói
-- **Layout:** **90%** gigante (~160px) à esquerda; à direita um mini-diagrama do formulário (botão de registro no topo → usuário não rola → abandono).
-- **Como contar:** o botão de registro ficava no topo; ~90% não completaram o formulário. O problema não era falta de interesse — era jornada mal desenhada.
-- **Punch:** *"Quando a experiência falha, o dado nem chega a existir."*
+> ❌ O step "Caso Carnaval" (90% + mock do formulário) foi **removido** daqui — o Carnaval agora vive como Case 3 no Slide 4.
 
 ---
 
 ## Slide 2 — Mais dados não significam mais clareza
-**Steps:** Situação → Perguntas · **Layout:** duas colunas (esquerda = escalada do problema · direita = perguntas)
+**Steps:** Situação → Perguntas · **conceitual** (sem exemplos específicos) · duas colunas
 
-- **Coluna esquerda (escalada, step "Situação"):** card "Antes — um problema que mal conseguia ser administrado" → seta ↓ "ferramenta IC" → card "Depois — **10×** maior do que se imaginava".
+- **Coluna esquerda (conceitual, step "Situação"):** card "A descoberta — A Intelicity revela problemas que antes eram invisíveis" → seta ↓ → card "A nova responsabilidade — cada problema revelado precisa ser entendido, priorizado e resolvido".
 - **Coluna direita (step "Perguntas"):** título "E agora?" (visível desde o step 1) e, ao avançar, as perguntas cascateiam: *Como priorizar? · Como justificar orçamento? · Como planejar? · Como prestar contas? · Como comunicar a órgãos públicos?*
 - **Frase centralizada (entra com o step "Perguntas"):** *"O dado revela o problema. **A experiência define se ele vira ação.**"*
-- ❌ Removida a linha "Privacidade protege o dado" (não fazia sentido no fluxo).
+- ❌ Removido o exemplo específico "**10×**" / "antes-administrável-depois" — slide agora foca só na mensagem conceitual.
 
 ---
 
@@ -106,20 +105,39 @@ Título: "Os problemas que enfrentamos **hoje.**" (destaque vermelho). Grid 3×2
 - **Punch (entra ao completar a cadeia, step 2):** *"UX não é a tela final. É a estrutura que faz cada etapa gerar a próxima ação."*
 - ❌ Pinos de case (Carnaval/Cidade/Mapas) removidos — os cards agora são autoexplicativos.
 
----
-
-## Slide 4 — O que vendemos nem sempre é o que gera mais valor
-**Steps:** Valor · case Mapas vs Ordens de Serviço
-
-- **Duas colunas:**
-  - **MAPA** — "mostra o problema": leitura territorial, comparação temporal (ex.: antes/depois de São Paulo).
-  - **ORDEM DE SERVIÇO** — "mostra controle": prioridade, execução, cobrança, resultado. *(peso visual maior / roxo na direita)*
-- **Como contar:** em demos o mapa costuma ser a feature principal e é importante; mas para o gestor o valor mais forte pode estar no controle das OS — o que foi identificado, priorizado, está em execução e foi resolvido.
-- **Punch:** *"O mapa mostra onde está o problema. A Ordem de Serviço mostra como a cidade assume controle."*
+> ⚠️ Slide 3 **congelado** a pedido — não alterar conteúdo nem estrutura.
 
 ---
 
-## Slide 5 — Quando a experiência falha, o custo aparece
+## Slide 4 — Quando a experiência falha, a cadeia inteira sente
+**Steps:** Casos · **3 cases reais de falha que quebram a cadeia antes do dado virar decisão**
+
+Subtítulo: "UX não atua só na interface final. Ele evita falhas na operação, na coleta, na instalação, no uso do equipamento e na forma como a informação chega ao usuário."
+
+3 cards (ícone vermelho · cenário da falha · **Ponto de UX** em roxo · chip de impacto na cadeia):
+
+| Case | Cenário | Ponto de UX | Impacto |
+|------|---------|-------------|---------|
+| **Utilização do equipamento** | Câmera mal posicionada compromete a captura, reduz a qualidade e gera dados ruins | Orientar o uso correto do equipamento | Coleta → Dados |
+| **Instalação** | Dispositivo mal instalado pode não funcionar ou não gerar dado | Fluxos de instalação, validação e confirmação | Coleta → Dados → Acompanhamento |
+| **Carnaval** | Formulário mal formatado impede registrar a informação correta | Conduzir o usuário até a ação principal | Coleta → Informação |
+
+- **Mensagem final + Punch:** "Esses problemas parecem pequenos isoladamente — mas todos quebram a cadeia antes que o dado vire decisão." → *"Quando a experiência falha no começo, o problema aparece no dado, na operação e na decisão."*
+
+---
+
+## Slide 5 — O mapa nem sempre precisa ser o protagonista
+**Steps:** Valor · **reflexão de produto** (não confronto) — vendemos os dois
+
+- Tom **reflexivo, não agressivo**: entregamos o mapa **e** o controle de ordens de serviço; a questão é qual deve ocupar o centro da experiência, conforme público e objetivo.
+- **Duas colunas com peso visual igual** (mesma borda/fundo), diferenciadas só pelo accent:
+  - **Mapa** *(azul)* — "Para ver e entender": leitura territorial · comparação temporal · antes e depois.
+  - **Ordem de Serviço** *(roxo)* — "Para agir e controlar": prioridade · execução · cobrança · resultado.
+- **Punch:** *"O mapa mostra onde está o problema. A ordem de serviço mostra o que fazer com ele. **UX decide qual merece o centro da tela.**"*
+
+---
+
+## Slide 6 — Quando a experiência falha, o custo aparece
 **Steps:** Custo · **qualitativo, sem métricas numéricas** (não temos os dados)
 
 Cards (ícone + título + 1 linha), sem números:
@@ -135,16 +153,16 @@ Cards (ícone + título + 1 linha), sem números:
 
 ---
 
-## Slide 6 — Além da experiência, falta uma narrativa comum
+## Slide 7 — Além da experiência, falta uma narrativa comum
 **Steps:** Narrativa · entrada do branding (repurpose do slide dos 10 produtos)
 
 - **Layout:** os projetos aparecem **dispersos e inconsistentes** — provando visualmente que ainda não parecem da mesma família.
-- **Mensagem:** a Intelicity tem muitos projetos com potencial, mas eles ainda não se apresentam como partes de uma mesma visão.
+- **Insight em destaque (citação com borda roxa):** "Precisamos de algo que mostre **quem a Intelicity é** através dos produtos. Tivemos um rebranding visual para a comunicação externa — mas não trabalhamos o **maior ponto de contato com o consumidor: as nossas aplicações.**"
 - **Punch:** *"UX organiza a experiência. Branding organiza a narrativa."*
 
 ---
 
-## Slide 7 — Stack IC: a árvore do dado
+## Slide 8 — Stack IC: a árvore do dado
 **Steps:** Stack IC · **nova visualização em árvore/fluxo** (substitui o pipeline linear)
 
 - **Metáfora:** a Stack IC **é** o caminho do dado — de onde ele vem, como é processado, como é exibido. Visualizada como uma **árvore que cresce de baixo para cima**: raízes (fontes) → galhos (processamento) → copa (exibição), nutrida pelo solo (endomarketing/P&D). O **IC Fleets** é o *gateway* por onde entram os dados de **hardware** — as demais fontes vão direto ao processamento.
@@ -174,7 +192,17 @@ Cards (ícone + título + 1 linha), sem números:
 
 ---
 
-## Slide 8 — Onde o UX entra
+## Slide 9 — Uma identidade para cada produto
+**Steps:** Marcas · **carrossel vertical automático** (branding dos produtos)
+
+- **Esquerda — lockup `IC ●` + carrossel:** "IC" fixo + bolinha que troca de cor; ao lado, um carrossel vertical infinito dos nomes dos produtos que sobe sozinho (~2s cada). O produto ativo fica centralizado, colorido e maior; os demais esmaecidos (mask de fade nas bordas). Lê como "IC ● Lumen".
+- **Direita — sincronizado:** camada (Coleta / Processamento / Qualidade / Acesso / Interface / …) na cor do produto + nome completo ("IC Lumen") + funcionalidade em 1 linha. Cross-fade (`AnimatePresence`).
+- **12 produtos:** Fleets · Vision · Lumen · Quality · Tree · Gas · Flood · Classify · Query · Face · News · Labs.
+- Loop infinito real (posição relativa com wrap-around). Calibração no topo do arquivo: `STEP_MS` (tempo por produto, 2000ms) e `ITEM_H` (espaçamento).
+
+---
+
+## Slide 10 — Onde o UX entra
 **Steps:** Foco · fechamento prático + tese final
 
 Em vez de só nomear as frentes, cada uma mostra **onde o UX entra**, de forma concreta. Layout: **3 colunas** + **barra de fundação** transversal embaixo.
@@ -192,9 +220,21 @@ Em vez de só nomear as frentes, cada uma mostra **onde o UX entra**, de forma c
 
 ---
 
+## Slide 11 — Citação de encerramento
+**Steps:** Fim · slide centralizado (finale)
+
+Citação que amarra a tese (começar pela experiência, não pela tecnologia), revelada em cascata:
+
+> "Você precisa começar pela **experiência do cliente** e trabalhar de trás para frente até a tecnologia. Não dá para começar pela tecnologia e depois tentar descobrir para onde você vai vendê-la."
+> — **Steve Jobs** · WWDC · 1997
+
+- Layout centralizado (vertical + horizontal), aspa grande em roxo, 1ª frase em destaque (46px) com "experiência do cliente" em roxo, 2ª frase menor, atribuição com filete + nome + "WWDC · 1997".
+
+---
+
 ## Notas de implementação
 
-**Status:** ✅ implementado — 9 slides (`Slide0Capa`…`Slide8Foco`), build passando. Arquivos renomeados para bater com a ordem 0–8.
+**Status:** ✅ implementado — 12 slides (`Slide0Capa`…`Slide11Citacao`), build passando. Arquivos renomeados para bater com a ordem 0–11.
 
 **Padding / full-bleed**
 - O container em `Presentation.tsx` **não** aplica padding. Cada slide aplica `SLIDE_PADDING` (`px-16 pt-10 pb-8`, exportado de `config.ts`) no seu próprio root.
@@ -203,14 +243,21 @@ Em vez de só nomear as frentes, cada uma mostra **onde o UX entra**, de forma c
 **Removido na reestruturação**
 - ⏸️ **Companion mobile por perfil** (via QR) — pausado. O controle remoto do apresentador continua.
 - ❌ **Slide de Personas** — removido.
-- ❌ **Slide de Design System** dedicado — removido (vive como fundação no Slide 8).
+- ❌ **Slide de Design System** dedicado — removido (vive como fundação no Slide 9).
 - ❌ **Three.js** — removido. `DataChain`/`StackIC3D` apagados, pasta `scenes/` removida, dependências `three` e `@types/three` retiradas do `package.json`.
 - ❌ Arquivos legados apagados: `Slide01Fundamento`, `Slide02Desafio`, `Slide03Crescimento`, `Slide04Branding`, `Slide05DadosTodos`, `Slide06CustoReal`, `Slide05StackIC`, `Slide06Escopo`.
 
+**Esteira global (camera pan)**
+- A apresentação inteira é **uma esteira**: os 10 slides ficam numa trilha (`Presentation.tsx`), e a "câmera" (translate `x`) desliza até o slide atual com easing dramático (`[0.76,0,0.24,1]`, 0.85s). Dá continuidade ao conjunto.
+- **Montagem preguiçosa + congelamento:** um slide só **monta na 1ª vez que é visitado** (`activated` Set) → a animação de entrada dispara ao chegar nele. Depois fica montado e **congelado no estado completo** — não remonta, não reseta ao seguir em frente.
+- **Memória de step (`actionMemory`):** slides inativos ficam no último step visto (não voltam ao primeiro). Mudar de step no slide ativo **não** remonta (transições internas preservadas).
+- Nenhum arquivo de slide precisou mudar para a esteira.
+- Nota: a entrada do slide roda concomitante ao pan (entra animando). Se quiser "animar só ao chegar", dá pra atrasar o remount até o pan terminar.
+
 **Pendências de polimento (próxima rodada)**
-- Conferir cada slide em 1920×1080 (sem scroll) — o Slide 3 (cadeia) tem timing de revelação longo; ajustar se necessário.
+- Conferir cada slide em 1920×1080 (sem scroll).
 - Slide 7: a árvore (SVG) centraliza com margens laterais; avaliar se quer preencher mais a largura.
-- Animação de entrada/saída entre slides ainda usa o CSS `slide-fwd/bwd`; GSAP nas transições é opcional.
+- CSS `slide-fwd/bwd` em `index.css` ficou sem uso (a transição agora é o pan da esteira).
 
 ---
 

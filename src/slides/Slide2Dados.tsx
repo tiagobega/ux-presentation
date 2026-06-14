@@ -1,6 +1,6 @@
 import { motion } from "motion/react";
 import type { SlideProps } from "./config";
-import { ArrowDown } from "lucide-react";
+import { ArrowDown, ArrowRight } from "lucide-react";
 import { SLIDE_PADDING } from "./config";
 
 const easeOut: [number, number, number, number] = [0, 0, 0.2, 1];
@@ -46,17 +46,44 @@ export default function Slide2Dados({ action }: SlideProps) {
 
       {/* duas colunas: escalada do problema (esq) · perguntas (dir) */}
       <div className="flex-1 min-h-0 grid grid-cols-2 gap-10">
-        {/* ESQUERDA — a escalada */}
+        {/* ESQUERDA — da descoberta à responsabilidade (conceitual) */}
         <div className="flex flex-col justify-center gap-4">
           <motion.div
             {...up(0.2, easeIn)}
-            className="border border-text/10 bg-black/2 px-8 py-6"
+            className="border border-text/10 bg-black/2 px-8 py-7"
           >
-            <div className="font-mono text-[12px] tracking-[0.16em] text-text/40 uppercase mb-2">
-              Antes
+            <div className="font-mono text-[12px] tracking-[0.16em] text-text/40 uppercase mb-3">
+              A descoberta
             </div>
-            <div className="text-[27px] font-semibold text-text/70 leading-[1.15] tracking-[-0.02em]">
-              Um problema que mal conseguia ser administrado.
+            <div className="text-[28px] font-semibold text-text/75 leading-[1.18] tracking-[-0.02em]">
+              A Intelicity revela problemas que antes eram invisíveis.
+            </div>
+
+            {/* exemplo concreto: 300 → 3.000 buracos */}
+            <div className="flex items-end gap-6 mt-5 pt-5 border-t border-text/8">
+              <div>
+                <div className="font-mono text-[11px] tracking-[0.16em] text-text/35 uppercase mb-1">
+                  Antes
+                </div>
+                <div className="text-[15px] text-text/45">
+                  <span className="text-[42px] font-bold leading-none text-text/55 tracking-[-0.03em]">
+                    300
+                  </span>{" "}
+                  buracos
+                </div>
+              </div>
+              <ArrowRight className="size-6 text-purple/45 mb-2.5 flex-shrink-0" />
+              <div>
+                <div className="font-mono text-[11px] tracking-[0.16em] text-purple/55 uppercase mb-1">
+                  Depois
+                </div>
+                <div className="text-[15px] text-text/55">
+                  <span className="text-[42px] font-bold leading-none text-purple tracking-[-0.03em]">
+                    3.000
+                  </span>{" "}
+                  buracos
+                </div>
+              </div>
             </div>
           </motion.div>
 
@@ -80,23 +107,27 @@ export default function Slide2Dados({ action }: SlideProps) {
             />
             <div className="relative z-[1]">
               <div className="font-mono text-[12px] tracking-[0.16em] text-purple/55 uppercase mb-3">
-                Após adquirir nossos dados e sistemas
+                A nova responsabilidade
               </div>
-              <div className="flex items-end gap-4">
-                <div className="text-[88px] font-bold leading-[0.8] tracking-[-0.04em] text-purple">
-                  10×
-                </div>
-                <div className="text-[27px] font-semibold text-text/90 leading-[1.15] tracking-[-0.02em] pb-2">
-                  maior do que se imaginava.
-                </div>
+              <div className="text-[28px] font-semibold text-text/90 leading-[1.18] tracking-[-0.02em]">
+                Cada problema revelado precisa ser entendido, priorizado e
+                resolvido.
               </div>
             </div>
           </motion.div>
         </div>
 
-        {/* DIREITA — as perguntas */}
-        <div className="flex flex-col justify-center gap-4 border-l border-text/8 pl-10">
-          <motion.div {...up(0.3)} className="flex items-center gap-3">
+        {/* DIREITA — as perguntas (E agora? + borda entram só no step "Perguntas") */}
+        <div
+          className="flex flex-col justify-center gap-4 border-l pl-10 transition-colors duration-500"
+          style={{ borderColor: showQuestions ? "rgba(26,18,37,0.08)" : "transparent" }}
+        >
+          <motion.div
+            initial={false}
+            animate={{ opacity: showQuestions ? 1 : 0, y: showQuestions ? 0 : 10 }}
+            transition={{ duration: 0.4, ease: easeOut }}
+            className="flex items-center gap-3"
+          >
             <div className="text-[34px] font-bold text-text tracking-[-0.02em]">
               E agora?
             </div>

@@ -13,25 +13,50 @@ import {
 const easeOut: [number, number, number, number] = [0, 0, 0.2, 1];
 const easeIn: [number, number, number, number] = [0.66, 0, 0.33, 1];
 
-const up = (delay: number, ease: [number, number, number, number] = easeOut) => ({
+const up = (
+  delay: number,
+  ease: [number, number, number, number] = easeOut,
+) => ({
   initial: { opacity: 0, y: 20 },
   animate: { opacity: 1, y: 0 },
   transition: { duration: 0.4, ease, delay },
 });
 
 const costs: { Icon: LucideIcon; title: string; desc: string }[] = [
-  { Icon: TrendingDown, title: "Baixa conclusão de fluxos", desc: "o usuário desiste no meio do caminho" },
-  { Icon: Repeat, title: "Onboarding repetido", desc: "cada cliente recomeça do zero" },
+  {
+    Icon: TrendingDown,
+    title: "Baixa conclusão de fluxos",
+    desc: "o usuário desiste no meio do caminho",
+  },
+  {
+    Icon: Repeat,
+    title: "Onboarding repetido",
+    desc: "cada cliente recomeça do zero",
+  },
   { Icon: Clock, title: "Demos longas", desc: "o valor demora a aparecer" },
-  { Icon: LifeBuoy, title: "Suporte por dúvida de uso", desc: "atendimento que era pra ser tela" },
-  { Icon: MessageCircle, title: "Vendas que dependem de explicação", desc: "o produto não fala por si" },
-  { Icon: Compass, title: "Cliente com dado, mas sem plano", desc: "informação sem próximo passo" },
+  {
+    Icon: LifeBuoy,
+    title: "Suporte por dúvida de uso",
+    desc: "atendimento que era pra ser tela",
+  },
+  {
+    Icon: MessageCircle,
+    title: "Vendas que dependem de explicação",
+    desc: "o produto não comunica a sua finalidade",
+  },
+  {
+    Icon: Compass,
+    title: "Cliente com dado, mas sem plano",
+    desc: "informação sem próximo passo, risco de perder o cliente",
+  },
 ];
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function Slide5Custo({ action: _ }: SlideProps) {
   return (
-    <div className={`${SLIDE_PADDING} flex-1 flex flex-col gap-9 min-h-0 overflow-hidden`}>
+    <div
+      className={`${SLIDE_PADDING} flex-1 flex flex-col gap-20 min-h-0 overflow-hidden`}
+    >
       <div>
         <motion.div
           {...up(0.0)}
@@ -48,7 +73,7 @@ export default function Slide5Custo({ action: _ }: SlideProps) {
         </motion.h1>
       </div>
 
-      <div className="flex-1 min-h-0 grid grid-cols-3 grid-rows-2 gap-4">
+      <div className="flex-1 min-h-0 grid grid-cols-3 grid-rows-2 gap-8">
         {costs.map((c, i) => (
           <motion.div
             key={c.title}
@@ -59,18 +84,18 @@ export default function Slide5Custo({ action: _ }: SlideProps) {
             <div className="text-[24px] font-semibold text-text/90 leading-[1.15] tracking-[-0.02em]">
               {c.title}
             </div>
-            <div className="text-[15px] font-light text-text/50 leading-[1.45]">{c.desc}</div>
+            <div className="text-[15px]  text-text/50 leading-[1.45]">
+              {c.desc}
+            </div>
           </motion.div>
         ))}
       </div>
 
-      <motion.div
-        {...up(0.85, easeIn)}
-        className="border border-purple/20 bg-purple/[0.04] px-10 py-6"
-      >
-        <div className="text-[30px] font-bold text-text tracking-[-0.02em]">
+      <motion.div {...up(0.85, easeIn)} className="">
+        <div className="text-[30px] font-bold text-text text-center tracking-[-0.02em]">
           UX reduz o custo de{" "}
-          <span className="text-purple">explicar, corrigir e sustentar</span> o produto.
+          <span className="text-purple">explicar, corrigir e sustentar</span> o
+          produto.
         </div>
       </motion.div>
     </div>

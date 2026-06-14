@@ -5,6 +5,7 @@ import {
   useRef,
   type ComponentType,
 } from "react";
+import { motion } from "motion/react";
 import { Background } from "./Background";
 import Nav from "./Nav";
 import QROverlay from "./QROverlay";
@@ -13,32 +14,46 @@ import Slide0Capa from "../slides/Slide00Capa";
 import Slide1Coerencia from "../slides/Slide1Coerencia";
 import Slide2Dados from "../slides/Slide2Dados";
 import Slide3Cadeia from "../slides/Slide3Cadeia";
-import Slide4Valor from "../slides/Slide4Valor";
-import Slide5Custo from "../slides/Slide5Custo";
-import Slide6Narrativa from "../slides/Slide6Narrativa";
-import Slide7StackIC from "../slides/Slide7StackIC";
-import Slide8Foco from "../slides/Slide8Foco";
+import Slide4Falhas from "../slides/Slide4Falhas";
+import Slide5Valor from "../slides/Slide5Valor";
+import Slide6Custo from "../slides/Slide6Custo";
+import Slide7Narrativa from "../slides/Slide7Narrativa";
+import Slide8StackIC from "../slides/Slide8StackIC";
+import Slide9Branding from "../slides/Slide9Branding";
+import Slide10Foco from "../slides/Slide10Foco";
+import Slide11Citacao from "../slides/Slide11Citacao";
 import { SLIDE_CONFIG, type SlideProps } from "../slides/config";
 
 // Order matches SLIDE_CONFIG indices:
-// 0 Capa · 1 O problema · 2 Mais dados · 3 A cadeia · 4 Valor
-// 5 O custo · 6 Narrativa · 7 Stack IC · 8 Onde o UX entra
+// 0 Capa · 1 O problema · 2 Mais dados · 3 A cadeia · 4 Falhas na cadeia
+// 5 Valor · 6 O custo · 7 Narrativa · 8 Stack IC · 9 Branding dos produtos
+// 10 Onde o UX entra · 11 Citação (Steve Jobs)
 const SLIDES: ComponentType<SlideProps>[] = [
   Slide0Capa,
   Slide1Coerencia,
   Slide2Dados,
   Slide3Cadeia,
-  Slide4Valor,
-  Slide5Custo,
-  Slide6Narrativa,
-  Slide7StackIC,
-  Slide8Foco,
+  Slide4Falhas,
+  Slide5Valor,
+  Slide6Custo,
+  Slide7Narrativa,
+  Slide8StackIC,
+  Slide9Branding,
+  Slide10Foco,
+  Slide11Citacao,
 ];
+
+// Easing dramático para o pan da câmera entre slides.
+const camera: [number, number, number, number] = [0.76, 0, 0.24, 1];
+const PAN_SEC = 0.85; // duração do pan da câmera
+// Atraso da montagem do slide: ele só monta (e anima) quando o pan está terminando.
+const ENTER_DELAY_MS = 700;
 
 export default function Presentation() {
   const [slide, setSlide] = useState(0);
   const [action, setAction] = useState<string>(SLIDE_CONFIG[0].actions[0]);
-  const [slideDirection, setSlideDirection] = useState<"fwd" | "bwd">("fwd");
+  // Slides já visitados ficam montados (estado completo, sem reset ao sair).
+  const [activated, setActivated] = useState<Set<number>>(() => new Set([0]));
   const [showQR, setShowQR] = useState(false);
   const total = SLIDES.length;
 
@@ -46,6 +61,22 @@ export default function Presentation() {
   const actionRef = useRef(action);
   slideRef.current = slide;
   actionRef.current = action;
+
+  // Último step visto de cada slide — usado para congelar slides inativos no estado completo.
+  const actionMemory = useRef<Record<number, string>>({
+    0: SLIDE_CONFIG[0].actions[0],
+  });
+  useEffect(() => {
+    actionMemory.current[slide] = action;
+  }, [slide, action]);
+
+  // Monta o slide só DEPOIS do pan da câmera → a animação de entrada dispara ao chegar.
+  // (Slides já visitados ignoram, pois continuam montados e completos.)
+  const activate = useCallback((i: number) => {
+    window.setTimeout(() => {
+      setActivated((prev) => (prev.has(i) ? prev : new Set(prev).add(i)));
+    }, ENTER_DELAY_MS);
+  }, []);
 
   const next = useCallback(() => {
     const s = slideRef.current;
@@ -55,11 +86,11 @@ export default function Presentation() {
     if (idx < actions.length - 1) {
       setAction(actions[idx + 1]);
     } else if (s < total - 1) {
-      setSlideDirection("fwd");
       setSlide(s + 1);
       setAction(SLIDE_CONFIG[s + 1].actions[0]);
+      activate(s + 1);
     }
-  }, [total]);
+  }, [total, activate]);
 
   const prev = useCallback(() => {
     const s = slideRef.current;
@@ -69,40 +100,43 @@ export default function Presentation() {
     if (idx > 0) {
       setAction(actions[idx - 1]);
     } else if (s > 0) {
-      setSlideDirection("bwd");
       const prevActions = SLIDE_CONFIG[s - 1].actions;
       setSlide(s - 1);
       setAction(prevActions[prevActions.length - 1]);
+      activate(s - 1);
     }
-  }, []);
+  }, [activate]);
 
-  const gotoSlide = useCallback((i: number) => {
-    setSlideDirection(i > slideRef.current ? "fwd" : "bwd");
-    setSlide(i);
-    setAction(SLIDE_CONFIG[i].actions[0]);
-  }, []);
+  const gotoSlide = useCallback(
+    (i: number) => {
+      setSlide(i);
+      setAction(SLIDE_CONFIG[i].actions[0]);
+      activate(i);
+    },
+    [activate],
+  );
 
   const handleRemote = useCallback(
     (cmd: string) => {
       const s = slideRef.current;
       if (cmd === "prev") {
         if (s > 0) {
-          setSlideDirection("bwd");
           setSlide(s - 1);
           setAction(SLIDE_CONFIG[s - 1].actions[0]);
+          activate(s - 1);
         }
       } else if (cmd === "next") {
         if (s < total - 1) {
-          setSlideDirection("fwd");
           setSlide(s + 1);
           setAction(SLIDE_CONFIG[s + 1].actions[0]);
+          activate(s + 1);
         }
       } else {
         const actions = SLIDE_CONFIG[s].actions as readonly string[];
         if ((actions as string[]).includes(cmd)) setAction(cmd);
       }
     },
-    [total],
+    [total, activate],
   );
 
   useRemoteControl(handleRemote);
@@ -154,7 +188,6 @@ export default function Presentation() {
     }).catch(() => {});
   }, [slide, action, total]);
 
-  const SlideComponent = SLIDES[slide];
   const config = SLIDE_CONFIG[slide];
   const actions = config.actions as readonly string[];
   const actionIndex = actions.indexOf(action);
@@ -165,15 +198,32 @@ export default function Presentation() {
     <div className="fixed inset-0 flex flex-col">
       <Background />
 
+      {/* Esteira global: todos os slides renderizados lado a lado; a câmera desliza. */}
       <div className="flex-1 relative overflow-hidden z-20">
-        <div
-          key={slide}
-          className={`absolute inset-0 overflow-hidden slide-${slideDirection}`}
+        <motion.div
+          className="flex h-full"
+          style={{ width: `${total * 100}%` }}
+          animate={{ x: `-${(100 / total) * slide}%` }}
+          transition={{ duration: PAN_SEC, ease: camera }}
         >
-          <div className="relative h-full w-full flex flex-col">
-            <SlideComponent action={action} />
-          </div>
-        </div>
+          {SLIDES.map((S, i) => {
+            const isActive = i === slide;
+            // Slide ativo segue o action atual; inativos congelam no último step visto.
+            const slideAction = isActive
+              ? action
+              : (actionMemory.current[i] ?? SLIDE_CONFIG[i].actions[0]);
+            return (
+              <div
+                key={i}
+                className="h-full flex flex-col shrink-0"
+                style={{ width: `${100 / total}%` }}
+              >
+                {/* Monta só quando visitado pela 1ª vez → anima ao chegar; depois fica completo, sem remontar. */}
+                {activated.has(i) ? <S action={slideAction} /> : null}
+              </div>
+            );
+          })}
+        </motion.div>
       </div>
 
       <Nav

@@ -135,7 +135,10 @@ export default function Slide3Cadeia({ action }: SlideProps) {
                   animate={
                     i <= 2
                       ? { opacity: 1, y: 0 }
-                      : { opacity: phase === 1 ? 1 : 0, y: phase === 1 ? 0 : 14 }
+                      : {
+                          opacity: phase === 1 ? 1 : 0,
+                          y: phase === 1 ? 0 : 14,
+                        }
                   }
                   transition={{
                     duration: i <= 2 ? 0.45 : 0.5,
@@ -161,27 +164,6 @@ export default function Slide3Cadeia({ action }: SlideProps) {
                 </motion.div>
               </div>
             ))}
-          </div>
-        </motion.div>
-      </div>
-
-      {/* rodapé: punch entra ao completar a cadeia (step 2) */}
-      <div className="min-h-[84px] flex items-center px-16 pb-10">
-        <motion.div
-          initial={false}
-          animate={{ opacity: phase === 1 ? 1 : 0, y: phase === 1 ? 0 : 12 }}
-          transition={{
-            duration: 0.5,
-            ease: easeOut,
-            delay: phase === 1 ? 0.5 : 0,
-          }}
-          className="w-full border border-purple/20 bg-purple/[0.04] px-10 py-6"
-        >
-          <div className="text-[28px] font-bold text-text tracking-[-0.02em]">
-            UX não é a tela final.{" "}
-            <span className="text-purple">
-              É a estrutura que faz cada etapa gerar a próxima ação.
-            </span>
           </div>
         </motion.div>
       </div>

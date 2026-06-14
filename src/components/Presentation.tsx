@@ -9,19 +9,30 @@ import { Background } from "./Background";
 import Nav from "./Nav";
 import QROverlay from "./QROverlay";
 import { useRemoteControl } from "../hooks/useRemoteControl";
-import Slide00 from "../slides/Slide00Capa";
-import Slide01 from "../slides/Slide01Fundamento";
-import Slide02 from "../slides/Slide02Desafio";
-import Slide03 from "../slides/Slide03Crescimento";
-import Slide04 from "../slides/Slide04Branding";
+import Slide0Capa from "../slides/Slide00Capa";
+import Slide1Coerencia from "../slides/Slide1Coerencia";
+import Slide2Dados from "../slides/Slide2Dados";
+import Slide3Cadeia from "../slides/Slide3Cadeia";
+import Slide4Valor from "../slides/Slide4Valor";
+import Slide5Custo from "../slides/Slide5Custo";
+import Slide6Narrativa from "../slides/Slide6Narrativa";
+import Slide7StackIC from "../slides/Slide7StackIC";
+import Slide8Foco from "../slides/Slide8Foco";
 import { SLIDE_CONFIG, type SlideProps } from "../slides/config";
 
+// Order matches SLIDE_CONFIG indices:
+// 0 Capa · 1 O problema · 2 Mais dados · 3 A cadeia · 4 Valor
+// 5 O custo · 6 Narrativa · 7 Stack IC · 8 Onde o UX entra
 const SLIDES: ComponentType<SlideProps>[] = [
-  Slide00,
-  Slide01,
-  Slide02,
-  Slide03,
-  Slide04,
+  Slide0Capa,
+  Slide1Coerencia,
+  Slide2Dados,
+  Slide3Cadeia,
+  Slide4Valor,
+  Slide5Custo,
+  Slide6Narrativa,
+  Slide7StackIC,
+  Slide8Foco,
 ];
 
 export default function Presentation() {
@@ -153,18 +164,18 @@ export default function Presentation() {
   return (
     <div className="fixed inset-0 flex flex-col">
       <Background />
-      
+
       <div className="flex-1 relative overflow-hidden z-20">
         <div
           key={slide}
           className={`absolute inset-0 overflow-hidden slide-${slideDirection}`}
         >
-          <div className="relative h-full mx-auto max-w-360 px-8 pt-7 pb-6 flex flex-col">
+          <div className="relative h-full w-full flex flex-col">
             <SlideComponent action={action} />
           </div>
         </div>
       </div>
-      
+
       <Nav
         current={slide}
         total={total}

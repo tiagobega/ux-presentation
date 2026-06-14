@@ -4,24 +4,46 @@ export const SLIDE_CONFIG = [
     actions: ['Capa'],
   },
   {
-    label: 'Os Problemas',
-    actions: ['Problemas'],
+    label: 'O problema',
+    actions: ['Diagnóstico', 'Caso Carnaval'],
   },
   {
-    label: 'Onde Estamos',
-    actions: ['Cadeia', 'Personas'],
+    label: 'Mais dados',
+    actions: ['Situação', 'Perguntas'],
   },
   {
-    label: 'A Solução',
-    actions: ['Design System', 'Stack IC'],
+    label: 'A cadeia',
+    actions: ['Coleta → Contexto', 'Informação → Acompanhamento'],
   },
   {
-    label: 'Em Andamento',
-    actions: ['Fleets', 'Vision', 'SABESP'],
+    label: 'Valor',
+    actions: ['Valor'],
+  },
+  {
+    label: 'O custo',
+    actions: ['Custo'],
+  },
+  {
+    label: 'Narrativa',
+    actions: ['Narrativa'],
+  },
+  {
+    label: 'Stack IC',
+    actions: ['Stack IC'],
+  },
+  {
+    label: 'Onde o UX entra',
+    actions: ['Foco'],
   },
 ] as const
 
-export type SlideIndex = 0 | 1 | 2 | 3 | 4
+/**
+ * Padding padrão dos slides. Aplicado DENTRO de cada slide (não no container),
+ * para permitir slides full-bleed: basta omitir esta constante no slide.
+ */
+export const SLIDE_PADDING = 'px-16 pt-10 pb-8'
+
+export type SlideIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8
 
 export interface SlideProps {
   action: string

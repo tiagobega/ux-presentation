@@ -1,25 +1,39 @@
-import { useEffect, useState } from 'react'
-import QRCode from 'react-qr-code'
+import { useEffect, useState } from "react";
+import QRCode from "react-qr-code";
 
 interface Props {
-  onClose: () => void
+  onClose: () => void;
 }
 
 export default function QROverlay({ onClose }: Props) {
-  const [url, setUrl] = useState('')
+  const [companionUrl, setCompanionUrl] = useState("");
+  const [presenterUrl, setPresenterUrl] = useState("");
+  const [active, setActive] = useState<"companion" | "presenter">("companion");
 
   useEffect(() => {
-    fetch('/remote-info')
+    fetch("/remote-info")
       .then((r) => r.json())
-      .then((d: { remoteUrl: string }) => setUrl(d.remoteUrl))
-      .catch(() => setUrl('http://localhost:5173/remote'))
-  }, [])
+      .then((d: { remoteUrl: string }) => {
+        // remoteUrl already points to /remote (profile selection)
+        setCompanionUrl(d.remoteUrl);
+        // presenter remote is at /presenter-remote on the same host
+        setPresenterUrl(d.remoteUrl.replace("/remote", "/presenter-remote"));
+      })
+      .catch(() => {
+        setCompanionUrl("http://localhost:5173/remote");
+        setPresenterUrl("http://localhost:5173/presenter-remote");
+      });
+  }, []);
 
   useEffect(() => {
-    const handleKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
-    window.addEventListener('keydown', handleKey)
-    return () => window.removeEventListener('keydown', handleKey)
-  }, [onClose])
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [onClose]);
+
+  const url = active === "companion" ? companionUrl : presenterUrl;
 
   return (
     <div
@@ -27,29 +41,66 @@ export default function QROverlay({ onClose }: Props) {
       onClick={onClose}
     >
       <div
-        className="bg-white/95 border border-purple/[0.22] p-10 px-9 text-center max-w-[340px] w-[90%] shadow-[0_8px_40px_rgba(109,40,217,0.08)] anim-panel-in"
+        className="bg-white/95 border border-purple/[0.22] p-8 text-center max-w-[360px] w-[90%] shadow-[0_8px_40px_rgba(109,40,217,0.08)] anim-panel-in"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="font-mono text-[10px] tracking-[0.2em] text-purple/[0.45] uppercase mb-[10px]">
-          Controle remoto
+          Controle remoto & Companion
         </div>
-        <div className="text-[18px] font-bold text-text tracking-[-0.02em] mb-7">
-          Escaneie e controle pelo celular
+
+        {/* Tab toggle */}
+        <div className="flex gap-1 mb-6">
+          <button
+            onClick={() => setActive("companion")}
+            className={`flex-1 py-[9px] text-[11px] font-mono tracking-[0.1em] uppercase transition-all border ${
+              active === "companion"
+                ? "bg-purple/10 border-purple/40 text-purple/80"
+                : "bg-transparent border-text/10 text-text/35"
+            }`}
+          >
+            Companion
+          </button>
+          <button
+            onClick={() => setActive("presenter")}
+            className={`flex-1 py-[9px] text-[11px] font-mono tracking-[0.1em] uppercase transition-all border ${
+              active === "presenter"
+                ? "bg-purple/10 border-purple/40 text-purple/80"
+                : "bg-transparent border-text/10 text-text/35"
+            }`}
+          >
+            Presenter
+          </button>
         </div>
+
+        <div className="text-[13px] font-light text-text/50 mb-5 leading-[1.6]">
+          {active === "companion"
+            ? "Audiência escaneia para ver conteúdo complementar por perfil"
+            : "Apresentador controla os slides pelo celular"}
+        </div>
+
         <div className="inline-flex p-[18px] bg-text/[0.03] border border-text/[0.08] mb-5">
           {url ? (
-            <QRCode value={url} size={180} bgColor="transparent" fgColor="#1a1225" />
+            <QRCode
+              value={url}
+              size={180}
+              bgColor="transparent"
+              fgColor="#1a1225"
+            />
           ) : (
             <div className="w-[180px] h-[180px] flex items-center justify-center font-mono text-[20px] text-text/[0.32]">
               …
             </div>
           )}
         </div>
+
         <div className="font-mono text-[10px] text-purple/55 tracking-[0.04em] mb-[14px] break-all leading-[1.5]">
           {url}
         </div>
-        <div className="text-[12px] font-light text-text/55">← → navegar · ESC fechar</div>
+
+        <div className="text-[12px] font-light text-text/55">
+          ← → navegar · ESC fechar
+        </div>
       </div>
     </div>
-  )
+  );
 }

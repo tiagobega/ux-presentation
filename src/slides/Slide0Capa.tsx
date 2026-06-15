@@ -1,15 +1,19 @@
-import { useEffect, useRef } from "react";
-import gsap from "gsap";
-import { SLIDE_PADDING, type SlideProps } from "./config";
+import { useEffect, useRef } from 'react';
+import gsap from 'gsap';
+import { SLIDE_PADDING, type SlideProps } from './config';
 
 // Divide um texto em palavras mascaráveis individualmente
-function splitToWords(text: string, className = "") {
-  const words = text.split(" ");
+function splitToWords(text: string, className = '') {
+  const words = text.split(' ');
   return words.map((word, i) => (
-    <span key={i} className="inline-block overflow-hidden" style={{ verticalAlign: "bottom" }}>
+    <span
+      key={i}
+      className='inline-block overflow-hidden'
+      style={{ verticalAlign: 'bottom' }}
+    >
       <span className={`inline-block ${className}`} data-word>
         {word}
-        {i < words.length - 1 ? " " : ""}
+        {i < words.length - 1 ? ' ' : ''}
       </span>
     </span>
   ));
@@ -23,26 +27,26 @@ export default function Slide0Capa({ action: _ }: SlideProps) {
     const el = containerRef.current;
     if (!el) return;
 
-    const words = el.querySelectorAll("[data-word]");
-    const meta = el.querySelectorAll("[data-meta]");
-    const subtitle = el.querySelector("[data-subtitle]");
-    const support = el.querySelector("[data-support]");
-    const nav = el.querySelector("[data-nav]");
+    const words = el.querySelectorAll('[data-word]');
+    const meta = el.querySelectorAll('[data-meta]');
+    const subtitle = el.querySelector('[data-subtitle]');
+    const support = el.querySelector('[data-support]');
+    const nav = el.querySelector('[data-nav]');
 
     gsap.set([words, meta, subtitle, support, nav], { opacity: 0 });
 
-    const tl = gsap.timeline({ defaults: { ease: "power4.out" } });
+    const tl = gsap.timeline({ defaults: { ease: 'power4.out' } });
     tl.to(meta, { opacity: 1, duration: 0.5 }, 0.1);
     tl.fromTo(
-      el.querySelector("[data-tag]"),
+      el.querySelector('[data-tag]'),
       { opacity: 0, y: 8 },
       { opacity: 1, y: 0, duration: 0.4 },
       0.2,
     );
     tl.fromTo(
       Array.from(words),
-      { y: "110%" },
-      { y: "0%", opacity: 1, duration: 0.7, stagger: 0.06 },
+      { y: '110%' },
+      { y: '0%', opacity: 1, duration: 0.7, stagger: 0.06 },
       0.3,
     );
     gsap.set(subtitle, { y: 14 });
@@ -63,44 +67,43 @@ export default function Slide0Capa({ action: _ }: SlideProps) {
     >
       <div
         data-meta
-        className="font-mono text-[10px] tracking-[0.2em] text-purple/45 uppercase"
+        className='font-mono text-sm tracking-[0.2em] text-purple/45 uppercase'
       >
         Intelicity · IC Vision · Demonstração
       </div>
 
       <div>
-        <div
-          data-tag
-          className="font-mono text-[10px] tracking-[0.28em] text-purple/50 uppercase mb-5"
-        >
-          Fluxo de análise · OS → Output
+        <div className=''>
+          <div className='flex items-center gap-8'>
+            <h1
+              className='text-[120px] font-bold h-48 tracking-[-0.04em] text-text'
+              style={{ fontFamily: "'Exo 2', sans-serif" }}
+            >
+              IC
+            </h1>
+            <div className='size-8 bg-blue-700/80 rounded-full' />
+            <h1
+              className='text-[120px] not-italic text-blue-700/80 font-bol tracking-[-0.04em]'
+              style={{ fontFamily: "'Geist mono', sans-serif" }}
+            >
+              Vision
+            </h1>
+          </div>
+          <p data-subtitle className='text-4xl text-text/60'>
+            Da Ordem de Serviço ao output inteligente.
+          </p>
+          <p data-support className='mt-3 text-2xl text-text/45 leading-[1.6]'>
+            Demonstração do fluxo de análise automatizada de imagens
+            operacionais.
+          </p>
         </div>
-        <h1
-          className="text-[120px] font-bold leading-[0.94] tracking-[-0.04em] text-text"
-          style={{ fontFamily: "'Exo 2', sans-serif" }}
-        >
-          <span className="block">{splitToWords("IC")}</span>
-          <em className="not-italic text-purple block">{splitToWords("Vision")}</em>
-        </h1>
-        <p
-          data-subtitle
-          className="mt-8 text-[24px] font-light text-text/60 leading-[1.5] max-w-[840px]"
-        >
-          Da Ordem de Serviço ao output inteligente.
-        </p>
-        <p
-          data-support
-          className="mt-3 text-[17px] font-light text-text/45 leading-[1.6] max-w-[760px]"
-        >
-          Demonstração do fluxo de análise automatizada de imagens operacionais.
-        </p>
       </div>
 
       <div
         data-nav
-        className="font-mono text-[9px] tracking-[0.18em] text-purple/30 uppercase flex items-center gap-3"
+        className='font-mono text-[9px] tracking-[0.18em] text-purple/30 uppercase flex items-center gap-3'
       >
-        <span className="w-[18px] h-px bg-purple/20 inline-block" />
+        <span className='w-[18px] h-px bg-purple/20 inline-block' />
         Use as setas para navegar
       </div>
     </div>

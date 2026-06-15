@@ -20,6 +20,22 @@ React + Vite + TypeScript fullscreen slide presentation. The original static HTM
 
 **CSS** — all styles live in `src/index.css` as plain CSS with custom properties defined in `:root`. No CSS modules or utility classes. Class names match the original HTML. Presentation-specific classes (`.presentation`, `.slide-area`, `.slide`, `.pres-nav`, `.pres-dot`, etc.) are prefixed with `pres-` or `slide-`.
 
+**Data** — all mock data for the IC Vision demo lives in `src/slides/visionData.ts` (OS list, images per OS, evaluation criteria, analysis layers, summary). It is the single source of truth for all slides.
+
+## Slide map — branch `vision-presentation` (IC Vision demo)
+
+5 slides total. Full content + actions documented in `SLIDES-VISION.md`.
+
+| # | File | Label | Title / theme |
+|---|------|-------|---------------|
+| 0 | `Slide0Capa.tsx` | Capa | Cover — "Da Ordem de Serviço ao output inteligente." |
+| 1 | `Slide1MenuOS.tsx` | Selecionar OS | OS selection menu (2 cards: 1 ready, 1 pending) |
+| 2 | `Slide2Criterios.tsx` | Escopo da análise | Criteria & scope for the selected OS |
+| 3 | `Slide3Processamento.tsx` | Processamento | Image processing — 4 actions: Imagens → Bronze → Prata → Ouro |
+| 4 | `Slide4Output.tsx` | Output | Analysis output: criteria table + summary stats |
+
+> **Slide 3 actions** drive the visual state of the 11 image cards — each action reveals the next analysis layer (quality → detection → context).
+
 ## Content language
 
 All user-facing copy is in Brazilian Portuguese.

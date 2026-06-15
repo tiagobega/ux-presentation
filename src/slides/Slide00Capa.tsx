@@ -95,7 +95,7 @@ export default function Slide00Capa({ action: _ }: SlideProps) {
         </h1>
         <p
           data-subtitle
-          className="mt-8 text-[22px] font-light text-text/50 leading-[1.6] max-w-[820px]"
+          className="mt-8 text-[22px]  text-text/50 leading-[1.6] max-w-[820px]"
         >
           UX, branding e estrutura de produto.
           <br />

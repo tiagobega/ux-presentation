@@ -76,7 +76,7 @@ export default function Slide8Foco({ action: _ }: SlideProps) {
                   <f.Icon className="size-9 flex-shrink-0" style={{ color: f.color }} strokeWidth={1.5} />
                   <div className="text-[30px] font-bold text-text tracking-[-0.02em]">{f.name}</div>
                 </div>
-                <div className="text-[13px] font-light text-text/45 leading-[1.4]">{f.sub}</div>
+                <div className="text-[13px]  text-text/45 leading-[1.4]">{f.sub}</div>
                 <div className="h-px bg-text/8" />
                 <div className="font-mono text-[11px] tracking-[0.16em] text-purple/55 uppercase">
                   UX entra como
@@ -99,7 +99,7 @@ export default function Slide8Foco({ action: _ }: SlideProps) {
           </div>
           <div className="text-[22px] font-bold text-text tracking-[-0.02em]">
             Design System e paradigmas de comunicação{" "}
-            <span className="text-[17px] font-light text-text/50">
+            <span className="text-[17px]  text-text/50">
               — a base que conecta as três frentes
             </span>
           </div>

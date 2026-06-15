@@ -66,7 +66,7 @@ export default function Slide2Dados({ action }: SlideProps) {
                   Antes
                 </div>
                 <div className="text-[15px] text-text/45">
-                  <span className="text-[42px] font-bold leading-none text-text/55 tracking-[-0.03em]">
+                  <span className="text-[42px] font-bold leading-none  tracking-[-0.03em]">
                     300
                   </span>{" "}
                   buracos
@@ -77,7 +77,7 @@ export default function Slide2Dados({ action }: SlideProps) {
                 <div className="font-mono text-[11px] tracking-[0.16em] text-purple/55 uppercase mb-1">
                   Depois
                 </div>
-                <div className="text-[15px] text-text/55">
+                <div className="text-[15px] ">
                   <span className="text-[42px] font-bold leading-none text-purple tracking-[-0.03em]">
                     3.000
                   </span>{" "}

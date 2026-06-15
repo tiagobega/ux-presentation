@@ -17,7 +17,7 @@ interface NavProps {
 }
 
 const btnBase =
-  "w-[30px] h-[30px] rounded-lg border border-black/[0.08] bg-black/[0.03] text-text/55 cursor-pointer text-[13px] flex items-center justify-center transition-all leading-none disabled:opacity-20 disabled:cursor-default enabled:hover:border-purple/30 enabled:hover:text-text enabled:hover:bg-purple/[0.06]";
+  "w-[30px] h-[30px] rounded-lg border border-black/[0.08] bg-black/[0.03]  cursor-pointer text-[13px] flex items-center justify-center transition-all leading-none disabled:opacity-20 disabled:cursor-default enabled:hover:border-purple/30 enabled:hover:text-text enabled:hover:bg-purple/[0.06]";
 
 export default function Nav({
   current,

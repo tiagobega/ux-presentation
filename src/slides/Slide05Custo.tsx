@@ -33,7 +33,7 @@ const costs: { Icon: LucideIcon; title: string; desc: string }[] = [
     title: "Onboarding repetido",
     desc: "cada cliente recomeça do zero",
   },
-  { Icon: Clock, title: "Demos longas", desc: "o valor demora a aparecer" },
+  { Icon: Clock, title: "Demos Disfuncionais", desc: "o valor demora a aparecer" },
   {
     Icon: LifeBuoy,
     title: "Suporte por dúvida de uso",

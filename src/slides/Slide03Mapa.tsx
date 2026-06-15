@@ -76,7 +76,7 @@ export default function Slide5Valor({ action: _ }: SlideProps) {
             <div className="text-[38px] font-bold text-text/90 tracking-[-0.02em] leading-[1.0]">
               Mapa
             </div>
-            <div className="text-[18px] font-light text-text/55 mt-2">
+            <div className="text-[18px] font-light  mt-2">
               Mostra onde está o problema, no território e no tempo.
             </div>
           </div>
@@ -116,7 +116,7 @@ export default function Slide5Valor({ action: _ }: SlideProps) {
             <div className="text-[38px] font-bold text-text/90 tracking-[-0.02em] leading-[1.0]">
               Ordem de Serviço
             </div>
-            <div className="text-[18px] font-light text-text/55 mt-2">
+            <div className="text-[18px] font-light  mt-2">
               Mostra o que fazer — e como a cidade assume o controle.
             </div>
           </div>

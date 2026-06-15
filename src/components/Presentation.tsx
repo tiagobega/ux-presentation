@@ -11,36 +11,38 @@ import Nav from "./Nav";
 import QROverlay from "./QROverlay";
 import { useRemoteControl } from "../hooks/useRemoteControl";
 import Slide0Capa from "../slides/Slide00Capa";
-import Slide1Coerencia from "../slides/Slide1Coerencia";
-import Slide2Dados from "../slides/Slide2Dados";
-import Slide3Cadeia from "../slides/Slide3Cadeia";
-import Slide4Falhas from "../slides/Slide4Falhas";
-import Slide5Valor from "../slides/Slide5Valor";
-import Slide6Custo from "../slides/Slide6Custo";
-import Slide7Narrativa from "../slides/Slide7Narrativa";
-import Slide8StackIC from "../slides/Slide8StackIC";
-import Slide9Branding from "../slides/Slide9Branding";
+import Slide01UxExistente from "../slides/Slide01UxExistente";
+import Slide02Dados from "../slides/Slide02Dados";
+import Slide03Mapa from "../slides/Slide03Mapa";
+import Slide04Falhas from "../slides/Slide04Falhas";
+import Slide05Custo from "../slides/Slide05Custo";
+import Slide06Cadeia from "../slides/Slide06Cadeia";
+import Slide07Narrativa from "../slides/Slide07Narrativa";
+import Slide08StackIC from "../slides/Slide08StackIC";
+import Slide09Branding from "../slides/Slide09Branding";
 import Slide10Foco from "../slides/Slide10Foco";
-import Slide11Citacao from "../slides/Slide11Citacao";
+import Slide11ProblemasSolucoes from "../slides/Slide11ProblemasSolucoes";
+import Slide12Citacao from "../slides/Slide12Citacao";
 import { SLIDE_CONFIG, type SlideProps } from "../slides/config";
 
 // Order matches SLIDE_CONFIG indices:
-// 0 Capa · 1 O problema · 2 Mais dados · 3 A cadeia · 4 Falhas na cadeia
-// 5 Valor · 6 O custo · 7 Narrativa · 8 Stack IC · 9 Branding dos produtos
-// 10 Onde o UX entra · 11 Citação (Steve Jobs)
+// 0 Capa · 1 UX hoje · 2 Mais dados · 3 O protagonista · 4 Falhas na cadeia
+// 5 O custo · 6 A cadeia · 7 Narrativa · 8 Stack IC · 9 Branding dos produtos
+// 10 Onde o UX entra · 11 Respostas · 12 Citação (Steve Jobs)
 const SLIDES: ComponentType<SlideProps>[] = [
   Slide0Capa,
-  Slide1Coerencia,
-  Slide2Dados,
-  Slide3Cadeia,
-  Slide4Falhas,
-  Slide5Valor,
-  Slide6Custo,
-  Slide7Narrativa,
-  Slide8StackIC,
-  Slide9Branding,
+  Slide01UxExistente,
+  Slide02Dados,
+  Slide03Mapa,
+  Slide04Falhas,
+  Slide05Custo,
+  Slide06Cadeia,
+  Slide07Narrativa,
+  Slide08StackIC,
+  Slide09Branding,
   Slide10Foco,
-  Slide11Citacao,
+  Slide11ProblemasSolucoes,
+  Slide12Citacao,
 ];
 
 // Easing dramático para o pan da câmera entre slides.

@@ -72,7 +72,7 @@ export default function QROverlay({ onClose }: Props) {
           </button>
         </div>
 
-        <div className="text-[13px] font-light text-text/50 mb-5 leading-[1.6]">
+        <div className="text-[13px]  text-text/50 mb-5 leading-[1.6]">
           {active === "companion"
             ? "Audiência escaneia para ver conteúdo complementar por perfil"
             : "Apresentador controla os slides pelo celular"}
@@ -97,7 +97,7 @@ export default function QROverlay({ onClose }: Props) {
           {url}
         </div>
 
-        <div className="text-[12px] font-light text-text/55">
+        <div className="text-[12px]  ">
           ← → navegar · ESC fechar
         </div>
       </div>

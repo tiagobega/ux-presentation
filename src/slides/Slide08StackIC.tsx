@@ -30,7 +30,7 @@ export default function Slide8StackIC({ action: _ }: SlideProps) {
         >
           Stack IC:{" "}
           <em className="not-italic text-purple">a árvore do dado.</em>
-          <span className="text-[18px] font-light text-text/45 ml-4">
+          <span className="text-[18px]  text-text/45 ml-4">
             de onde vem → como é processado → como é exibido
           </span>
         </motion.h1>

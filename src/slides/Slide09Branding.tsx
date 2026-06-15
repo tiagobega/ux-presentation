@@ -216,7 +216,7 @@ export default function Slide9Branding({ action: _ }: SlideProps) {
               >
                 {current.layer}
               </div>
-              <div className="text-4xl font-light text-text/60 leading-[1.5] w-full">
+              <div className="text-4xl  text-text/60 leading-[1.5] w-full">
                 {current.func}
               </div>
             </motion.div>

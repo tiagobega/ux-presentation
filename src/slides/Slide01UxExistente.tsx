@@ -53,7 +53,7 @@ export default function Slide01UxExistente({ action: _ }: SlideProps) {
         </motion.h1>
         <motion.p
           {...up(0.18)}
-          className="mt-4 text-[18px] font-light  leading-[1.6] max-w-[1050px]"
+          className="mt-4 text-[18px]   leading-[1.6] max-w-[1050px]"
         >
           A Intelicity vende dados, mas o cliente geralmente acessa, interpreta
           e utiliza esses dados por meio de plataformas que nós construímos.

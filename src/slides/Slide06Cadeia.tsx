@@ -80,7 +80,7 @@ export default function Slide3Cadeia({ action }: SlideProps) {
         </motion.h1>
         <motion.p
           {...up(0.18)}
-          className="mt-3 text-[18px] font-light text-text/50 leading-[1.55] max-w-[900px]"
+          className="mt-3 text-[18px]  text-text/50 leading-[1.55] max-w-[900px]"
         >
           Não é só sobre como a informação aparece na tela. É sobre como cada
           etapa conduz o usuário até uma ação melhor.

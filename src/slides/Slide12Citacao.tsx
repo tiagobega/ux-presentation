@@ -33,7 +33,7 @@ export default function Slide11Citacao({ action: _ }: SlideProps) {
 
       <motion.div
         {...up(0.65)}
-        className="mt-7 text-[28px] font-light text-text/50 leading-[1.4] max-w-[980px]"
+        className="mt-7 text-[28px]  text-text/50 leading-[1.4] max-w-[980px]"
       >
         Não dá para começar pela tecnologia e depois tentar descobrir para onde
         você vai vendê-la.

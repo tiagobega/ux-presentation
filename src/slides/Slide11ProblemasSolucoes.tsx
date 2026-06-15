@@ -64,7 +64,7 @@ const cards: { Icon: LucideIcon; problema: string; solucao: string }[] = [
 export default function Slide11ProblemasSolucoes({ action: _ }: SlideProps) {
   return (
     <div
-      className={`${SLIDE_PADDING} flex-1 flex flex-col gap-6 min-h-0 overflow-hidden`}
+      className={`${SLIDE_PADDING} flex-1 flex flex-col gap-12 min-h-0 overflow-hidden`}
     >
       <div>
         <motion.div
@@ -81,43 +81,36 @@ export default function Slide11ProblemasSolucoes({ action: _ }: SlideProps) {
           <em className='not-italic text-purple'>Respostas possíveis.</em>
         </motion.h1>
       </div>
-
-      <div className='flex-1 min-h-0 grid grid-cols-3 grid-rows-2 gap-4'>
-        {cards.map((c, i) => (
-          <motion.div
-            key={c.problema}
-            {...up(0.25 + i * 0.08, easeIn)}
-            className='border border-text/8 bg-black/2 p-5 flex flex-col gap-2.5'
-          >
-            <div className='flex items-center gap-2.5'>
-              <c.Icon
-                className='size-7 text-red-500/60 flex-shrink-0'
-                strokeWidth={1.5}
-              />
-              <div className='font-mono text-[10px] tracking-[0.14em] text-red-500/50 uppercase'>
-                Problema
+      <div className='flex flex-1 items-center'>
+        <div className='min-h-0 grid grid-cols-3 gap-8 items-center'>
+          {cards.map((c, i) => (
+            <motion.div
+              key={c.problema}
+              {...up(0.25 + i * 0.08, easeIn)}
+              className='border border-text/8 bg-black/2 p-5 flex flex-col gap-2.5'
+            >
+              <div className='flex items-center gap-2.5'>
+                <c.Icon
+                  className='size-7 text-red-500/60 flex-shrink-0'
+                  strokeWidth={1.5}
+                />
+                <div className='text-[20px] font-semibold leading-[1.35] text-red-500/70 tracking-[-0.01em]'>
+                  {c.problema}
+                </div>
               </div>
-            </div>
-            <div className='text-[15px] font-semibold text-text/80 leading-[1.35] tracking-[-0.01em]'>
-              {c.problema}
-            </div>
-            <div className='flex items-center gap-2 py-1'>
-              <div className='flex-1 h-px bg-purple/20' />
-              <ArrowDown className='size-3 text-purple/40 flex-shrink-0' />
-              <div className='flex-1 h-px bg-purple/20' />
-            </div>
-            <div className='font-mono text-[10px] tracking-[0.14em] text-purple/55 uppercase'>
-              Resposta
-            </div>
-            <div className=' text-purple/80 leading-[1.5]'>{c.solucao}</div>
-          </motion.div>
-        ))}
+              <div className='flex items-center gap-2 py-1'>
+                <div className='flex-1 h-px bg-purple/20' />
+                <ArrowDown className='size-3 text-purple/40 flex-shrink-0' />
+                <div className='flex-1 h-px bg-purple/20' />
+              </div>
+
+              <div className=' text-2xl leading-[1.5]'>{c.solucao}</div>
+            </motion.div>
+          ))}
+        </div>
       </div>
 
-      <motion.div
-        {...up(0.85, easeIn)}
-        className='border-t border-text/10 pt-5 text-center'
-      >
+      <motion.div {...up(0.85, easeIn)} className=' text-center'>
         <div className='text-[26px] font-bold text-text tracking-[-0.02em]'>
           Os problemas não são isolados.{' '}
           <span className='text-purple'>As soluções também não podem ser.</span>

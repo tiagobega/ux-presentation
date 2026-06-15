@@ -73,7 +73,7 @@ export default function Slide4Falhas({ action: _ }: SlideProps) {
         </motion.h1>
         <motion.p
           {...up(0.18)}
-          className="mt-3 text-[17px] font-light text-text/50 leading-[1.5] max-w-[1050px]"
+          className="mt-3 text-[17px]  text-text/50 leading-[1.5] max-w-[1050px]"
         >
           UX não atua só na interface final. Ele evita falhas na operação, na
           coleta, na instalação, no uso do equipamento e na forma como a
@@ -100,7 +100,7 @@ export default function Slide4Falhas({ action: _ }: SlideProps) {
             <div className="text-[22px] font-bold text-text/90 tracking-[-0.02em] leading-[1.1]">
               {c.label}
             </div>
-            <div className="text-[15px] font-light text-text/60 leading-[1.5]">
+            <div className="text-[15px]  text-text/60 leading-[1.5]">
               {c.scenario}
             </div>
 
@@ -108,7 +108,7 @@ export default function Slide4Falhas({ action: _ }: SlideProps) {
               <div className="font-mono text-[10px] tracking-[0.16em] text-purple/55 uppercase mb-1.5">
                 Ponto de UX
               </div>
-              <div className="text-[14px] text-purple/90 leading-[1.45]">
+              <div className="text-[18px] text-purple/90 leading-[1.45]">
                 {c.ux}
               </div>
             </div>

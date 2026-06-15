@@ -39,12 +39,16 @@ export default function Presentation() {
   // Slides já visitados ficam montados (estado completo, sem reset ao sair).
   const [activated, setActivated] = useState<Set<number>>(() => new Set([0]));
   const [showQR, setShowQR] = useState(false);
+  const [selectedOS, setSelectedOS] = useState<number | null>(null);
+  const [navBlocked, setNavBlocked] = useState(false);
   const total = SLIDES.length;
 
   const slideRef = useRef(slide);
   const actionRef = useRef(action);
+  const selectedOSRef = useRef<number | null>(null);
   slideRef.current = slide;
   actionRef.current = action;
+  selectedOSRef.current = selectedOS;
 
   // Último step visto de cada slide — usado para congelar slides inativos no estado completo.
   const actionMemory = useRef<Record<number, string>>({
@@ -62,9 +66,24 @@ export default function Presentation() {
     }, ENTER_DELAY_MS);
   }, []);
 
+  const blockNav = useCallback(() => {
+    setNavBlocked(true);
+    window.setTimeout(() => setNavBlocked(false), 1400);
+  }, []);
+
+  // Seleção de OS vinda do Slide1 — avança direto para o slide 2.
+  const handleSelectOS = useCallback((idx: number) => {
+    setSelectedOS(idx);
+    setSlide(2);
+    setAction(SLIDE_CONFIG[2].actions[0]);
+    activate(2);
+  }, [activate]);
+
   const next = useCallback(() => {
     const s = slideRef.current;
     const a = actionRef.current;
+    // Bloqueia avanço além de slide 1 sem OS selecionada.
+    if (s >= 1 && selectedOSRef.current === null) { blockNav(); return; }
     const actions = SLIDE_CONFIG[s].actions as readonly string[];
     const idx = actions.indexOf(a);
     if (idx < actions.length - 1) {
@@ -74,7 +93,7 @@ export default function Presentation() {
       setAction(SLIDE_CONFIG[s + 1].actions[0]);
       activate(s + 1);
     }
-  }, [total, activate]);
+  }, [total, activate, blockNav]);
 
   const prev = useCallback(() => {
     const s = slideRef.current;
@@ -93,11 +112,13 @@ export default function Presentation() {
 
   const gotoSlide = useCallback(
     (i: number) => {
+      // Bloqueia navegação para slides além do 1 sem OS selecionada.
+      if (i > 1 && selectedOSRef.current === null) { blockNav(); return; }
       setSlide(i);
       setAction(SLIDE_CONFIG[i].actions[0]);
       activate(i);
     },
-    [activate],
+    [activate, blockNav],
   );
 
   const handleRemote = useCallback(
@@ -203,7 +224,14 @@ export default function Presentation() {
                 style={{ width: `${100 / total}%` }}
               >
                 {/* Monta só quando visitado pela 1ª vez → anima ao chegar; depois fica completo, sem remontar. */}
-                {activated.has(i) ? <S action={slideAction} /> : null}
+                {activated.has(i) ? (
+                  <S
+                    action={slideAction}
+                    selectedOS={selectedOS}
+                    onSelectOS={handleSelectOS}
+                    navBlocked={i === 1 ? navBlocked : undefined}
+                  />
+                ) : null}
               </div>
             );
           })}

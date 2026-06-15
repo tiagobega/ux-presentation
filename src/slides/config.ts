@@ -31,4 +31,7 @@ export type SlideIndex = 0 | 1 | 2 | 3 | 4
 
 export interface SlideProps {
   action: string
+  selectedOS: number | null
+  onSelectOS: (idx: number) => void
+  navBlocked?: boolean
 }

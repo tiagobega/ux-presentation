@@ -1,6 +1,6 @@
 import { motion } from 'motion/react';
 import { SLIDE_PADDING, type SlideProps } from './config';
-import { osImages, osImageUrl, type OSImage } from './visionData';
+import { osImages, osImageUrl, os2Images, os2ImageUrl, type OSImage } from './visionData';
 import { Check, X, AlertTriangle, Loader2 } from 'lucide-react';
 
 const easeOut: [number, number, number, number] = [0, 0, 0.2, 1];
@@ -23,11 +23,10 @@ const GREEN = '#2d9d63';
 const RED = '#e0524d';
 const AMBER = '#d59021';
 
-const aprovadas = osImages.filter((i) => i.bronze === 'aprovada').length;
-const reprovadas = osImages.length - aprovadas;
-
-export default function Slide3Processamento({ action }: SlideProps) {
+export default function Slide3Processamento({ action, selectedOS }: SlideProps) {
   const phase = Math.max(ACTIONS.indexOf(action), 0); // 0..3
+  const images = selectedOS === 1 ? os2Images : osImages;
+  const imageUrl = selectedOS === 1 ? os2ImageUrl : osImageUrl;
 
   return (
     <div
@@ -71,7 +70,7 @@ export default function Slide3Processamento({ action }: SlideProps) {
                   }}
                 >
                   <div
-                    className='font-mono text-[12px] tracking-[0.1em] uppercase font-bold'
+                    className='font-mono text-lg tracking-[0.1em] uppercase font-bold'
                     style={{ color: on ? s.color : 'rgba(26,18,37,0.4)' }}
                   >
                     {s.name}
@@ -88,8 +87,8 @@ export default function Slide3Processamento({ action }: SlideProps) {
 
       {/* grid das 11 imagens */}
       <div className='flex-1 min-h-0 grid grid-cols-6 grid-rows-2 gap-3'>
-        {osImages.map((img, i) => (
-          <Card key={img.id} img={img} phase={phase} index={i} />
+        {images.map((img) => (
+          <Card key={img.id} img={img} phase={phase} imageUrl={imageUrl} />
         ))}
       </div>
     </div>
@@ -99,13 +98,13 @@ export default function Slide3Processamento({ action }: SlideProps) {
 function Card({
   img,
   phase,
-  index,
+  imageUrl,
 }: {
   img: OSImage;
   phase: number;
-  index: number;
+  imageUrl: (id: number) => string | undefined;
 }) {
-  const url = osImageUrl(img.id);
+  const url = imageUrl(img.id);
   const rejected = img.bronze === 'reprovada';
   const num = String(img.id).padStart(2, '0');
 

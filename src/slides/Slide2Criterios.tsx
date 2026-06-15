@@ -1,7 +1,7 @@
 import { motion } from 'motion/react';
 import { Filter, ScanSearch, Lightbulb } from 'lucide-react';
 import { SLIDE_PADDING, type SlideProps } from './config';
-import { LAYERS, criterios, osList } from './visionData';
+import { LAYERS, criterios, criterios2, osList } from './visionData';
 import type { ElementType } from 'react';
 
 const LAYER_META: Record<
@@ -37,10 +37,10 @@ const up = (
   transition: { duration: 0.4, ease, delay },
 });
 
-const os = osList[0];
-
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export default function Slide2Criterios({ action: _ }: SlideProps) {
+export default function Slide2Criterios({ action: _, selectedOS }: SlideProps) {
+  const os = osList[selectedOS ?? 0];
+  const crit = selectedOS === 1 ? criterios2 : criterios;
   return (
     <div
       className={`${SLIDE_PADDING} flex-1 flex flex-col gap-6 min-h-0 overflow-hidden justify-between`}
@@ -80,7 +80,7 @@ export default function Slide2Criterios({ action: _ }: SlideProps) {
         </div>
 
         <div className='grid grid-cols-5 gap-4'>
-          {criterios.map((c, i) => (
+          {crit.map((c, i) => (
             <motion.div
               key={c.label}
               {...up(0.55 + i * 0.04, easeIn)}
@@ -148,7 +148,7 @@ export default function Slide2Criterios({ action: _ }: SlideProps) {
           <div className='w-full flex gap-4 items-center'>
             <div className='flex-1 h-0.5 bg-text/20' />
             <div className='font-mono text-xl tracking-[0.16em] text-text/40 uppercase'>
-              Camadas de análise
+              Total
             </div>
             <div className='flex-1 h-0.5 bg-text/20' />
           </div>
@@ -158,8 +158,8 @@ export default function Slide2Criterios({ action: _ }: SlideProps) {
             className='grid grid-cols-2 gap-3 h-full'
           >
             {[
-              { n: '11', l: 'imagens recebidas' },
-              { n: criterios.length, l: 'critérios de avaliação' },
+              { n: os.imagens, l: 'imagens recebidas' },
+              { n: crit.length, l: 'critérios de avaliação' },
             ].map((q) => (
               <div
                 key={q.l}

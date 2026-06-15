@@ -2,23 +2,6 @@ import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { SLIDE_PADDING, type SlideProps } from './config';
 
-// Divide um texto em palavras mascaráveis individualmente
-function splitToWords(text: string, className = '') {
-  const words = text.split(' ');
-  return words.map((word, i) => (
-    <span
-      key={i}
-      className='inline-block overflow-hidden'
-      style={{ verticalAlign: 'bottom' }}
-    >
-      <span className={`inline-block ${className}`} data-word>
-        {word}
-        {i < words.length - 1 ? ' ' : ''}
-      </span>
-    </span>
-  ));
-}
-
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function Slide0Capa({ action: _ }: SlideProps) {
   const containerRef = useRef<HTMLDivElement>(null);

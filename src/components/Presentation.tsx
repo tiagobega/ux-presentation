@@ -10,37 +10,21 @@ import { Background } from "./Background";
 import Nav from "./Nav";
 import QROverlay from "./QROverlay";
 import { useRemoteControl } from "../hooks/useRemoteControl";
-import Slide0Capa from "../slides/Slide00Capa";
-import Slide1Coerencia from "../slides/Slide1Coerencia";
-import Slide2Dados from "../slides/Slide2Dados";
-import Slide3Cadeia from "../slides/Slide3Cadeia";
-import Slide4Falhas from "../slides/Slide4Falhas";
-import Slide5Valor from "../slides/Slide5Valor";
-import Slide6Custo from "../slides/Slide6Custo";
-import Slide7Narrativa from "../slides/Slide7Narrativa";
-import Slide8StackIC from "../slides/Slide8StackIC";
-import Slide9Branding from "../slides/Slide9Branding";
-import Slide10Foco from "../slides/Slide10Foco";
-import Slide11Citacao from "../slides/Slide11Citacao";
+import Slide0Capa from "../slides/Slide0Capa";
+import Slide1MenuOS from "../slides/Slide1MenuOS";
+import Slide2Criterios from "../slides/Slide2Criterios";
+import Slide3Processamento from "../slides/Slide3Processamento";
+import Slide4Output from "../slides/Slide4Output";
 import { SLIDE_CONFIG, type SlideProps } from "../slides/config";
 
-// Order matches SLIDE_CONFIG indices:
-// 0 Capa · 1 O problema · 2 Mais dados · 3 A cadeia · 4 Falhas na cadeia
-// 5 Valor · 6 O custo · 7 Narrativa · 8 Stack IC · 9 Branding dos produtos
-// 10 Onde o UX entra · 11 Citação (Steve Jobs)
+// Demo IC Vision — ordem casa com os índices de SLIDE_CONFIG:
+// 0 Capa · 1 Selecionar OS · 2 Escopo · 3 Processamento (4 steps) · 4 Output
 const SLIDES: ComponentType<SlideProps>[] = [
   Slide0Capa,
-  Slide1Coerencia,
-  Slide2Dados,
-  Slide3Cadeia,
-  Slide4Falhas,
-  Slide5Valor,
-  Slide6Custo,
-  Slide7Narrativa,
-  Slide8StackIC,
-  Slide9Branding,
-  Slide10Foco,
-  Slide11Citacao,
+  Slide1MenuOS,
+  Slide2Criterios,
+  Slide3Processamento,
+  Slide4Output,
 ];
 
 // Easing dramático para o pan da câmera entre slides.

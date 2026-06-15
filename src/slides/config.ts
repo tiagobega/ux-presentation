@@ -4,48 +4,20 @@ export const SLIDE_CONFIG = [
     actions: ['Capa'],
   },
   {
-    label: 'O problema',
-    actions: ['Diagnóstico'],
+    label: 'Selecionar OS',
+    actions: ['Seleção'],
   },
   {
-    label: 'Mais dados',
-    actions: ['Situação', 'Perguntas'],
+    label: 'Escopo da análise',
+    actions: ['Escopo'],
   },
   {
-    label: 'A cadeia',
-    actions: ['Coleta → Contexto', 'Informação → Acompanhamento'],
+    label: 'Processamento',
+    actions: ['Imagens', 'Bronze', 'Prata', 'Ouro'],
   },
   {
-    label: 'Falhas na cadeia',
-    actions: ['Casos'],
-  },
-  {
-    label: 'Valor',
-    actions: ['Valor'],
-  },
-  {
-    label: 'O custo',
-    actions: ['Custo'],
-  },
-  {
-    label: 'Narrativa',
-    actions: ['Narrativa'],
-  },
-  {
-    label: 'Stack IC',
-    actions: ['Stack IC'],
-  },
-  {
-    label: 'Branding dos produtos',
-    actions: ['Marcas'],
-  },
-  {
-    label: 'Onde o UX entra',
-    actions: ['Foco'],
-  },
-  {
-    label: 'Citação',
-    actions: ['Fim'],
+    label: 'Output',
+    actions: ['Output'],
   },
 ] as const
 
@@ -55,7 +27,7 @@ export const SLIDE_CONFIG = [
  */
 export const SLIDE_PADDING = 'px-16 pt-10 pb-8'
 
-export type SlideIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11
+export type SlideIndex = 0 | 1 | 2 | 3 | 4
 
 export interface SlideProps {
   action: string

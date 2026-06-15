@@ -20,6 +20,26 @@ React + Vite + TypeScript fullscreen slide presentation. The original static HTM
 
 **CSS** — all styles live in `src/index.css` as plain CSS with custom properties defined in `:root`. No CSS modules or utility classes. Class names match the original HTML. Presentation-specific classes (`.presentation`, `.slide-area`, `.slide`, `.pres-nav`, `.pres-dot`, etc.) are prefixed with `pres-` or `slide-`.
 
+## Slide map
+
+13 slides total. File names encode position (`Slide00`–`Slide12`). Order is governed by the `SLIDES` array in `Presentation.tsx` and the matching `SLIDE_CONFIG` in `src/slides/config.ts`.
+
+| # | File | Label | Title / theme |
+|---|------|-------|---------------|
+| 0 | `Slide00Capa.tsx` | Capa | Cover slide |
+| 1 | `Slide01UxExistente.tsx` | UX hoje | "Nós já utilizamos UX, mesmo quando não chamamos assim" — grid of 6 UX artefacts already delivered |
+| 2 | `Slide02Dados.tsx` | Mais dados | "Mais dados não significam mais clareza" — the risk of data without context |
+| 3 | `Slide03Mapa.tsx` | O protagonista | "O mapa nem sempre precisa ser o protagonista" — map vs. ordem de serviço |
+| 4 | `Slide04Falhas.tsx` | Falhas na cadeia | "Quando a experiência falha, a cadeia inteira sente" — real failure cases |
+| 5 | `Slide05Custo.tsx` | O custo | "Quando a experiência falha, o custo aparece" — business argument |
+| 6 | `Slide06Cadeia.tsx` | A cadeia | "UX atravessa a cadeia inteira" — Coleta → Dados → Contexto → Informação → Decisão → Acompanhamento |
+| 7 | `Slide07Narrativa.tsx` | Narrativa | "Além da experiência, falta uma narrativa comum" — fragmented product names |
+| 8 | `Slide08StackIC.tsx` | Stack IC | "Stack IC: a árvore do dado" — branding proposal |
+| 9 | `Slide09Branding.tsx` | Branding dos produtos | "Uma identidade para cada produto" |
+| 10 | `Slide10Foco.tsx` | Onde o UX entra | Practical UX entry points: Fleets, Vision, SABESP, Design System |
+| 11 | `Slide11ProblemasSolucoes.tsx` | Respostas | "Problemas atuais. Respostas possíveis." — 6 problem→solution cards |
+| 12 | `Slide12Citacao.tsx` | Citação | Steve Jobs quote — "começar pela experiência do cliente" |
+
 ## Content language
 
 All user-facing copy is in Brazilian Portuguese.

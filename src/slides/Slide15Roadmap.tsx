@@ -28,6 +28,7 @@ const columns: { title: string; accent: string; items: RoadmapItem[] }[] = [
     items: [
       { text: "Vision em produção na SABESP", vision: true },
       { text: "Workshop do Fleets para todos" },
+      { text: "Adoção dos alertas em campo" },
       { text: "Informs: feedback e correções em campo" },
       { text: "Retomada do Gravata integrado ao Fleets" },
     ],
@@ -37,9 +38,9 @@ const columns: { title: string; accent: string; items: RoadmapItem[] }[] = [
     accent: "#7c6ef5",
     items: [
       { text: "Camada Ouro do Vision: regras de negócio", vision: true },
-      { text: "Geobox + N100 no Fleets" },
+      { text: "Geobox + N100 no Fleets, com streaming" },
       { text: "Informs na App Store" },
-      { text: "Gestão de Obras de prateleira" },
+      { text: "Gestão de Obras de prateleira — todo contrato pede" },
       { text: "Agente com MCP" },
     ],
   },

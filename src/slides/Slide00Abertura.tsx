@@ -15,7 +15,7 @@ export default function Slide00Abertura({ action: _ }: SlideProps) {
     <div className="flex-1 flex flex-col items-center justify-center text-center px-24 relative">
       <motion.div
         {...up(0.0)}
-        className="font-mono text-sm tracking-[0.2em] text-purple/45 mb-6 uppercase"
+        className="inline-block font-mono text-sm font-bold tracking-[0.2em] text-purple mb-6 uppercase bg-purple/10 border border-purple/25 px-3 py-1.5"
       >
         Últimos 6 meses · Visão de futuro
       </motion.div>

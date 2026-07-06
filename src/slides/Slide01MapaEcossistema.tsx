@@ -1,7 +1,6 @@
 import { motion } from "motion/react";
 import type { SlideProps } from "./config";
 import { SLIDE_PADDING } from "./config";
-import EcosystemMap from "./shared/EcosystemMap";
 
 const easeOut: [number, number, number, number] = [0, 0, 0.2, 1];
 
@@ -20,7 +19,7 @@ export default function Slide01MapaEcossistema({ action: _ }: SlideProps) {
       <div>
         <motion.div
           {...up(0.0)}
-          className="font-mono text-sm tracking-[0.2em] text-purple/45 mb-3 uppercase"
+          className="inline-block font-mono text-sm font-bold tracking-[0.2em] text-purple mb-3 uppercase bg-purple/10 border border-purple/25 px-3 py-1.5"
         >
           O mapa do ecossistema
         </motion.div>
@@ -40,7 +39,16 @@ export default function Slide01MapaEcossistema({ action: _ }: SlideProps) {
         </motion.p>
       </div>
 
-      <EcosystemMap variant="intro" />
+      <motion.div
+        {...up(0.3)}
+        className="flex-1 min-h-0 flex items-center justify-center"
+      >
+        <img
+          src="/diagrama-atual.svg"
+          alt="Diagrama do ecossistema atual"
+          className="max-w-full max-h-full object-contain"
+        />
+      </motion.div>
     </div>
   );
 }

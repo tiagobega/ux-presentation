@@ -27,7 +27,7 @@ export interface UpdateSlideProps {
   titleHighlight: string;
   titleTrail?: string;
   paragraph?: string;
-  done: UpdateColumn;
+  done?: UpdateColumn;
   next: UpdateColumn;
   note?: {
     lead?: string;
@@ -49,14 +49,14 @@ function Column({
   delayBase: number;
 }) {
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-12">
       <div className="flex items-center gap-2.5">
-        <Marker className={`size-5 ${markerClass}`} strokeWidth={2} />
+        <Marker className={`size-12 ${markerClass}`} strokeWidth={3} />
         <div className="font-mono text-[12px] tracking-[0.18em] uppercase text-text/45">
           {header}
         </div>
       </div>
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-8">
         {items.map((b, i) => (
           <motion.div
             key={b.text}
@@ -64,10 +64,10 @@ function Column({
             className="flex items-start gap-3.5"
           >
             <b.Icon
-              className={`size-[22px] mt-0.5 flex-shrink-0 ${markerClass}`}
+              className={`size-8 mt-0.5 flex-shrink-0 ${markerClass}`}
               strokeWidth={1.5}
             />
-            <div className="text-[18px] text-text/85 leading-[1.35]">
+            <div className="text-[24px] text-text/85 leading-[1.35]">
               {b.text}
             </div>
           </motion.div>
@@ -94,7 +94,7 @@ export default function UpdateSlide({
       <div>
         <motion.div
           {...up(0.0)}
-          className="font-mono text-sm tracking-[0.2em] text-purple/45 mb-4 uppercase"
+          className="inline-block font-mono text-sm font-bold tracking-[0.2em] text-purple mb-4 uppercase bg-purple/10 border border-purple/25 px-3 py-1.5"
         >
           {eyebrow}
         </motion.div>
@@ -116,16 +116,22 @@ export default function UpdateSlide({
         )}
       </div>
 
-      <div className="flex-1 min-h-0 grid grid-cols-2 gap-10 content-center">
-        <div className="border-l-2 border-text/15 pl-8">
-          <Column
-            header={done.label ?? "O que fizemos"}
-            Marker={Check}
-            markerClass="text-text/55"
-            items={done.items}
-            delayBase={0.3}
-          />
-        </div>
+      <div
+        className={`flex-1 min-h-0 grid gap-10 content-center ${
+          done ? "grid-cols-2" : "grid-cols-1 max-w-[720px]"
+        }`}
+      >
+        {done && (
+          <div className="border-l-2 border-text/15 pl-8">
+            <Column
+              header={done.label ?? "O que fizemos"}
+              Marker={Check}
+              markerClass="text-text/55"
+              items={done.items}
+              delayBase={0.3}
+            />
+          </div>
+        )}
         <div className="border-l-2 border-purple/40 pl-8">
           <Column
             header={next.label ?? "Próximos passos"}

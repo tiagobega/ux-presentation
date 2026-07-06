@@ -1,9 +1,17 @@
 import type { SlideProps } from "./config";
 import UpdateSlide from "./shared/UpdateSlide";
-import { ClipboardCheck, Bug, Apple, ScanEye } from "lucide-react";
+import {
+  ClipboardCheck,
+  Bug,
+  Apple,
+  Lightbulb,
+  Boxes,
+  ShieldCheck,
+  ScanEye,
+} from "lucide-react";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export default function Slide08Informs({ action: _ }: SlideProps) {
+export default function Slide07Informs({ action: _ }: SlideProps) {
   return (
     <UpdateSlide
       eyebrow="Informs · produto vivo"
@@ -18,16 +26,15 @@ export default function Slide08Informs({ action: _ }: SlideProps) {
       }}
       next={{
         items: [
-          { Icon: Apple, text: "Deploy na App Store — acessibilidade e alcance" },
+          { Icon: Apple, text: "Deploy na App Store (Apple)" },
+          { Icon: Lightbulb, text: "Entender e priorizar novas features a partir do feedback de campo" },
+          { Icon: Boxes, text: "Expansão para novos projetos e contratos" },
+          { Icon: ShieldCheck, text: "Plano de sustentação de longo prazo" },
           {
             Icon: ScanEye,
-            text: "Visão de futuro: foto passa em tempo real pelo Vision, que valida na hora se é a foto ideal",
+            text: "Visão de futuro: foto passa em tempo real pelo Vision.",
           },
         ],
-      }}
-      note={{
-        lead: "Um produto alimentando o outro —",
-        highlight: "o melhor exemplo da tese do ecossistema integrado.",
       }}
     />
   );

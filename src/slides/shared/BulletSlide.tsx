@@ -54,7 +54,7 @@ export default function BulletSlide({
       <div>
         <motion.div
           {...up(0.0)}
-          className="font-mono text-sm tracking-[0.2em] text-purple/45 mb-4 uppercase"
+          className="inline-block font-mono text-sm font-bold tracking-[0.2em] text-purple mb-4 uppercase bg-purple/10 border border-purple/25 px-3 py-1.5"
         >
           {eyebrow}
         </motion.div>
@@ -77,7 +77,7 @@ export default function BulletSlide({
       </div>
 
       <div
-        className={`flex-1 min-h-0 grid gap-4 items-center content-center ${
+        className={`flex-1 min-h-0 grid gap-6 items-center content-center ${
           bulletCols === 2 ? "grid-cols-2" : "grid-cols-1 max-w-[900px]"
         }`}
       >
@@ -88,11 +88,11 @@ export default function BulletSlide({
             className="border border-purple/15 bg-purple/[0.03] px-7 py-5 flex items-center gap-5"
           >
             <b.Icon
-              className="size-7 flex-shrink-0"
+              className="size-10 flex-shrink-0"
               style={{ color: iconColor }}
               strokeWidth={1.5}
             />
-            <div className="text-[20px] font-medium text-text/85 leading-[1.35] tracking-[-0.01em]">
+            <div className="text-[24`px] font-medium text-text/85 leading-[1.35] tracking-[-0.01em]">
               {b.text}
             </div>
           </motion.div>

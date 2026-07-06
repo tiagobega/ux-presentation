@@ -13,51 +13,45 @@ import { useRemoteControl } from "../hooks/useRemoteControl";
 import Slide00Abertura from "../slides/Slide00Abertura";
 import Slide01MapaEcossistema from "../slides/Slide01MapaEcossistema";
 import Slide02Fleets from "../slides/Slide02Fleets";
-import Slide03Ingestao from "../slides/Slide03Ingestao";
-import Slide04Plataforma from "../slides/Slide04Plataforma";
+import Slide03Plataforma from "../slides/Slide03Plataforma";
+import Slide04Ingestao from "../slides/Slide04Ingestao";
 import Slide05Alertas from "../slides/Slide05Alertas";
-import Slide06VisionArquitetura from "../slides/Slide06VisionArquitetura";
-import Slide07VisionExpansao from "../slides/Slide07VisionExpansao";
-import Slide08Informs from "../slides/Slide08Informs";
-import Slide09SGC from "../slides/Slide09SGC";
-import Slide10Gravata from "../slides/Slide10Gravata";
-import Slide11GestaoObras from "../slides/Slide11GestaoObras";
-import Slide12Zeladoria from "../slides/Slide12Zeladoria";
-import Slide13PadroesIntro from "../slides/Slide13PadroesIntro";
-import Slide14IcePanel from "../slides/Slide14IcePanel";
-import Slide15Claude from "../slides/Slide15Claude";
-import Slide16DevIA from "../slides/Slide16DevIA";
-import Slide17MCPs from "../slides/Slide17MCPs";
-import Slide18Creditos from "../slides/Slide18Creditos";
-import Slide19Roadmap from "../slides/Slide19Roadmap";
+import Slide06Vision from "../slides/Slide06Vision";
+import Slide07Informs from "../slides/Slide07Informs";
+import Slide08Cvat from "../slides/Slide08Cvat";
+import Slide09Gravata from "../slides/Slide09Gravata";
+import Slide10GestaoObras from "../slides/Slide10GestaoObras";
+import Slide11Zeladoria from "../slides/Slide11Zeladoria";
+import Slide12PadroesIntro from "../slides/Slide12PadroesIntro";
+import Slide13IcePanel from "../slides/Slide13IcePanel";
+import Slide14Padroes from "../slides/Slide14Padroes";
+import Slide15Creditos from "../slides/Slide15Creditos";
+import Slide16Roadmap from "../slides/Slide16Roadmap";
 import { SLIDE_CONFIG, type SlideProps } from "../slides/config";
 
 // Order matches SLIDE_CONFIG indices:
-// 0 Abertura · 1 Mapa do ecossistema · 2 Intelifleets · 3 Ingestão · 4 Plataforma
-// 5 Alertas · 6 Vision arquitetura · 7 Vision expansão · 8 Informs · 9 SGC
-// 10 Gravata · 11 Gestão de Obras · 12 Zeladoria · 13 Padrões intro · 14 IcePanel
-// 15 Claude · 16 Dev com IA · 17 MCPs · 18 Créditos · 19 Roadmap
+// 0 Abertura · 1 Mapa do ecossistema · 2 Intelifleets · 3 Plataforma · 4 Ingestão
+// 5 Alertas · 6 Vision (arquitetura + expansão) · 7 Informs · 8 CVAT
+// 9 Gravata · 10 Gestão de Obras · 11 Zeladoria · 12 Padrões intro · 13 IcePanel
+// 14 Claude/Dev com IA/MCPs · 15 Créditos · 16 Roadmap
 const SLIDES: ComponentType<SlideProps>[] = [
   Slide00Abertura,
   Slide01MapaEcossistema,
   Slide02Fleets,
-  Slide03Ingestao,
-  Slide04Plataforma,
+  Slide03Plataforma,
+  Slide04Ingestao,
   Slide05Alertas,
-  Slide06VisionArquitetura,
-  Slide07VisionExpansao,
-  Slide08Informs,
-  Slide09SGC,
-  Slide10Gravata,
-  Slide11GestaoObras,
-  Slide12Zeladoria,
-  Slide13PadroesIntro,
-  Slide14IcePanel,
-  Slide15Claude,
-  Slide16DevIA,
-  Slide17MCPs,
-  Slide18Creditos,
-  Slide19Roadmap,
+  Slide06Vision,
+  Slide07Informs,
+  Slide08Cvat,
+  Slide09Gravata,
+  Slide10GestaoObras,
+  Slide11Zeladoria,
+  Slide12PadroesIntro,
+  Slide13IcePanel,
+  Slide14Padroes,
+  Slide15Creditos,
+  Slide16Roadmap,
 ];
 
 // Easing dramático para o pan da câmera entre slides.

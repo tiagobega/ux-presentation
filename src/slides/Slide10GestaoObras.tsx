@@ -3,16 +3,16 @@ import UpdateSlide from "./shared/UpdateSlide";
 import { Zap, HardHat, Package, Repeat } from "lucide-react";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export default function Slide11GestaoObras({ action: _ }: SlideProps) {
+export default function Slide10GestaoObras({ action: _ }: SlideProps) {
   return (
     <UpdateSlide
-      eyebrow="Novo produto · Gestão de Obras"
-      titleLead="Uma demo funcional em"
-      titleHighlight="1 semana."
-      paragraph="Demo para a SABESP construída em uma semana — só possível por causa dos novos padrões de dev com IA."
+      eyebrow="Novo produto · Gestão e Planejamento de Obras"
+      titleLead="Um novo produto para"
+      titleHighlight="gestão e planejamento de obras."
+      paragraph="Nasceu como demo para a SABESP — construída em apenas 1 semana, graças aos novos padrões de dev com IA — e agora vira um produto próprio do ecossistema."
       done={{
         items: [
-          { Icon: Zap, text: "Demo funcional para a SABESP em 1 semana" },
+          { Icon: Zap, text: "Demo funcional entregue à SABESP em 1 semana" },
           { Icon: HardHat, text: "Necessidade simples e universal de gestão de obras" },
         ],
       }}

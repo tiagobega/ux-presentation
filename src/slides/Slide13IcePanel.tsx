@@ -3,7 +3,7 @@ import BulletSlide from "./shared/BulletSlide";
 import { Boxes, BookMarked, Wrench, Plug } from "lucide-react";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export default function Slide14IcePanel({ action: _ }: SlideProps) {
+export default function Slide13IcePanel({ action: _ }: SlideProps) {
   return (
     <BulletSlide
       eyebrow="Padrões · IcePanel + ADRs"

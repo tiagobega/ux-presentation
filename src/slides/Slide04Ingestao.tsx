@@ -3,7 +3,7 @@ import UpdateSlide from "./shared/UpdateSlide";
 import { Database, ShieldCheck, Eye, Video, Radio } from "lucide-react";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export default function Slide03Ingestao({ action: _ }: SlideProps) {
+export default function Slide04Ingestao({ action: _ }: SlideProps) {
   return (
     <UpdateSlide
       eyebrow="Intelifleets · Ingestão de dados"
@@ -20,12 +20,11 @@ export default function Slide03Ingestao({ action: _ }: SlideProps) {
       next={{
         items: [
           { Icon: Video, text: "Trazer Geobox e N100 (vídeos) para dentro do Fleets" },
-          { Icon: Radio, text: "Integração com streaming — hub de todos os dispositivos" },
+          { Icon: Radio, text: "Integração com streaming e IRI" },
         ],
       }}
       note={{
-        lead: "Não foi refatoração por estética —",
-        highlight: "foi a fundação que permitiu lançar o Intelivision.",
+        highlight: "A fundação que permitiu lançar o Intelivision.",
       }}
     />
   );

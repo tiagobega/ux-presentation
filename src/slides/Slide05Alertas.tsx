@@ -1,6 +1,6 @@
 import type { SlideProps } from "./config";
 import UpdateSlide from "./shared/UpdateSlide";
-import { Bell, Wrench, RefreshCw, GraduationCap } from "lucide-react";
+import { Bell, Wrench, RefreshCw, HeartPulse, GraduationCap, Monitor } from "lucide-react";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function Slide05Alertas({ action: _ }: SlideProps) {
@@ -21,6 +21,8 @@ export default function Slide05Alertas({ action: _ }: SlideProps) {
         items: [
           { Icon: GraduationCap, text: "Mesma pauta da Plataforma: precisa entrar no dia a dia" },
           { Icon: RefreshCw, text: "Conectar o uso com o workshop do Fleets" },
+          { Icon: HeartPulse, text: "Saúde dos dispositivos via heartbeat (Jetson)" },
+          { Icon: Monitor, text: "Dashboards nas futuras TVs do escritório" },
         ],
       }}
       note={{

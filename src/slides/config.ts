@@ -12,31 +12,27 @@ export const SLIDE_CONFIG = [
     actions: ['O hub · 3 frentes'],
   },
   {
-    label: 'Ingestão',
-    actions: ['Refatoração'],
-  },
-  {
     label: 'Plataforma',
     actions: ['Produção e adoção'],
+  },
+  {
+    label: 'Ingestão',
+    actions: ['Refatoração'],
   },
   {
     label: 'Alertas',
     actions: ['Detectar → resolver'],
   },
   {
-    label: 'Vision · arquitetura',
-    actions: ['As três camadas', 'A foto atravessa'],
-  },
-  {
-    label: 'Vision · expansão',
-    actions: ['SABESP e além'],
+    label: 'Intelivision',
+    actions: ['As três camadas', 'A foto atravessa', 'Onde isso escala'],
   },
   {
     label: 'Informs',
     actions: ['Produto vivo'],
   },
   {
-    label: 'SGC',
+    label: 'CVAT',
     actions: ['Decisão open source'],
   },
   {
@@ -45,7 +41,7 @@ export const SLIDE_CONFIG = [
   },
   {
     label: 'Gestão de Obras',
-    actions: ['Demo em 1 semana'],
+    actions: ['Novo produto'],
   },
   {
     label: 'Zeladoria',
@@ -60,16 +56,8 @@ export const SLIDE_CONFIG = [
     actions: ['Arquitetura e ADRs'],
   },
   {
-    label: 'Claude corporativo',
-    actions: ['IA para o time'],
-  },
-  {
-    label: 'Dev com IA',
-    actions: ['O novo workflow'],
-  },
-  {
-    label: 'MCPs',
-    actions: ['Integração universal'],
+    label: 'Claude, dev com IA & MCPs',
+    actions: ['Um único fluxo de IA'],
   },
   {
     label: 'Créditos',
@@ -77,7 +65,7 @@ export const SLIDE_CONFIG = [
   },
   {
     label: 'Roadmap',
-    actions: ['Agora, próximo, explorando'],
+    actions: ['Agora, próximo, explorando', 'Hoje', 'Objetivo'],
   },
 ] as const
 
@@ -105,9 +93,6 @@ export type SlideIndex =
   | 14
   | 15
   | 16
-  | 17
-  | 18
-  | 19
 
 export interface SlideProps {
   action: string

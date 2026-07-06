@@ -10,12 +10,12 @@ const up = (delay: number) => ({
 });
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export default function Slide13PadroesIntro({ action: _ }: SlideProps) {
+export default function Slide12PadroesIntro({ action: _ }: SlideProps) {
   return (
     <div className="flex-1 flex flex-col items-center justify-center text-center px-24 relative">
       <motion.div
         {...up(0.0)}
-        className="font-mono text-sm tracking-[0.2em] text-purple/45 mb-6 uppercase"
+        className="inline-block font-mono text-sm font-bold tracking-[0.2em] text-purple mb-6 uppercase bg-purple/10 border border-purple/25 px-3 py-1.5"
       >
         Padrões & Inovação · bloco transversal
       </motion.div>

@@ -16,19 +16,19 @@ const up = (
 
 // Preencher com os nomes reais de cada time.
 const credits: { project: string; people: string }[] = [
-  { project: "Intelifleets · Ingestão", people: "— a preencher —" },
   { project: "Intelifleets · Plataforma", people: "— a preencher —" },
+  { project: "Intelifleets · Ingestão", people: "— a preencher —" },
   { project: "Intelifleets · Alertas", people: "— a preencher —" },
   { project: "Intelivision", people: "— a preencher —" },
   { project: "Informs", people: "— a preencher —" },
-  { project: "SGC · avaliação open source", people: "Time de IA — a preencher" },
+  { project: "CVAT · avaliação open source", people: "Time de IA — a preencher" },
   { project: "Gravata", people: "— a preencher —" },
-  { project: "Gestão de Obras · demo SABESP", people: "— a preencher —" },
-  { project: "Padrões · IcePanel · MCPs", people: "— a preencher —" },
+  { project: "Gestão e Planejamento de Obras", people: "— a preencher —" },
+  { project: "Padrões · IcePanel · Claude · MCPs", people: "— a preencher —" },
 ];
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export default function Slide18Creditos({ action: _ }: SlideProps) {
+export default function Slide15Creditos({ action: _ }: SlideProps) {
   return (
     <div
       className={`${SLIDE_PADDING} flex-1 flex flex-col gap-8 min-h-0 overflow-hidden`}
@@ -36,7 +36,7 @@ export default function Slide18Creditos({ action: _ }: SlideProps) {
       <div>
         <motion.div
           {...up(0.0)}
-          className="font-mono text-sm tracking-[0.2em] text-purple/45 mb-4 uppercase"
+          className="inline-block font-mono text-sm font-bold tracking-[0.2em] text-purple mb-4 uppercase bg-purple/10 border border-purple/25 px-3 py-1.5"
         >
           Créditos
         </motion.div>

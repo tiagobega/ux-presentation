@@ -15,7 +15,7 @@ export default function Slide12PadroesIntro({ action: _ }: SlideProps) {
     <div className="flex-1 flex flex-col items-center justify-center text-center px-24 relative">
       <motion.h1
         {...up(0.0)}
-        className="text-[44px] font-bold uppercase tracking-[0.02em] text-purple leading-[1.15]"
+        className="text-[64px] font-bold uppercase tracking-[0.02em] text-purple leading-[1.15]"
       >
         Padrões & Inovação
       </motion.h1>

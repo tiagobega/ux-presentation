@@ -93,9 +93,9 @@ export default function Slide06Vision({ action }: SlideProps) {
           {...up(0.18)}
           className="mt-3 text-[18px] text-text/50 leading-[1.55] max-w-[940px]"
         >
-          Pipeline em camadas, estilo medallion. Uma foto atravessa o fluxo e,
-          a cada camada, ganha mais significado — a mesma arquitetura que
-          agora vira serviço de visão da empresa.
+          Pipeline em camadas. Uma foto atravessa o fluxo e, a cada camada,
+          ganha mais significado, a mesma arquitetura que agora vira serviço de
+          visão da empresa.
         </motion.p>
       </div>
 
@@ -123,7 +123,10 @@ export default function Slide06Vision({ action }: SlideProps) {
                   {...up(0.3 + i * 0.12, easeIn)}
                   className="flex-1 h-full max-h-[200px] border border-text/10 bg-black/2 overflow-hidden flex flex-col"
                 >
-                  <div className="h-[6px] w-full" style={{ background: l.color }} />
+                  <div
+                    className="h-[6px] w-full"
+                    style={{ background: l.color }}
+                  />
                   <div className="p-8 flex flex-col gap-4 flex-1">
                     <div className="flex items-center gap-3">
                       <Medal
@@ -173,7 +176,11 @@ export default function Slide06Vision({ action }: SlideProps) {
       <motion.div
         key="expansao"
         animate={{ opacity: phase >= 2 ? 1 : 0 }}
-        transition={{ duration: 0.35, ease: easeIn, delay: phase >= 2 ? 0.2 : 0 }}
+        transition={{
+          duration: 0.35,
+          ease: easeIn,
+          delay: phase >= 2 ? 0.2 : 0,
+        }}
         style={{ pointerEvents: phase >= 2 ? "auto" : "none" }}
         className="border-t border-text/10 pt-5 flex flex-col gap-4 shrink-0"
       >

@@ -21,14 +21,23 @@ export default function Slide01MapaEcossistema({ action: _ }: SlideProps) {
           {...up(0.0)}
           className="text-[40px] font-bold uppercase tracking-[0.02em] text-purple leading-[1.15]"
         >
-          O mapa do ecossistema
+          O foco dos últimos 6 meses
         </motion.h1>
         <motion.p
           {...up(0.1)}
           className="mt-3 text-[22px] font-medium text-text/70 leading-[1.4] tracking-[-0.01em]"
         >
-          Um mapa que se repete na{" "}
-          <em className="not-italic text-purple">apresentação inteira.</em>
+          Não foi tudo o que fizemos — mas foi{" "}
+          <em className="not-italic text-purple">
+            onde concentramos a energia:
+          </em>{" "}
+          construir, refatorar e integrar as peças deste mapa.
+        </motion.p>
+        <motion.p
+          {...up(0.2)}
+          className="mt-5 text-[18px] text-text/50 leading-[1.5]"
+        >
+          É ele que vamos percorrer agora, peça a peça.
         </motion.p>
       </div>
 

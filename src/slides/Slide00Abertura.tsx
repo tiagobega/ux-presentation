@@ -12,37 +12,47 @@ const up = (delay: number) => ({
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function Slide00Abertura({ action: _ }: SlideProps) {
   return (
-    <div className="flex-1 flex flex-col items-center justify-center text-center px-24 relative">
-      <motion.h1
-        {...up(0.0)}
-        className="text-[44px] font-bold uppercase tracking-[0.02em] text-purple leading-[1.15]"
-      >
-        Últimos 6 meses · Visão de futuro
-      </motion.h1>
-
-      <motion.div
-        {...up(0.2)}
-        className="mt-5 text-[26px] font-medium text-text/70 leading-[1.4] tracking-[-0.01em] max-w-[1150px]"
-      >
-        Saímos de sistemas isolados para um{" "}
-        <span className="text-purple">ecossistema integrado</span> — dados,
-        visão computacional e IA conversando entre si.
+    <div className="flex-1 flex flex-col justify-between px-24 py-20 relative">
+      {/* Eyebrow */}
+      <motion.div {...up(0)} className="flex items-center gap-4">
+        <span className="w-3 h-3 bg-purple" />
+        <span className="font-mono text-[15px] uppercase tracking-[0.28em] text-text/60">
+          Engenharia de Software · Apresentação de semestre
+        </span>
       </motion.div>
 
-      <motion.div
-        {...up(0.55)}
-        className="mt-10 text-[22px] text-text/50 leading-[1.5] max-w-[980px]"
-      >
-        Nos últimos 6 meses consolidamos as fundações: refatorações, produção e
-        padrões.
-      </motion.div>
+      {/* Title block */}
+      <div className="max-w-[1200px]">
+        <motion.h1
+          {...up(0.15)}
+          className="text-[84px] font-bold leading-[1.02] tracking-[-0.03em] text-text"
+        >
+          Últimos 6 meses.
+          <br />
+          <span className="text-purple">Próximos 6 meses.</span>
+        </motion.h1>
 
+        <motion.p
+          {...up(0.45)}
+          className="mt-8 text-[24px] text-text/60 leading-[1.5] max-w-[860px] tracking-[-0.01em]"
+        >
+          De sistemas isolados a um{" "}
+          <span className="text-text font-medium">ecossistema integrado</span> —
+          o balanço do que construímos e o plano do que vem pela frente.
+        </motion.p>
+      </div>
+
+      {/* Footer */}
       <motion.div
-        {...up(0.78)}
-        className="mt-5 text-[26px] font-bold text-text tracking-[-0.02em]"
+        {...up(0.7)}
+        className="border-t border-text/10 pt-6 flex items-end justify-between"
       >
-        O próximo semestre é sobre{" "}
-        <span className="text-purple">expansão e integração.</span>
+        <div className="font-mono text-[15px] uppercase tracking-[0.2em] text-text/50">
+          Intelicity · Time de Engenharia de Software
+        </div>
+        <div className="font-mono text-[15px] uppercase tracking-[0.2em] text-purple">
+          Julho · 2026
+        </div>
       </motion.div>
     </div>
   );

@@ -24,16 +24,8 @@ export default function Slide12PadroesIntro({ action: _ }: SlideProps) {
         {...up(0.2)}
         className="mt-5 text-[30px] font-medium text-text/70 leading-[1.3] tracking-[-0.01em] max-w-[1100px]"
       >
-        Como mudamos o{" "}<br/>
+        Como mudamos o{" "}
         <span className="text-purple">método de construir software.</span>
-      </motion.div>
-
-      <motion.div
-        {...up(0.55)}
-        className="mt-8 text-[22px] text-text/50 leading-[1.5] max-w-[940px]"
-      >
-        IcePanel, Claude corporativo e MCPs: o que explica a velocidade de tudo
-        que veio antes.
       </motion.div>
     </div>
   );

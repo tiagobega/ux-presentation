@@ -1,11 +1,11 @@
 export const SLIDE_CONFIG = [
   {
     label: 'Abertura',
-    actions: ['Tese do ecossistema'],
+    actions: ['Capa'],
   },
   {
     label: 'Mapa do ecossistema',
-    actions: ['O mapa'],
+    actions: ['O foco do semestre'],
   },
   {
     label: 'Intelifleets',

@@ -6,13 +6,16 @@ import { Boxes, BookMarked, Wrench, Plug } from "lucide-react";
 export default function Slide13IcePanel({ action: _ }: SlideProps) {
   return (
     <BulletSlide
-      eyebrow="Padrões · IcePanel + ADRs"
+      eyebrow="Padrões de Arquitetura · IcePanel + ADRs"
       titleHighlight="Arquitetura"
       titleTrail="que não se perde."
       paragraph="Um padrão único de arquitetura e documentação — o porquê das decisões fica registrado."
       bullets={[
         { Icon: Boxes, text: "Ferramenta única e padronizada de arquitetura" },
-        { Icon: BookMarked, text: "ADRs: a memória das decisões, o \"porquê\" preservado" },
+        {
+          Icon: BookMarked,
+          text: 'ADRs: a memória das decisões, o "porquê" preservado',
+        },
         { Icon: Wrench, text: "Onboarding mais rápido para o time" },
         {
           Icon: Plug,

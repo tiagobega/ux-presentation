@@ -63,8 +63,9 @@ export default function Slide02Fleets({ action: _ }: SlideProps) {
           {...up(0.18)}
           className="mt-3 text-[18px] text-text/80 leading-[1.55] max-w-[940px]"
         >
-          A mesma plataforma que ingere o dado, gerencia os projetos e garante
-          que ele chega confiável.
+          A plataforma que sustenta a operação em campo: gerencia projetos,
+          veículos e dispositivos, recebe tudo o que eles capturam e avisa
+          quando algo precisa de atenção.
         </motion.p>
       </div>
 

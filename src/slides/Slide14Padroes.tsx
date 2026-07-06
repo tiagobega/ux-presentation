@@ -169,17 +169,6 @@ export default function Slide14Padroes({ action: _ }: SlideProps) {
               </div>
             </div>
           </div>
-          <div className="flex items-center gap-3 text-[16px] text-text/80 leading-[1.4]">
-            <Bot
-              className="size-7 text-purple/60 flex-shrink-0"
-              strokeWidth={1.5}
-            />
-            <span>
-              Quem já consome: o Claude de todos e{" "}
-              <span className="font-bold text-text">2 agentes</span> — Agente SP
-              (chat com mapa) e Agente SABESP. Um agente por contrato.
-            </span>
-          </div>
         </motion.div>
       </div>
     </div>

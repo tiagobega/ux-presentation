@@ -16,10 +16,7 @@ export default function Slide11Zeladoria({ action: _ }: SlideProps) {
           { Icon: ScanEye, text: "Nasce com integração ao Vision: foto do munícipe passa pelo pipeline" },
         ],
       }}
-      note={{
-        lead: "Cada produto novo",
-        highlight: "já nasce conectado ao ecossistema.",
-      }}
+      
     />
   );
 }

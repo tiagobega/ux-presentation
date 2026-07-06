@@ -12,7 +12,7 @@ export default function Slide10GestaoObras({ action: _ }: SlideProps) {
       paragraph="Nasceu como demo para a SABESP — construída em apenas 1 semana, graças aos novos padrões de dev com IA — e agora vira um produto próprio do ecossistema."
       done={{
         items: [
-          { Icon: Zap, text: "Demo funcional entregue à SABESP em 1 semana" },
+          { Icon: Zap, text: "Demo funcional entregue à SABESP em 1 semana com tecnologias tradicionais" },
           { Icon: HardHat, text: "Necessidade simples e universal de gestão de obras" },
         ],
       }}

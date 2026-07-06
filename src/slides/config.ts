@@ -60,12 +60,12 @@ export const SLIDE_CONFIG = [
     actions: ['Um único fluxo de IA'],
   },
   {
-    label: 'Créditos',
-    actions: ['Os times'],
-  },
-  {
     label: 'Roadmap',
     actions: ['Agora, próximo, explorando', 'Hoje', 'Objetivo'],
+  },
+  {
+    label: 'Créditos',
+    actions: ['Agradecimentos'],
   },
 ] as const
 

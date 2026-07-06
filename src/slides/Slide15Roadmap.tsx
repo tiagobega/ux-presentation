@@ -52,7 +52,7 @@ const columns: { title: string; accent: string; items: string[] }[] = [
   },
 ];
 
-export default function Slide16Roadmap({ action }: SlideProps) {
+export default function Slide15Roadmap({ action }: SlideProps) {
   const showMap = action === STEP_TODAY || action === STEP_GOAL;
   const revealed = action === STEP_GOAL;
 
@@ -61,19 +61,19 @@ export default function Slide16Roadmap({ action }: SlideProps) {
       className={`${SLIDE_PADDING} flex-1 flex flex-col gap-7 min-h-0 overflow-hidden`}
     >
       <div>
-        <motion.div
+        <motion.h1
           {...up(0.0)}
-          className="inline-block font-mono text-sm font-bold tracking-[0.2em] text-purple mb-4 uppercase bg-purple/10 border border-purple/25 px-3 py-1.5"
+          className="text-[40px] font-bold uppercase tracking-[0.02em] text-purple leading-[1.15]"
         >
           Roadmap · próximo semestre
-        </motion.div>
-        <motion.h1
+        </motion.h1>
+        <motion.p
           {...up(0.1)}
-          className="text-[48px] font-bold leading-[1.02] text-text tracking-[-0.03em]"
+          className="mt-3 text-[22px] font-medium text-text/70 leading-[1.4] tracking-[-0.01em]"
         >
           Agora, próximo e{" "}
           <em className="not-italic text-purple">explorando.</em>
-        </motion.h1>
+        </motion.p>
       </div>
 
       {showMap ? (

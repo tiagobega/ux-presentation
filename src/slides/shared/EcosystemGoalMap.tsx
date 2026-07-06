@@ -105,28 +105,28 @@ export default function EcosystemGoalMap({ revealed }: { revealed: boolean }) {
       </motion.g>
       <motion.line
         opacity="0.6" stroke="#1A1225" strokeOpacity="0.5" strokeDasharray="4 5"
-        x1={1.0} y1={500.0}
+        x1={1.0} y1={500.0} y2={500.0}
         initial={false}
         animate={{ x2: revealed ? 951.0 : 493.0 }}
         transition={{ duration: 1.3, ease: drama }}
       />
       <motion.line
         opacity="0.6" stroke="#1A1225" strokeOpacity="0.5" strokeDasharray="4 5"
-        x1={0.0} y1={338.0}
+        x1={0.0} y1={338.0} y2={338.0}
         initial={false}
         animate={{ x2: revealed ? 951.0 : 493.0 }}
         transition={{ duration: 1.3, ease: drama }}
       />
       <motion.line
         opacity="0.6" stroke="#1A1225" strokeOpacity="0.5" strokeDasharray="4 5"
-        x1={1.0} y1={123.0}
+        x1={1.0} y1={123.0} y2={123.0}
         initial={false}
         animate={{ x2: revealed ? 951.0 : 493.0 }}
         transition={{ duration: 1.3, ease: drama }}
       />
       <motion.line
         opacity="0.6" stroke="#1A1225" strokeOpacity="0.5" strokeDasharray="4 5"
-        x1={1.0} y1={0.0}
+        x1={1.0} y1={0.0} y2={0.0}
         initial={false}
         animate={{ x2: revealed ? 951.0 : 493.0 }}
         transition={{ duration: 1.3, ease: drama }}

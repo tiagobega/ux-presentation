@@ -14,7 +14,7 @@ import {
 export default function Slide07Informs({ action: _ }: SlideProps) {
   return (
     <UpdateSlide
-      eyebrow="Informs · produto vivo"
+      eyebrow="Informs"
       titleLead="Em campo, iterando com o"
       titleHighlight="usuário real."
       paragraph="Em produção desde o último semestre; motoverificadores já usando no dia a dia."

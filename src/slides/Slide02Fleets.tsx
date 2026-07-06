@@ -46,19 +46,19 @@ export default function Slide02Fleets({ action: _ }: SlideProps) {
       className={`${SLIDE_PADDING} flex-1 flex flex-col gap-8 min-h-0 overflow-hidden`}
     >
       <div>
-        <motion.div
+        <motion.h1
           {...up(0.0)}
-          className="inline-block font-mono text-sm font-bold tracking-[0.2em] text-purple mb-4 uppercase bg-purple/10 border border-purple/25 px-3 py-1.5"
+          className="text-[40px] font-bold uppercase tracking-[0.02em] text-purple leading-[1.15]"
         >
           Intelifleets
-        </motion.div>
-        <motion.h1
+        </motion.h1>
+        <motion.p
           {...up(0.1)}
-          className="text-[52px] font-bold leading-[1.02] text-text tracking-[-0.03em]"
+          className="mt-3 text-[22px] font-medium text-text/70 leading-[1.4] tracking-[-0.01em]"
         >
           O <em className="not-italic text-purple">hub</em> que conecta as
           peças.
-        </motion.h1>
+        </motion.p>
         <motion.p
           {...up(0.18)}
           className="mt-3 text-[18px] text-text/80 leading-[1.55] max-w-[940px]"

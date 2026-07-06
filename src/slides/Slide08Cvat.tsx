@@ -9,7 +9,7 @@ export default function Slide08Cvat({ action: _ }: SlideProps) {
       eyebrow="SGC > CVAT (Computer Vision Annotation Tool)"
       titleHighlight="O melhor código"
       titleTrail="é o que não precisamos escrever."
-      paragraph="Descontinuamos o desenvolvimento interno do SGC ao encontrar o CVAT (Computer Vision Annotation Tool) — uma alternativa open source, madura e validada."
+      paragraph="Descontinuamos o desenvolvimento interno do SGC ao encontrar o CVAT, uma alternativa open source, madura e validada."
       bullets={[
         { Icon: XCircle, text: "Desenvolvimento interno do SGC descontinuado" },
         { Icon: Package, text: "CVAT identificado como alternativa open source" },

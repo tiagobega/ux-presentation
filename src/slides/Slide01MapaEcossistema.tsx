@@ -14,38 +14,31 @@ const up = (delay: number) => ({
 export default function Slide01MapaEcossistema({ action: _ }: SlideProps) {
   return (
     <div
-      className={`${SLIDE_PADDING} flex-1 flex flex-col gap-6 min-h-0 overflow-hidden`}
+      className={`${SLIDE_PADDING} flex-1 flex items-center gap-12 min-h-0 overflow-hidden`}
     >
-      <div>
-        <motion.div
+      <div className="flex-1 min-w-0">
+        <motion.h1
           {...up(0.0)}
-          className="inline-block font-mono text-sm font-bold tracking-[0.2em] text-purple mb-3 uppercase bg-purple/10 border border-purple/25 px-3 py-1.5"
+          className="text-[40px] font-bold uppercase tracking-[0.02em] text-purple leading-[1.15]"
         >
           O mapa do ecossistema
-        </motion.div>
-        <motion.h1
-          {...up(0.1)}
-          className="text-[46px] font-bold leading-[1.02] text-text tracking-[-0.03em]"
-        >
-          Um mapa que se repete a{" "}
-          <em className="not-italic text-purple">apresentação inteira.</em>
         </motion.h1>
         <motion.p
-          {...up(0.18)}
-          className="mt-3 text-[18px] text-text/50 leading-[1.55] max-w-[940px]"
+          {...up(0.1)}
+          className="mt-3 text-[22px] font-medium text-text/70 leading-[1.4] tracking-[-0.01em]"
         >
-          IC Fleets no centro; IC Vision, Informs, Gravata e os novos produtos
-          se plugam nele. Cada projeto a seguir reforça essa mesma tese.
+          Um mapa que se repete na{" "}
+          <em className="not-italic text-purple">apresentação inteira.</em>
         </motion.p>
       </div>
 
       <motion.div
         {...up(0.3)}
-        className="flex-1 min-h-0 flex items-center justify-center"
+        className="flex-1 min-h-0 h-full flex items-center justify-center"
       >
         <img
-          src="/diagrama-atual.svg"
-          alt="Diagrama do ecossistema atual"
+          src="/diagrama-atual-simplificado.svg"
+          alt="Diagrama do ecossistema atual, simplificado"
           className="max-w-full max-h-full object-contain"
         />
       </motion.div>

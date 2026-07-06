@@ -13,16 +13,16 @@ const up = (delay: number) => ({
 export default function Slide00Abertura({ action: _ }: SlideProps) {
   return (
     <div className="flex-1 flex flex-col items-center justify-center text-center px-24 relative">
-      <motion.div
+      <motion.h1
         {...up(0.0)}
-        className="inline-block font-mono text-sm font-bold tracking-[0.2em] text-purple mb-6 uppercase bg-purple/10 border border-purple/25 px-3 py-1.5"
+        className="text-[44px] font-bold uppercase tracking-[0.02em] text-purple leading-[1.15]"
       >
         Últimos 6 meses · Visão de futuro
-      </motion.div>
+      </motion.h1>
 
       <motion.div
         {...up(0.2)}
-        className="text-[46px] font-medium text-text leading-[1.3] tracking-[-0.02em] max-w-[1150px]"
+        className="mt-5 text-[26px] font-medium text-text/70 leading-[1.4] tracking-[-0.01em] max-w-[1150px]"
       >
         Saímos de sistemas isolados para um{" "}
         <span className="text-purple">ecossistema integrado</span> — dados,

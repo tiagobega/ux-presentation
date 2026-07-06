@@ -46,8 +46,8 @@ React + Vite + TypeScript fullscreen slide presentation. The original static HTM
 | 12 | `Slide12PadroesIntro.tsx` | Padrões & Inovação | Transition slide: "Como mudamos o jeito de construir software" |
 | 13 | `Slide13IcePanel.tsx` | IcePanel | "Arquitetura que não se perde" — architecture tool + ADRs + MCP for AI context (`BulletSlide`) |
 | 14 | `Slide14Padroes.tsx` | Claude, dev com IA & MCPs | Merged slide: Claude corporate subscription, Specs→Docs→IcePanel→MCPs→Código pipeline, and MCPs as the "USB-C" of AI integrations, side by side |
-| 15 | `Slide15Creditos.tsx` | Créditos | "Nada disso é de uma pessoa só" — 3×3 grid of projects, credits still to fill in |
-| 16 | `Slide16Roadmap.tsx` | Roadmap | "Agora, próximo e explorando" — 3-column roadmap closing the deck |
+| 15 | `Slide15Roadmap.tsx` | Roadmap | "Agora, próximo e explorando" — 3-column roadmap |
+| 16 | `Slide16Creditos.tsx` | Créditos | "Nada incrível é construído sozinho" — centered thank-you naming a handful of people, closes the deck |
 
 ## Content language
 

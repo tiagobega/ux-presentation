@@ -4,6 +4,11 @@
   --color-text: #1a1225;
   --color-purple: #7c3aed;
   --font-family-mono: 'Space Mono', monospace;
+  --font-family-inter: 'Inter', sans-serif;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
 }
 
 /* ── SLIDE TRANSITIONS ── */

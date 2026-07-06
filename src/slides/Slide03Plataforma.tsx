@@ -17,8 +17,8 @@ export default function Slide03Plataforma({ action: _ }: SlideProps) {
   return (
     <UpdateSlide
       eyebrow="Intelifleets · Plataforma"
-      titleLead="Em produção. Agora, a"
-      titleHighlight="adoção."
+      titleLead=""
+      titleHighlight=""
       paragraph="Entregue em produção no último mês, substituindo a planilha e o report antigo — e já bem mais do que isso."
       done={{
         items: [

@@ -25,15 +25,15 @@ import Slide11Zeladoria from "../slides/Slide11Zeladoria";
 import Slide12PadroesIntro from "../slides/Slide12PadroesIntro";
 import Slide13IcePanel from "../slides/Slide13IcePanel";
 import Slide14Padroes from "../slides/Slide14Padroes";
-import Slide15Creditos from "../slides/Slide15Creditos";
-import Slide16Roadmap from "../slides/Slide16Roadmap";
+import Slide15Roadmap from "../slides/Slide15Roadmap";
+import Slide16Creditos from "../slides/Slide16Creditos";
 import { SLIDE_CONFIG, type SlideProps } from "../slides/config";
 
 // Order matches SLIDE_CONFIG indices:
 // 0 Abertura · 1 Mapa do ecossistema · 2 Intelifleets · 3 Plataforma · 4 Ingestão
 // 5 Alertas · 6 Vision (arquitetura + expansão) · 7 Informs · 8 CVAT
 // 9 Gravata · 10 Gestão de Obras · 11 Zeladoria · 12 Padrões intro · 13 IcePanel
-// 14 Claude/Dev com IA/MCPs · 15 Créditos · 16 Roadmap
+// 14 Claude/Dev com IA/MCPs · 15 Roadmap · 16 Créditos
 const SLIDES: ComponentType<SlideProps>[] = [
   Slide00Abertura,
   Slide01MapaEcossistema,
@@ -50,8 +50,8 @@ const SLIDES: ComponentType<SlideProps>[] = [
   Slide12PadroesIntro,
   Slide13IcePanel,
   Slide14Padroes,
-  Slide15Creditos,
-  Slide16Roadmap,
+  Slide15Roadmap,
+  Slide16Creditos,
 ];
 
 // Easing dramático para o pan da câmera entre slides.

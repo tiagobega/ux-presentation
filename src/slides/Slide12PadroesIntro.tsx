@@ -13,19 +13,19 @@ const up = (delay: number) => ({
 export default function Slide12PadroesIntro({ action: _ }: SlideProps) {
   return (
     <div className="flex-1 flex flex-col items-center justify-center text-center px-24 relative">
-      <motion.div
+      <motion.h1
         {...up(0.0)}
-        className="inline-block font-mono text-sm font-bold tracking-[0.2em] text-purple mb-6 uppercase bg-purple/10 border border-purple/25 px-3 py-1.5"
+        className="text-[44px] font-bold uppercase tracking-[0.02em] text-purple leading-[1.15]"
       >
-        Padrões & Inovação · bloco transversal
-      </motion.div>
+        Padrões & Inovação
+      </motion.h1>
 
       <motion.div
         {...up(0.2)}
-        className="text-[52px] font-bold text-text leading-[1.1] tracking-[-0.03em] max-w-[1100px]"
+        className="mt-5 text-[30px] font-medium text-text/70 leading-[1.3] tracking-[-0.01em] max-w-[1100px]"
       >
-        Como mudamos o{" "}
-        <span className="text-purple">jeito de construir software.</span>
+        Como mudamos o{" "}<br/>
+        <span className="text-purple">método de construir software.</span>
       </motion.div>
 
       <motion.div

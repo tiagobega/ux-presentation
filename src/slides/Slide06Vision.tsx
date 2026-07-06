@@ -109,7 +109,7 @@ export default function Slide06Vision({ action }: SlideProps) {
             className="absolute bottom-0 -translate-x-1/2 flex items-center gap-2 border border-purple/40 bg-purple/[0.08] px-4 py-2"
           >
             <Image className="size-4 text-purple" strokeWidth={1.75} />
-            <span className="text-[13px] font-mono tracking-[0.1em] text-purple/80 uppercase">
+            <span className="text-[15px] font-mono tracking-[0.1em] text-purple uppercase">
               foto
             </span>
           </motion.div>
@@ -135,7 +135,7 @@ export default function Slide06Vision({ action }: SlideProps) {
                         strokeWidth={1.5}
                       />
                       <div
-                        className="font-mono text-[13px] tracking-[0.18em] uppercase"
+                        className="font-mono text-[16px] tracking-[0.18em] uppercase"
                         style={{ color: l.color }}
                       >
                         {l.tier}

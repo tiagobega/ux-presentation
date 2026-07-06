@@ -13,7 +13,6 @@ import {
   TrendingUp,
   Database,
   MessageSquare,
-  Cable,
   Bot,
 } from "lucide-react";
 
@@ -35,6 +34,15 @@ const steps: { Icon: LucideIcon; label: string }[] = [
   { Icon: Boxes, label: "IcePanel" },
   { Icon: Plug, label: "MCPs" },
   { Icon: Code2, label: "Código" },
+];
+
+const mcps: { name: string; desc: string }[] = [
+  { name: "detecções", desc: "Defeitos viários vistos pela IA" },
+  { name: "pavimento", desc: "Qualidade de pavimento (IRI)" },
+  { name: "recape", desc: "Obras de recapeamento" },
+  { name: "geoinfra", desc: "Intervenções na via (GAIA)" },
+  { name: "sabesp", desc: "Multas contra a SABESP" },
+  { name: "geo", desc: "Vias e regiões de SP" },
 ];
 
 const claudeBullets: { Icon: LucideIcon; text: string }[] = [
@@ -72,7 +80,7 @@ export default function Slide14Padroes({ action: _ }: SlideProps) {
         </motion.p>
         <motion.p
           {...up(0.18)}
-          className="mt-2 text-[17px] text-text/50 leading-[1.5] max-w-[1000px]"
+          className="mt-2 text-[17px] text-text/65 leading-[1.5] max-w-[1000px]"
         >
           A IA não é autocomplete — é parte do processo, do Claude corporativo
           ao contexto que os MCPs entregam a cada etapa.
@@ -106,9 +114,9 @@ export default function Slide14Padroes({ action: _ }: SlideProps) {
         {/* Claude */}
         <motion.div
           {...up(0.55, easeIn)}
-          className="border border-text/10 bg-black/2 p-7 flex flex-col gap-8 h-[350px] "
+          className="border border-text/10 bg-black/2 p-7 flex flex-col gap-8 h-[400px]"
         >
-          <div className="font-mono text-[24px] tracking-[0.18em] uppercase text-purple/55">
+          <div className="font-mono text-[24px] tracking-[0.18em] uppercase text-purple/85">
             Claude corporativo
           </div>
           <div className="flex flex-col gap-6">
@@ -118,7 +126,7 @@ export default function Slide14Padroes({ action: _ }: SlideProps) {
                   className="size-8 mt-0.5 text-purple/60 flex-shrink-0"
                   strokeWidth={1.5}
                 />
-                <div className="text-[16px] text-text/80 leading-[1.35]">
+                <div className="text-[17px] text-text/85 leading-[1.35]">
                   {b.text}
                 </div>
               </div>
@@ -129,56 +137,51 @@ export default function Slide14Padroes({ action: _ }: SlideProps) {
         {/* MCPs */}
         <motion.div
           {...up(0.65, easeIn)}
-          className="border border-text/10 bg-black/2 p-7 flex flex-col gap-4 h-[350px]"
+          className="border border-text/10 bg-black/2 p-7 flex flex-col gap-4 h-[400px]"
         >
-          <div className="font-mono text-[24px] tracking-[0.18em] uppercase text-purple/55">
+          <div className="font-mono text-[24px] tracking-[0.18em] uppercase text-purple/85">
             MCPs
           </div>
-          <div className="grid grid-cols-2 gap-6 flex-1">
-            <div className="border border-text/12 bg-black/2 p-4 flex flex-col gap-5 items-center justify-center">
-              <div className="flex items-center gap-2">
-                <Cable className="size-5 text-text/45" strokeWidth={1.5} />
-                <div className="font-mono text-[11px] tracking-[0.14em] uppercase text-text/45">
-                  Antes
+          <div className="text-[16px] text-text/75 leading-[1.4]">
+            6 servidores que construímos + o MCP nativo da Oracle — o mesmo
+            conector serve qualquer LLM ou agente.
+          </div>
+          <div className="grid grid-cols-3 gap-2.5 flex-1">
+            {mcps.map((m) => (
+              <div
+                key={m.name}
+                className="border border-purple/30 bg-purple/[0.06] p-3 flex flex-col items-center justify-center gap-1.5 text-center"
+              >
+                <div className="font-mono text-[15px] tracking-[0.1em] uppercase text-purple">
+                  {m.name}
+                </div>
+                <div className="text-[14px] text-text/75 leading-[1.25]">
+                  {m.desc}
                 </div>
               </div>
-              <div className="text-[16px] font-bold text-text/80 leading-[1.2] text-center">
-                N × M integrações artesanais
+            ))}
+            <div className="col-span-3 border border-purple/45 bg-purple/[0.09] p-3 flex items-center justify-center gap-3">
+              <div className="font-mono text-[15px] tracking-[0.1em] uppercase text-purple shrink-0">
+                oracle · nativo
               </div>
-            </div>
-            <div className="border border-purple/25 bg-purple/[0.05] p-4 flex flex-col gap-5 items-center justify-center">
-              <div className="flex items-center gap-2">
-                <Plug className="size-5 text-purple/70" strokeWidth={1.5} />
-                <div className="font-mono text-[11px] tracking-[0.14em] uppercase text-purple/60">
-                  Depois
-                </div>
-              </div>
-              <div className="text-[16px] font-bold text-text leading-[1.2] text-center">
-                N conectores <br />
-                reutilizáveis
+              <div className="text-[14px] text-text/80 leading-[1.25]">
+                relatório de gastos e uso da nuvem — conclusões em minutos
               </div>
             </div>
           </div>
-          <div className="flex items-center gap-4 text-[18px] text-text/70">
+          <div className="flex items-center gap-3 text-[16px] text-text/80 leading-[1.4]">
             <Bot
-              className="size-8 text-purple/60 flex-shrink-0"
+              className="size-7 text-purple/60 flex-shrink-0"
               strokeWidth={1.5}
             />
-            Onde estamos: começamos pela LLM; <br />
-            um agente está sendo integração agora.
+            <span>
+              Quem já consome: o Claude de todos e{" "}
+              <span className="font-bold text-text">2 agentes</span> — Agente SP
+              (chat com mapa) e Agente SABESP. Um agente por contrato.
+            </span>
           </div>
         </motion.div>
       </div>
-
-      <motion.div
-        {...up(0.9, easeIn)}
-        className="border-t border-text/10 pt-5 text-center"
-      >
-        <div className="text-[20px] font-bold text-text tracking-[-0.02em]">
-          Um novo workflow de engenharia,{" "}
-          <span className="text-purple">alimentado com o contexto certo.</span>
-        </div>
-      </motion.div>
     </div>
   );
 }

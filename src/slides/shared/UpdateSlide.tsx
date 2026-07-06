@@ -37,12 +37,14 @@ export interface UpdateSlideProps {
 
 function Column({
   header,
+  headerClass,
   Marker,
   markerClass,
   items,
   delayBase,
 }: {
   header: string;
+  headerClass: string;
   Marker: LucideIcon;
   markerClass: string;
   items: BulletItem[];
@@ -50,9 +52,11 @@ function Column({
 }) {
   return (
     <div className="flex flex-col gap-12">
-      <div className="flex items-center gap-2.5">
+      <div className="flex items-center gap-3">
         <Marker className={`size-12 ${markerClass}`} strokeWidth={3} />
-        <div className="font-mono text-[12px] tracking-[0.18em] uppercase text-text/45">
+        <div
+          className={`font-mono text-[20px] tracking-[0.18em] uppercase ${headerClass}`}
+        >
           {header}
         </div>
       </div>
@@ -109,7 +113,7 @@ export default function UpdateSlide({
         {paragraph && (
           <motion.p
             {...up(0.18)}
-            className="mt-3 text-[18px] text-text/50 leading-[1.55] max-w-[1000px]"
+            className="mt-3 text-[18px] text-text/65 leading-[1.55] max-w-[1000px]"
           >
             {paragraph}
           </motion.p>
@@ -125,6 +129,7 @@ export default function UpdateSlide({
           <div className="border-l-2 border-text/15 pl-8">
             <Column
               header={done.label ?? "O que fizemos"}
+              headerClass="text-text/75"
               Marker={Check}
               markerClass="text-text/55"
               items={done.items}
@@ -135,6 +140,7 @@ export default function UpdateSlide({
         <div className="border-l-2 border-purple/40 pl-8">
           <Column
             header={next.label ?? "Próximos passos"}
+            headerClass="text-purple/85"
             Marker={ArrowRight}
             markerClass="text-purple/70"
             items={next.items}

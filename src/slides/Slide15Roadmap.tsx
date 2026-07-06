@@ -90,7 +90,7 @@ export default function Slide15Roadmap({ action }: SlideProps) {
           </div>
           <motion.div
             {...up(0.3)}
-            className="flex items-center gap-3 font-mono text-[13px] tracking-[0.18em] uppercase"
+            className="flex items-center gap-3 font-mono text-[15px] tracking-[0.18em] uppercase"
           >
             <span className={revealed ? "text-text/40" : "text-purple"}>
               Hoje
@@ -115,7 +115,7 @@ export default function Slide15Roadmap({ action }: SlideProps) {
               />
               <div className="p-6 flex flex-col gap-4 flex-1">
                 <div
-                  className="font-mono text-[13px] tracking-[0.18em] uppercase"
+                  className="font-mono text-[17px] tracking-[0.18em] uppercase"
                   style={{ color: col.accent }}
                 >
                   {col.title}

@@ -89,7 +89,7 @@ function BalloonField() {
               className="w-full h-full object-cover"
             />
           </div>
-          <span className="text-[12px] font-bold uppercase tracking-[0.08em] text-text/50">
+          <span className="text-[15px] font-bold uppercase tracking-[0.08em] text-text/70">
             {p.name}
           </span>
         </motion.div>

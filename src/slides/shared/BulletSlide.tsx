@@ -66,6 +66,23 @@ export default function BulletSlide({
     </motion.div>
   ));
 
+  const compactBulletList = bullets.map((b, i) => (
+    <motion.div
+      key={b.text}
+      {...up(0.3 + i * 0.08, easeIn)}
+      className="border border-purple/15 bg-purple/[0.03] px-4 py-4 flex items-center gap-4"
+    >
+      <b.Icon
+        className="size-8 flex-shrink-0"
+        style={{ color: iconColor }}
+        strokeWidth={1.5}
+      />
+      <div className="text-[18px] font-medium text-text/85 leading-[1.3] tracking-[-0.01em]">
+        {b.text}
+      </div>
+    </motion.div>
+  ));
+
   return (
     <div
       className={`${SLIDE_PADDING} flex-1 flex flex-col gap-8 min-h-0 overflow-hidden`}
@@ -95,33 +112,36 @@ export default function BulletSlide({
         )}
       </div>
 
-      <div
-        className={`flex-1 min-h-0 grid gap-8 items-center content-center ${
-          image
-            ? "grid-cols-2"
-            : bulletCols === 2
-              ? "grid-cols-2"
-              : "grid-cols-1 max-w-[900px]"
-        }`}
-      >
-        {image ? (
-          <>
-            <div className="flex flex-col gap-6">{bulletList}</div>
-            <motion.div
-              {...up(0.3 + bullets.length * 0.08, easeIn)}
-              className="h-full min-h-0 flex items-center justify-center"
-            >
-              <img
-                src={image.src}
-                alt={image.alt}
-                className="max-w-full max-h-full object-contain"
-              />
-            </motion.div>
-          </>
-        ) : (
-          bulletList
-        )}
-      </div>
+      {image ? (
+        <div className="flex-1 min-h-0 flex flex-col gap-6">
+          <div
+            className="grid gap-4 shrink-0"
+            style={{
+              gridTemplateColumns: `repeat(${bullets.length}, minmax(0, 1fr))`,
+            }}
+          >
+            {compactBulletList}
+          </div>
+          <motion.div
+            {...up(0.3 + bullets.length * 0.08, easeIn)}
+            className="flex-1 min-h-0 flex items-center justify-center"
+          >
+            <img
+              src={image.src}
+              alt={image.alt}
+              className="max-w-full max-h-full object-contain"
+            />
+          </motion.div>
+        </div>
+      ) : (
+        <div
+          className={`flex-1 min-h-0 grid gap-6 items-center content-center ${
+            bulletCols === 2 ? "grid-cols-2" : "grid-cols-1 max-w-[900px]"
+          }`}
+        >
+          {bulletList}
+        </div>
+      )}
 
       {transitionLine && (
         <motion.div

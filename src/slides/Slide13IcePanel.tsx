@@ -7,8 +7,8 @@ export default function Slide13IcePanel({ action: _ }: SlideProps) {
   return (
     <BulletSlide
       eyebrow="Padrões · IcePanel + ADRs"
-      titleHighlight="Arquitetura"
-      titleTrail="que não se perde."
+      titleHighlight=""
+      titleTrail=""
       paragraph="Um padrão único de arquitetura e documentação — o porquê das decisões fica registrado."
       image={{
         src: "/icepanel.svg",

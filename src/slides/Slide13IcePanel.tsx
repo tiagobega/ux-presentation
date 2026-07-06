@@ -10,6 +10,10 @@ export default function Slide13IcePanel({ action: _ }: SlideProps) {
       titleHighlight="Arquitetura"
       titleTrail="que não se perde."
       paragraph="Um padrão único de arquitetura e documentação — o porquê das decisões fica registrado."
+      image={{
+        src: "/icepanel.svg",
+        alt: "Diagrama de arquitetura do Intelifleets exportado do IcePanel",
+      }}
       bullets={[
         { Icon: Boxes, text: "Ferramenta única e padronizada de arquitetura" },
         { Icon: BookMarked, text: "ADRs: a memória das decisões, o \"porquê\" preservado" },

@@ -27,6 +27,7 @@ export interface BulletSlideProps {
   paragraph?: string;
   bullets: BulletItem[];
   bulletCols?: 1 | 2;
+  image?: { src: string; alt: string };
   transitionLine?: {
     lead?: string;
     highlight: string;
@@ -42,10 +43,28 @@ export default function BulletSlide({
   paragraph,
   bullets,
   bulletCols = 1,
+  image,
   transitionLine,
   accentColor,
 }: BulletSlideProps) {
   const iconColor = accentColor ?? "var(--color-purple)";
+
+  const bulletList = bullets.map((b, i) => (
+    <motion.div
+      key={b.text}
+      {...up(0.3 + i * 0.08, easeIn)}
+      className="border border-purple/15 bg-purple/[0.03] px-7 py-5 flex items-center gap-5"
+    >
+      <b.Icon
+        className="size-10 flex-shrink-0"
+        style={{ color: iconColor }}
+        strokeWidth={1.5}
+      />
+      <div className="text-[24px] font-medium text-text/85 leading-[1.35] tracking-[-0.01em]">
+        {b.text}
+      </div>
+    </motion.div>
+  ));
 
   return (
     <div
@@ -77,26 +96,31 @@ export default function BulletSlide({
       </div>
 
       <div
-        className={`flex-1 min-h-0 grid gap-6 items-center content-center ${
-          bulletCols === 2 ? "grid-cols-2" : "grid-cols-1 max-w-[900px]"
+        className={`flex-1 min-h-0 grid gap-8 items-center content-center ${
+          image
+            ? "grid-cols-2"
+            : bulletCols === 2
+              ? "grid-cols-2"
+              : "grid-cols-1 max-w-[900px]"
         }`}
       >
-        {bullets.map((b, i) => (
-          <motion.div
-            key={b.text}
-            {...up(0.3 + i * 0.08, easeIn)}
-            className="border border-purple/15 bg-purple/[0.03] px-7 py-5 flex items-center gap-5"
-          >
-            <b.Icon
-              className="size-10 flex-shrink-0"
-              style={{ color: iconColor }}
-              strokeWidth={1.5}
-            />
-            <div className="text-[24`px] font-medium text-text/85 leading-[1.35] tracking-[-0.01em]">
-              {b.text}
-            </div>
-          </motion.div>
-        ))}
+        {image ? (
+          <>
+            <div className="flex flex-col gap-6">{bulletList}</div>
+            <motion.div
+              {...up(0.3 + bullets.length * 0.08, easeIn)}
+              className="h-full min-h-0 flex items-center justify-center"
+            >
+              <img
+                src={image.src}
+                alt={image.alt}
+                className="max-w-full max-h-full object-contain"
+              />
+            </motion.div>
+          </>
+        ) : (
+          bulletList
+        )}
       </div>
 
       {transitionLine && (

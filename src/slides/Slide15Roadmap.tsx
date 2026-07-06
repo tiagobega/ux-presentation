@@ -19,35 +19,38 @@ const up = (
 const STEP_TODAY = "Hoje";
 const STEP_GOAL = "Objetivo";
 
-const columns: { title: string; accent: string; items: string[] }[] = [
+type RoadmapItem = { text: string; vision?: boolean };
+
+const columns: { title: string; accent: string; items: RoadmapItem[] }[] = [
   {
     title: "Agora",
     accent: "#e85151",
     items: [
-      "Vision em produção na SABESP",
-      "Workshop do Fleets",
-      "Correções do Informs",
-      "Retomada do Gravata integrado",
+      { text: "Vision em produção na SABESP", vision: true },
+      { text: "Workshop do Fleets para todos" },
+      { text: "Informs: feedback e correções em campo" },
+      { text: "Retomada do Gravata integrado ao Fleets" },
     ],
   },
   {
     title: "Próximo",
     accent: "#7c6ef5",
     items: [
-      "Geobox + N100 no Fleets",
-      "Informs na App Store",
-      "Gestão de Obras de prateleira",
-      "Agente com MCP",
+      { text: "Camada Ouro do Vision: regras de negócio", vision: true },
+      { text: "Geobox + N100 no Fleets" },
+      { text: "Informs na App Store" },
+      { text: "Gestão de Obras de prateleira" },
+      { text: "Agente com MCP" },
     ],
   },
   {
     title: "Explorando",
     accent: "#3a7ce8",
     items: [
-      "Vision on demand para todos",
-      "Informs ↔ Vision em tempo real",
-      "App de Zeladoria para munícipes",
-      "MCPs em tudo",
+      { text: "Vision on demand para todos", vision: true },
+      { text: "Informs ↔ Vision em tempo real", vision: true },
+      { text: "Zeladoria para munícipes" },
+      { text: "MCPs em tudo" },
     ],
   },
 ];
@@ -71,8 +74,8 @@ export default function Slide15Roadmap({ action }: SlideProps) {
           {...up(0.1)}
           className="mt-3 text-[22px] font-medium text-text/70 leading-[1.4] tracking-[-0.01em]"
         >
-          Agora, próximo e{" "}
-          <em className="not-italic text-purple">explorando.</em>
+          Agora, próximo e explorando — com o{" "}
+          <em className="not-italic text-purple">Vision no centro.</em>
         </motion.p>
       </div>
 
@@ -98,17 +101,17 @@ export default function Slide15Roadmap({ action }: SlideProps) {
           </motion.div>
         </div>
       ) : (
-        <div
-          key="colunas"
-          className="flex-1 min-h-0 grid grid-cols-3 gap-5"
-        >
+        <div key="colunas" className="flex-1 min-h-0 grid grid-cols-3 gap-5">
           {columns.map((col, ci) => (
             <motion.div
               key={col.title}
               {...up(0.25 + ci * 0.12, easeIn)}
               className="border border-text/10 bg-black/2 flex flex-col overflow-hidden"
             >
-              <div className="h-[6px] w-full" style={{ background: col.accent }} />
+              <div
+                className="h-[6px] w-full"
+                style={{ background: col.accent }}
+              />
               <div className="p-6 flex flex-col gap-4 flex-1">
                 <div
                   className="font-mono text-[13px] tracking-[0.18em] uppercase"
@@ -119,15 +122,22 @@ export default function Slide15Roadmap({ action }: SlideProps) {
                 <div className="flex flex-col gap-2.5">
                   {col.items.map((it, ii) => (
                     <motion.div
-                      key={it}
+                      key={it.text}
                       {...up(0.4 + ci * 0.12 + ii * 0.07, easeIn)}
-                      className="border-l-2 px-4 py-3 text-[17px] font-medium text-text/85 leading-[1.3]"
+                      className={`border-l-2 px-4 py-3 text-[17px] leading-[1.3] ${
+                        it.vision
+                          ? "font-bold text-text"
+                          : "font-medium text-text/85"
+                      }`}
                       style={{
-                        borderColor: col.accent,
-                        background: "rgba(0,0,0,0.02)",
+                        borderColor: it.vision ? "#7c3aed" : col.accent,
+                        background: it.vision
+                          ? "rgba(124,58,237,0.07)"
+                          : "rgba(0,0,0,0.02)",
                       }}
                     >
-                      {it}
+                      {it.vision && <span className="text-purple mr-2">✦</span>}
+                      {it.text}
                     </motion.div>
                   ))}
                 </div>
@@ -136,16 +146,6 @@ export default function Slide15Roadmap({ action }: SlideProps) {
           ))}
         </div>
       )}
-
-      <motion.div
-        {...up(0.9, easeIn)}
-        className="border-t border-text/10 pt-5 text-center"
-      >
-        <div className="text-[26px] font-bold text-text tracking-[-0.02em]">
-          Semestre passado construímos as fundações.{" "}
-          <span className="text-purple">Semestre que vem, conectamos tudo.</span>
-        </div>
-      </motion.div>
     </div>
   );
 }

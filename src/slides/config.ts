@@ -1,91 +1,77 @@
+/**
+ * Deck Fleets (apresentação com demo ao vivo) — 17 slides.
+ * Espelha `fleets-slides.md`; a fala de cada slide está em `fleets-roteiro.md`.
+ * Slides 7–15 do roteiro são `[DEMO]`: o slide é pano de fundo, a aplicação
+ * roda no monitor 2 — por isso têm um único step.
+ */
 export const SLIDE_CONFIG = [
   {
     label: 'Capa',
     actions: ['Capa'],
   },
   {
-    label: 'O problema',
-    actions: ['Problema'],
+    label: 'Por que existe',
+    actions: ['A planilha'],
   },
   {
-    label: 'Domínio',
-    actions: ['Entidades', 'Regra de ouro'],
+    label: 'O que resolvemos',
+    actions: ['Fonte única'],
   },
   {
-    label: 'Perfis',
-    actions: ['Perfis', 'LGPD'],
+    label: 'Ecossistema',
+    actions: ['Fluxo do dado', 'Auth & permissão'],
   },
   {
-    label: 'Quem usa',
-    actions: ['Quem usa'],
+    label: 'Usuários',
+    actions: ['5 perfis', 'LGPD'],
   },
   {
-    label: 'Módulos',
-    actions: ['Módulos'],
+    label: 'Glossário',
+    actions: ['Vocabulário', 'Frase de ouro'],
   },
   {
-    label: 'Dashboard',
-    actions: ['Dashboard'],
+    label: 'Demo · Autenticação',
+    actions: ['Autenticação'],
   },
   {
-    label: 'Dispositivos',
-    actions: ['Dispositivos'],
+    label: 'Demo · Cadastros base',
+    actions: ['Cadastros'],
   },
   {
-    label: 'Ciclo de vida',
-    actions: ['Estados', 'Rastro'],
+    label: 'Demo · Contrato',
+    actions: ['Contrato'],
   },
   {
-    label: 'Instalação',
-    actions: ['Instalação'],
-  },
-  {
-    label: 'Alertas',
-    actions: ['Alertas'],
-  },
-  {
-    label: 'Colaboradores',
+    label: 'Demo · Colaboradores',
     actions: ['Pessoas'],
   },
   {
-    label: 'Contratos',
-    actions: ['Contratos'],
+    label: 'Demo · Dispositivos',
+    actions: ['Hardware'],
   },
   {
-    label: 'Pagamentos',
+    label: 'Demo · Coleta em campo',
+    actions: ['Coleta'],
+  },
+  {
+    label: 'Demo · Pagamentos',
     actions: ['Pagamentos'],
   },
   {
-    label: 'Governança',
-    actions: ['Governança'],
+    label: 'Demo · Alertas',
+    actions: ['Alertas'],
   },
   {
-    label: 'Fluxo 1 · Hardware',
-    actions: ['Estoque → Campo', 'Operação → Fim'],
+    label: 'Demo · Para gestores',
+    actions: ['Indicadores'],
   },
   {
-    label: 'Fluxo 2 · Contrato',
-    actions: ['Contrato → Vínculo', 'Fechamento'],
+    label: 'Próximos passos',
+    actions: ['Sete frentes', 'Amarração'],
   },
   {
-    label: 'Roadmap',
-    actions: ['Três frentes'],
-  },
-  {
-    label: 'Estoque',
-    actions: ['Estoque'],
-  },
-  {
-    label: 'App do motorista',
-    actions: ['App'],
-  },
-  {
-    label: 'Instalação assistida',
-    actions: ['Ciclo fechado'],
-  },
-  {
-    label: 'Encerramento',
-    actions: ['Fim'],
+    label: 'Perguntas',
+    actions: ['Obrigado'],
   },
 ] as const
 
@@ -94,30 +80,6 @@ export const SLIDE_CONFIG = [
  * para permitir slides full-bleed: basta omitir esta constante no slide.
  */
 export const SLIDE_PADDING = 'px-16 pt-10 pb-8'
-
-export type SlideIndex =
-  | 0
-  | 1
-  | 2
-  | 3
-  | 4
-  | 5
-  | 6
-  | 7
-  | 8
-  | 9
-  | 10
-  | 11
-  | 12
-  | 13
-  | 14
-  | 15
-  | 16
-  | 17
-  | 18
-  | 19
-  | 20
-  | 21
 
 export interface SlideProps {
   action: string

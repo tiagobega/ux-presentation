@@ -10,59 +10,49 @@ import { Background } from "./Background";
 import Nav from "./Nav";
 import QROverlay from "./QROverlay";
 import { useRemoteControl } from "../hooks/useRemoteControl";
-import Slide00Capa from "../slides/fleets/Slide00Capa";
-import Slide01Problema from "../slides/fleets/Slide01Problema";
-import Slide02Dominio from "../slides/fleets/Slide02Dominio";
-import Slide03Perfis from "../slides/fleets/Slide03Perfis";
-import Slide04QuemUsa from "../slides/fleets/Slide04QuemUsa";
-import Slide05Mapa from "../slides/fleets/Slide05Mapa";
-import Slide06Dashboard from "../slides/fleets/Slide06Dashboard";
-import Slide07Dispositivos from "../slides/fleets/Slide07Dispositivos";
-import Slide08CicloVida from "../slides/fleets/Slide08CicloVida";
-import Slide09Instalacao from "../slides/fleets/Slide09Instalacao";
-import Slide10Alertas from "../slides/fleets/Slide10Alertas";
-import Slide11Colaboradores from "../slides/fleets/Slide11Colaboradores";
-import Slide12Contratos from "../slides/fleets/Slide12Contratos";
-import Slide13Pagamentos from "../slides/fleets/Slide13Pagamentos";
-import Slide14Configuracao from "../slides/fleets/Slide14Configuracao";
-import Slide15FluxoEstoque from "../slides/fleets/Slide15FluxoEstoque";
-import Slide16FluxoPagamento from "../slides/fleets/Slide16FluxoPagamento";
-import Slide17Roadmap from "../slides/fleets/Slide17Roadmap";
-import Slide18Estoque from "../slides/fleets/Slide18Estoque";
-import Slide19AppMotorista from "../slides/fleets/Slide19AppMotorista";
-import Slide20InstalacaoAssistida from "../slides/fleets/Slide20InstalacaoAssistida";
-import Slide21Encerramento from "../slides/fleets/Slide21Encerramento";
+import Slide00Capa from "../slides/fleets-demo/Slide00Capa";
+import Slide01PorQueExiste from "../slides/fleets-demo/Slide01PorQueExiste";
+import Slide02OQueResolvemos from "../slides/fleets-demo/Slide02OQueResolvemos";
+import Slide03Ecossistema from "../slides/fleets-demo/Slide03Ecossistema";
+import Slide04Usuarios from "../slides/fleets-demo/Slide04Usuarios";
+import Slide05Glossario from "../slides/fleets-demo/Slide05Glossario";
+import Slide06DemoAuth from "../slides/fleets-demo/Slide06DemoAuth";
+import Slide07DemoCadastros from "../slides/fleets-demo/Slide07DemoCadastros";
+import Slide08DemoContrato from "../slides/fleets-demo/Slide08DemoContrato";
+import Slide09DemoColaboradores from "../slides/fleets-demo/Slide09DemoColaboradores";
+import Slide10DemoDispositivos from "../slides/fleets-demo/Slide10DemoDispositivos";
+import Slide11DemoColeta from "../slides/fleets-demo/Slide11DemoColeta";
+import Slide12DemoPagamentos from "../slides/fleets-demo/Slide12DemoPagamentos";
+import Slide13DemoAlertas from "../slides/fleets-demo/Slide13DemoAlertas";
+import Slide14DemoGestores from "../slides/fleets-demo/Slide14DemoGestores";
+import Slide15ProximosPassos from "../slides/fleets-demo/Slide15ProximosPassos";
+import Slide16Perguntas from "../slides/fleets-demo/Slide16Perguntas";
 import { SLIDE_CONFIG, type SlideProps } from "../slides/config";
 
-// Order matches SLIDE_CONFIG indices:
-// 0 Capa · 1 O problema · 2 Domínio · 3 Perfis · 4 Quem usa · 5 Módulos
-// 6 Dashboard · 7 Dispositivos · 8 Ciclo de vida · 9 Instalação · 10 Alertas
-// 11 Colaboradores · 12 Contratos · 13 Pagamentos · 14 Governança
-// 15 Fluxo 1 (hardware) · 16 Fluxo 2 (contrato) · 17 Roadmap
-// 18 Estoque · 19 App do motorista · 20 Instalação assistida · 21 Encerramento
+// Order matches SLIDE_CONFIG indices (e `fleets-slides.md`):
+// 0 Capa · 1 Por que existe · 2 O que resolvemos · 3 Ecossistema
+// 4 Usuários · 5 Glossário
+// 6–14 [DEMO]: Autenticação · Cadastros · Contrato · Colaboradores
+//              Dispositivos · Coleta em campo · Pagamentos · Alertas · Gestores
+// 15 Próximos passos · 16 Perguntas
 const SLIDES: ComponentType<SlideProps>[] = [
   Slide00Capa,
-  Slide01Problema,
-  Slide02Dominio,
-  Slide03Perfis,
-  Slide04QuemUsa,
-  Slide05Mapa,
-  Slide06Dashboard,
-  Slide07Dispositivos,
-  Slide08CicloVida,
-  Slide09Instalacao,
-  Slide10Alertas,
-  Slide11Colaboradores,
-  Slide12Contratos,
-  Slide13Pagamentos,
-  Slide14Configuracao,
-  Slide15FluxoEstoque,
-  Slide16FluxoPagamento,
-  Slide17Roadmap,
-  Slide18Estoque,
-  Slide19AppMotorista,
-  Slide20InstalacaoAssistida,
-  Slide21Encerramento,
+  Slide01PorQueExiste,
+  Slide02OQueResolvemos,
+  Slide03Ecossistema,
+  Slide04Usuarios,
+  Slide05Glossario,
+  Slide06DemoAuth,
+  Slide07DemoCadastros,
+  Slide08DemoContrato,
+  Slide09DemoColaboradores,
+  Slide10DemoDispositivos,
+  Slide11DemoColeta,
+  Slide12DemoPagamentos,
+  Slide13DemoAlertas,
+  Slide14DemoGestores,
+  Slide15ProximosPassos,
+  Slide16Perguntas,
 ];
 
 // Easing dramático para o pan da câmera entre slides.

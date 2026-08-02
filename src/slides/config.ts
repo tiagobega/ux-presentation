@@ -4,51 +4,87 @@ export const SLIDE_CONFIG = [
     actions: ['Capa'],
   },
   {
-    label: 'UX hoje',
-    actions: ['Reconhecimento'],
+    label: 'O problema',
+    actions: ['Problema'],
   },
   {
-    label: 'Mais dados',
-    actions: ['Situação', 'Perguntas'],
+    label: 'Domínio',
+    actions: ['Entidades', 'Regra de ouro'],
   },
   {
-    label: 'O protagonista',
-    actions: ['Valor'],
+    label: 'Perfis',
+    actions: ['Perfis', 'LGPD'],
   },
   {
-    label: 'Falhas na cadeia',
-    actions: ['Casos'],
+    label: 'Quem usa',
+    actions: ['Quem usa'],
   },
   {
-    label: 'O custo',
-    actions: ['Custo'],
+    label: 'Módulos',
+    actions: ['Módulos'],
   },
   {
-    label: 'A cadeia',
-    actions: ['Coleta → Contexto', 'Informação → Acompanhamento'],
+    label: 'Dashboard',
+    actions: ['Dashboard'],
   },
   {
-    label: 'Narrativa',
-    actions: ['Narrativa'],
+    label: 'Dispositivos',
+    actions: ['Dispositivos'],
   },
   {
-    label: 'Stack IC',
-    actions: ['Stack IC'],
+    label: 'Ciclo de vida',
+    actions: ['Estados', 'Rastro'],
   },
   {
-    label: 'Branding dos produtos',
-    actions: ['Marcas'],
+    label: 'Instalação',
+    actions: ['Instalação'],
   },
   {
-    label: 'Onde o UX entra',
-    actions: ['Foco'],
+    label: 'Alertas',
+    actions: ['Alertas'],
   },
   {
-    label: 'Respostas',
-    actions: ['Respostas'],
+    label: 'Colaboradores',
+    actions: ['Pessoas'],
   },
   {
-    label: 'Citação',
+    label: 'Contratos',
+    actions: ['Contratos'],
+  },
+  {
+    label: 'Pagamentos',
+    actions: ['Pagamentos'],
+  },
+  {
+    label: 'Governança',
+    actions: ['Governança'],
+  },
+  {
+    label: 'Fluxo 1 · Hardware',
+    actions: ['Estoque → Campo', 'Operação → Fim'],
+  },
+  {
+    label: 'Fluxo 2 · Contrato',
+    actions: ['Contrato → Vínculo', 'Fechamento'],
+  },
+  {
+    label: 'Roadmap',
+    actions: ['Três frentes'],
+  },
+  {
+    label: 'Estoque',
+    actions: ['Estoque'],
+  },
+  {
+    label: 'App do motorista',
+    actions: ['App'],
+  },
+  {
+    label: 'Instalação assistida',
+    actions: ['Ciclo fechado'],
+  },
+  {
+    label: 'Encerramento',
     actions: ['Fim'],
   },
 ] as const
@@ -59,7 +95,29 @@ export const SLIDE_CONFIG = [
  */
 export const SLIDE_PADDING = 'px-16 pt-10 pb-8'
 
-export type SlideIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
+export type SlideIndex =
+  | 0
+  | 1
+  | 2
+  | 3
+  | 4
+  | 5
+  | 6
+  | 7
+  | 8
+  | 9
+  | 10
+  | 11
+  | 12
+  | 13
+  | 14
+  | 15
+  | 16
+  | 17
+  | 18
+  | 19
+  | 20
+  | 21
 
 export interface SlideProps {
   action: string

@@ -44,7 +44,7 @@ export default function Nav({
       />
 
       <div className="font-mono text-[11px] font-bold tracking-[0.12em] text-purple/[0.45] whitespace-nowrap hidden sm:block">
-        INTELICITY · BRANDING &amp; UX
+        INTELICITY · FLEETS
       </div>
 
       <div className="flex gap-[6px] items-center justify-center">

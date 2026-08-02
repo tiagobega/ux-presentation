@@ -10,39 +10,59 @@ import { Background } from "./Background";
 import Nav from "./Nav";
 import QROverlay from "./QROverlay";
 import { useRemoteControl } from "../hooks/useRemoteControl";
-import Slide0Capa from "../slides/Slide00Capa";
-import Slide01UxExistente from "../slides/Slide01UxExistente";
-import Slide02Dados from "../slides/Slide02Dados";
-import Slide03Mapa from "../slides/Slide03Mapa";
-import Slide04Falhas from "../slides/Slide04Falhas";
-import Slide05Custo from "../slides/Slide05Custo";
-import Slide06Cadeia from "../slides/Slide06Cadeia";
-import Slide07Narrativa from "../slides/Slide07Narrativa";
-import Slide08StackIC from "../slides/Slide08StackIC";
-import Slide09Branding from "../slides/Slide09Branding";
-import Slide10Foco from "../slides/Slide10Foco";
-import Slide11ProblemasSolucoes from "../slides/Slide11ProblemasSolucoes";
-import Slide12Citacao from "../slides/Slide12Citacao";
+import Slide00Capa from "../slides/fleets/Slide00Capa";
+import Slide01Problema from "../slides/fleets/Slide01Problema";
+import Slide02Dominio from "../slides/fleets/Slide02Dominio";
+import Slide03Perfis from "../slides/fleets/Slide03Perfis";
+import Slide04QuemUsa from "../slides/fleets/Slide04QuemUsa";
+import Slide05Mapa from "../slides/fleets/Slide05Mapa";
+import Slide06Dashboard from "../slides/fleets/Slide06Dashboard";
+import Slide07Dispositivos from "../slides/fleets/Slide07Dispositivos";
+import Slide08CicloVida from "../slides/fleets/Slide08CicloVida";
+import Slide09Instalacao from "../slides/fleets/Slide09Instalacao";
+import Slide10Alertas from "../slides/fleets/Slide10Alertas";
+import Slide11Colaboradores from "../slides/fleets/Slide11Colaboradores";
+import Slide12Contratos from "../slides/fleets/Slide12Contratos";
+import Slide13Pagamentos from "../slides/fleets/Slide13Pagamentos";
+import Slide14Configuracao from "../slides/fleets/Slide14Configuracao";
+import Slide15FluxoEstoque from "../slides/fleets/Slide15FluxoEstoque";
+import Slide16FluxoPagamento from "../slides/fleets/Slide16FluxoPagamento";
+import Slide17Roadmap from "../slides/fleets/Slide17Roadmap";
+import Slide18Estoque from "../slides/fleets/Slide18Estoque";
+import Slide19AppMotorista from "../slides/fleets/Slide19AppMotorista";
+import Slide20InstalacaoAssistida from "../slides/fleets/Slide20InstalacaoAssistida";
+import Slide21Encerramento from "../slides/fleets/Slide21Encerramento";
 import { SLIDE_CONFIG, type SlideProps } from "../slides/config";
 
 // Order matches SLIDE_CONFIG indices:
-// 0 Capa · 1 UX hoje · 2 Mais dados · 3 O protagonista · 4 Falhas na cadeia
-// 5 O custo · 6 A cadeia · 7 Narrativa · 8 Stack IC · 9 Branding dos produtos
-// 10 Onde o UX entra · 11 Respostas · 12 Citação (Steve Jobs)
+// 0 Capa · 1 O problema · 2 Domínio · 3 Perfis · 4 Quem usa · 5 Módulos
+// 6 Dashboard · 7 Dispositivos · 8 Ciclo de vida · 9 Instalação · 10 Alertas
+// 11 Colaboradores · 12 Contratos · 13 Pagamentos · 14 Governança
+// 15 Fluxo 1 (hardware) · 16 Fluxo 2 (contrato) · 17 Roadmap
+// 18 Estoque · 19 App do motorista · 20 Instalação assistida · 21 Encerramento
 const SLIDES: ComponentType<SlideProps>[] = [
-  Slide0Capa,
-  Slide01UxExistente,
-  Slide02Dados,
-  Slide03Mapa,
-  Slide04Falhas,
-  Slide05Custo,
-  Slide06Cadeia,
-  Slide07Narrativa,
-  Slide08StackIC,
-  Slide09Branding,
-  Slide10Foco,
-  Slide11ProblemasSolucoes,
-  Slide12Citacao,
+  Slide00Capa,
+  Slide01Problema,
+  Slide02Dominio,
+  Slide03Perfis,
+  Slide04QuemUsa,
+  Slide05Mapa,
+  Slide06Dashboard,
+  Slide07Dispositivos,
+  Slide08CicloVida,
+  Slide09Instalacao,
+  Slide10Alertas,
+  Slide11Colaboradores,
+  Slide12Contratos,
+  Slide13Pagamentos,
+  Slide14Configuracao,
+  Slide15FluxoEstoque,
+  Slide16FluxoPagamento,
+  Slide17Roadmap,
+  Slide18Estoque,
+  Slide19AppMotorista,
+  Slide20InstalacaoAssistida,
+  Slide21Encerramento,
 ];
 
 // Easing dramático para o pan da câmera entre slides.

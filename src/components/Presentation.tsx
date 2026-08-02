@@ -1,59 +1,11 @@
-import {
-  useState,
-  useEffect,
-  useCallback,
-  useRef,
-  type ComponentType,
-} from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { motion } from "motion/react";
 import { Background } from "./Background";
 import Nav from "./Nav";
 import QROverlay from "./QROverlay";
 import { useRemoteControl } from "../hooks/useRemoteControl";
-import Slide00Capa from "../slides/fleets-demo/Slide00Capa";
-import Slide01PorQueExiste from "../slides/fleets-demo/Slide01PorQueExiste";
-import Slide02OQueResolvemos from "../slides/fleets-demo/Slide02OQueResolvemos";
-import Slide03Ecossistema from "../slides/fleets-demo/Slide03Ecossistema";
-import Slide04Usuarios from "../slides/fleets-demo/Slide04Usuarios";
-import Slide05Glossario from "../slides/fleets-demo/Slide05Glossario";
-import Slide06DemoAuth from "../slides/fleets-demo/Slide06DemoAuth";
-import Slide07DemoCadastros from "../slides/fleets-demo/Slide07DemoCadastros";
-import Slide08DemoContrato from "../slides/fleets-demo/Slide08DemoContrato";
-import Slide09DemoColaboradores from "../slides/fleets-demo/Slide09DemoColaboradores";
-import Slide10DemoDispositivos from "../slides/fleets-demo/Slide10DemoDispositivos";
-import Slide11DemoColeta from "../slides/fleets-demo/Slide11DemoColeta";
-import Slide12DemoPagamentos from "../slides/fleets-demo/Slide12DemoPagamentos";
-import Slide13DemoAlertas from "../slides/fleets-demo/Slide13DemoAlertas";
-import Slide14DemoGestores from "../slides/fleets-demo/Slide14DemoGestores";
-import Slide15ProximosPassos from "../slides/fleets-demo/Slide15ProximosPassos";
-import Slide16Perguntas from "../slides/fleets-demo/Slide16Perguntas";
-import { SLIDE_CONFIG, type SlideProps } from "../slides/config";
-
-// Order matches SLIDE_CONFIG indices (e `fleets-slides.md`):
-// 0 Capa · 1 Por que existe · 2 O que resolvemos · 3 Ecossistema
-// 4 Usuários · 5 Glossário
-// 6–14 [DEMO]: Autenticação · Cadastros · Contrato · Colaboradores
-//              Dispositivos · Coleta em campo · Pagamentos · Alertas · Gestores
-// 15 Próximos passos · 16 Perguntas
-const SLIDES: ComponentType<SlideProps>[] = [
-  Slide00Capa,
-  Slide01PorQueExiste,
-  Slide02OQueResolvemos,
-  Slide03Ecossistema,
-  Slide04Usuarios,
-  Slide05Glossario,
-  Slide06DemoAuth,
-  Slide07DemoCadastros,
-  Slide08DemoContrato,
-  Slide09DemoColaboradores,
-  Slide10DemoDispositivos,
-  Slide11DemoColeta,
-  Slide12DemoPagamentos,
-  Slide13DemoAlertas,
-  Slide14DemoGestores,
-  Slide15ProximosPassos,
-  Slide16Perguntas,
-];
+// Esteira e nav vêm do deck ativo (Informs por padrão; `?deck=fleets` troca).
+import { SLIDES, SLIDE_CONFIG } from "../slides/decks";
 
 // Easing dramático para o pan da câmera entre slides.
 const camera: [number, number, number, number] = [0.76, 0, 0.24, 1];

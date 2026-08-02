@@ -1,4 +1,4 @@
-import { SLIDE_CONFIG } from "../slides/config";
+import { DECK, SLIDE_CONFIG } from "../slides/decks";
 
 const SLIDE_LABELS = SLIDE_CONFIG.map((s) => s.label);
 
@@ -44,7 +44,7 @@ export default function Nav({
       />
 
       <div className="font-mono text-[11px] font-bold tracking-[0.12em] text-purple/[0.45] whitespace-nowrap hidden sm:block">
-        INTELICITY · FLEETS
+        {DECK.brand}
       </div>
 
       <div className="flex gap-[6px] items-center justify-center">

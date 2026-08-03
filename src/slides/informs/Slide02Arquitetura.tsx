@@ -1,7 +1,13 @@
 import { motion } from 'motion/react'
-import { ArrowRight } from 'lucide-react'
+import { Boxes, Server, Smartphone, ArrowRight } from 'lucide-react'
 import type { SlideProps } from '../config'
 import { SlideShell, SlideHeader, Punch, Accent, up, easeIn } from '../kit'
+
+const atores = [
+  { Icon: Boxes, nome: 'Sistema de origem', sub: 'GAIA · Porto Alegre · Recife · SABESP' },
+  { Icon: Server, nome: 'Informs', sub: 'Template → Formulário' },
+  { Icon: Smartphone, nome: 'Moto-verificador', sub: 'app de campo' },
+]
 
 const fluxos = [
   { texto: 'Publica o template e gera o formulário' },
@@ -19,11 +25,38 @@ export default function Slide02Arquitetura({ action: _ }: SlideProps) {
       />
 
       <div className='flex-1 min-h-0 flex flex-col justify-center gap-12'>
+        <div className='grid grid-cols-3 gap-6'>
+          {atores.map((a, i) => (
+            <motion.div
+              key={a.nome}
+              {...up(0.26 + i * 0.1, easeIn)}
+              className={`px-7 py-6 flex items-center gap-4 ${
+                i === 1
+                  ? 'border border-purple/30 bg-purple/[0.07]'
+                  : 'border border-text/12 bg-black/[0.02]'
+              }`}
+            >
+              <a.Icon
+                className={`size-9 shrink-0 ${i === 1 ? 'text-purple/65' : 'text-purple/45'}`}
+                strokeWidth={1.5}
+              />
+              <div>
+                <div className='text-[23px] font-bold text-text tracking-[-0.025em] leading-[1.1]'>
+                  {a.nome}
+                </div>
+                <div className='font-mono text-[10px] tracking-[0.14em] text-purple/50 uppercase mt-0.5'>
+                  {a.sub}
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
         <div className='grid grid-cols-3 gap-6 px-2'>
           {fluxos.map((f, i) => (
             <motion.div
               key={f.texto}
-              {...up(0.3 + i * 0.14, easeIn)}
+              {...up(0.65 + i * 0.14, easeIn)}
               className='flex items-center gap-3 pt-3'
             >
               <ArrowRight className='size-5 text-purple/50 shrink-0' strokeWidth={2} />
@@ -34,7 +67,7 @@ export default function Slide02Arquitetura({ action: _ }: SlideProps) {
           ))}
         </div>
 
-        <Punch delay={0.75}>
+        <Punch delay={1.1}>
           O sistema de origem decide o quê. O Informs cuida do como chegar ao campo.
         </Punch>
       </div>

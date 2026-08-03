@@ -1,0 +1,524 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vaga — Product Designer (UX) · Intelicity</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --text: #1a1225;
+        --purple: #7c3aed;
+        --bg: #fdfcff;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Inter", sans-serif;
+        color: var(--text);
+        background: var(--bg);
+      }
+
+      /* ── nebula background ── */
+      body::before {
+        content: "";
+        position: fixed;
+        width: 700px;
+        height: 700px;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          rgba(109, 40, 217, 0.07) 0%,
+          transparent 65%
+        );
+        top: -200px;
+        left: -150px;
+        filter: blur(60px);
+        animation: nf 12s ease-in-out infinite;
+        pointer-events: none;
+      }
+      body::after {
+        content: "";
+        position: fixed;
+        width: 500px;
+        height: 500px;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          rgba(167, 139, 250, 0.06) 0%,
+          transparent 65%
+        );
+        bottom: -100px;
+        right: -100px;
+        filter: blur(80px);
+        animation: nf 16s ease-in-out infinite reverse;
+        pointer-events: none;
+      }
+      @keyframes nf {
+        0%,
+        100% {
+          transform: translate(0, 0) scale(1);
+        }
+        33% {
+          transform: translate(30px, -20px) scale(1.05);
+        }
+        66% {
+          transform: translate(-20px, 15px) scale(0.97);
+        }
+      }
+
+      /* ── A4 sheet ── */
+      .sheet {
+        position: relative;
+        z-index: 1;
+        width: min(210mm, calc(100% - 32px));
+        min-height: 297mm;
+        margin: clamp(16px, 5vh, 48px) auto;
+        padding: clamp(28px, 6vw, 68px) clamp(22px, 5.5vw, 60px)
+          clamp(24px, 4vw, 52px);
+        background: #fff;
+        border: 1px solid rgba(26, 18, 37, 0.08);
+        border-radius: 4px;
+        box-shadow: 0 20px 60px rgba(26, 18, 37, 0.08);
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* ── entrance animation ── */
+      @keyframes up {
+        from {
+          opacity: 0;
+          transform: translateY(24px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .up {
+        opacity: 0;
+        animation: up 0.55s cubic-bezier(0, 0, 0.2, 1) forwards;
+      }
+
+      /* ── eyebrow ── */
+      .eyebrow {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .eyebrow .sq {
+        width: 10px;
+        height: 10px;
+        background: var(--purple);
+        flex-shrink: 0;
+      }
+      .eyebrow span:last-child {
+        font-family: "Space Mono", monospace;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.28em;
+        color: rgba(26, 18, 37, 0.6);
+      }
+
+      /* ── title ── */
+      h1 {
+        margin-top: 16px;
+        font-size: clamp(26px, 4.5vw, 34px);
+        font-weight: 800;
+        line-height: 1.06;
+        letter-spacing: -0.03em;
+      }
+      h1 .hl {
+        color: var(--purple);
+      }
+      .sub {
+        margin-top: 10px;
+        font-size: clamp(13px, 1.8vw, 14px);
+        color: rgba(26, 18, 37, 0.62);
+        line-height: 1.55;
+        letter-spacing: -0.01em;
+        max-width: 620px;
+      }
+      .sub strong {
+        color: var(--text);
+        font-weight: 600;
+      }
+
+      /* ── meta tags ── */
+      .meta {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-top: 14px;
+      }
+      .tag {
+        font-family: "Space Mono", monospace;
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        padding: 6px 12px;
+        border-radius: 999px;
+        white-space: nowrap;
+      }
+      .tag.mgmt {
+        background: rgba(124, 58, 237, 0.1);
+        color: #6d28d9;
+      }
+      .tag.neutral {
+        background: rgba(26, 18, 37, 0.07);
+        color: rgba(26, 18, 37, 0.75);
+      }
+
+      /* ── sections ── */
+      section {
+        margin-top: 22px;
+      }
+      .sec-label {
+        display: flex;
+        align-items: baseline;
+        gap: 12px;
+        font-family: "Space Mono", monospace;
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+        font-size: 11px;
+        color: rgba(124, 58, 237, 0.9);
+        padding-bottom: 8px;
+        border-bottom: 1px solid rgba(26, 18, 37, 0.1);
+      }
+      .sec-label small {
+        color: rgba(26, 18, 37, 0.4);
+        letter-spacing: 0.14em;
+      }
+      section > p {
+        margin-top: 12px;
+        font-size: 13px;
+        line-height: 1.6;
+        color: rgba(26, 18, 37, 0.72);
+      }
+      section > p strong {
+        color: var(--text);
+        font-weight: 600;
+      }
+
+      /* ── two-column lists ── */
+      .cols {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+        gap: 0 28px;
+      }
+      ul {
+        list-style: none;
+        margin-top: 10px;
+      }
+      ul li {
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+        padding: 6px 0;
+        font-size: 12.5px;
+        line-height: 1.5;
+        color: rgba(26, 18, 37, 0.72);
+      }
+      ul li::before {
+        content: "";
+        width: 7px;
+        height: 7px;
+        background: var(--purple);
+        flex-shrink: 0;
+        margin-top: 6px;
+      }
+      ul li strong {
+        color: var(--text);
+        font-weight: 600;
+      }
+
+      /* ── chips (diferenciais) ── */
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 14px;
+      }
+      .chip {
+        font-size: 12.5px;
+        font-weight: 500;
+        color: rgba(26, 18, 37, 0.75);
+        border: 1px solid rgba(124, 58, 237, 0.25);
+        background: rgba(124, 58, 237, 0.05);
+        border-radius: 999px;
+        padding: 8px 16px;
+        line-height: 1.3;
+      }
+
+      /* ── footer ── */
+      footer {
+        margin-top: auto;
+        border-top: 1px solid rgba(26, 18, 37, 0.1);
+        padding-top: 12px;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        font-family: "Space Mono", monospace;
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+      }
+      footer .left {
+        color: rgba(26, 18, 37, 0.5);
+      }
+      footer .right {
+        color: var(--purple);
+      }
+
+      /* ── responsive ── */
+      @media (max-width: 720px) {
+        .sheet {
+          width: 100%;
+          margin: 0;
+          min-height: 100svh;
+          border: none;
+          border-radius: 0;
+          box-shadow: none;
+        }
+        section {
+          margin-top: 26px;
+        }
+        footer {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 6px;
+          margin-top: 32px;
+          padding-bottom: 4px;
+        }
+      }
+
+      /* ── print: 1 página A4 ── */
+      @media print {
+        html,
+        body {
+          background: #fff;
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+        }
+        body::before,
+        body::after {
+          display: none;
+        }
+        @page {
+          size: A4;
+          margin: 0;
+        }
+
+        .sheet {
+          width: 210mm;
+          max-width: none;
+          height: 296mm;
+          min-height: 0;
+          margin: 0;
+          padding: 11mm 12mm 8mm;
+          border: none;
+          border-radius: 0;
+          box-shadow: none;
+          overflow: hidden;
+        }
+        .up {
+          opacity: 1;
+          animation: none;
+        }
+
+        /* compactação para caber em 1 página */
+        h1 {
+          margin-top: 10px;
+          font-size: 28px;
+        }
+        .sub {
+          margin-top: 8px;
+          font-size: 12.5px;
+          line-height: 1.45;
+        }
+        .meta {
+          margin-top: 10px;
+        }
+        section {
+          margin-top: 14px;
+          break-inside: avoid;
+          page-break-inside: avoid;
+        }
+        .sec-label {
+          padding-bottom: 6px;
+        }
+        section > p {
+          margin-top: 8px;
+          font-size: 11.5px;
+          line-height: 1.45;
+        }
+        ul {
+          margin-top: 6px;
+        }
+        ul li {
+          padding: 3px 0;
+          font-size: 11px;
+          line-height: 1.4;
+        }
+        ul li::before {
+          margin-top: 5px;
+        }
+        .chips {
+          margin-top: 10px;
+          gap: 7px;
+        }
+        .chip {
+          font-size: 11px;
+          padding: 6px 12px;
+        }
+        footer {
+          padding-top: 10px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="sheet">
+      <div class="eyebrow up" style="animation-delay: 0s">
+        <span class="sq"></span>
+        <span>Intelicity · Estamos contratando</span>
+      </div>
+
+      <h1 class="up" style="animation-delay: 0.12s">
+        Product Designer <span class="hl">(UX/UI)</span>
+      </h1>
+      <p class="sub up" style="animation-delay: 0.24s">
+        Buscamos quem dê uma cara nova e um fluxo digno a quem usa nossos
+        sistemas no dia a dia, da descoberta das necessidades reais de cada área
+        ao handoff para o desenvolvimento, em plataformas ricas em dados, mapas
+        e dashboards.
+      </p>
+      <div class="meta up" style="animation-delay: 0.3s">
+        <span class="tag mgmt">100% Home Office</span>
+        <span class="tag neutral">Produto &amp; Design</span>
+        <span class="tag neutral">Figma</span>
+        <span class="tag neutral">Design System</span>
+        <span class="tag neutral">Pesquisa com usuários</span>
+      </div>
+
+      <section class="up" style="animation-delay: 0.4s">
+        <div class="sec-label"><span>01</span><small>Sobre a vaga</small></div>
+        <p>
+          Você vai reimaginar a experiência de quem usa os sistemas da
+          Intelicity todos os dias, motoristas, operadores, gestores de frota e
+          times internos de diversas áreas da empresa. Mais do que manter telas
+          funcionando, o trabalho é dar uma cara nova e um fluxo digno a cada
+          tipo de usuário, com jornadas
+          <strong>personalizadas por perfil</strong> em vez de telas genéricas
+          para todo mundo. Isso passa por identificar, junto às áreas da
+          empresa, onde tarefas repetitivas e processos manuais podem virar
+          fluxos mais eficientes.
+        </p>
+        <p>
+          O trabalho começa pela plataforma Intelifleets, gestão de veículos,
+          motoristas e dispositivos embarcados, mapas com camadas de dados,
+          dashboards e reports, pagamentos e metas, onboarding do motorista, e
+          pelos produtos para a SABESP. O escopo inclui entender a rotina de
+          cada perfil de usuário, mapear onde o trabalho se repete sem
+          necessidade, redesenhar essas experiências com um design system
+          unificado e validar tudo em protótipos navegáveis com pesquisa real de
+          usuário.
+        </p>
+      </section>
+
+      <section class="up" style="animation-delay: 0.5s">
+        <div class="sec-label">
+          <span>02</span><small>Responsabilidades</small>
+        </div>
+        <div class="cols">
+          <ul>
+            <li>
+              Mapear rotinas de diferentes áreas da empresa para identificar
+              tarefas repetitivas e propor fluxos mais eficientes
+            </li>
+            <li>
+              Desenhar experiências personalizadas por perfil de usuário:
+              motorista, operador, gestor, analista, em vez de telas únicas para
+              todos
+            </li>
+            <li>
+              Revisar e dar uma cara nova a interfaces já implementadas,
+              elevando o padrão visual e de usabilidade
+            </li>
+          </ul>
+          <ul>
+            <li>
+              Construir e manter o design system no Figma: tokens, componentes e
+              padrões de interação
+            </li>
+            <li>
+              Entregar protótipos navegáveis com navegação completa entre fluxos
+            </li>
+            <li>
+              Implementar, do zero, um fluxo de descoberta e coleta de feedback
+              de produto, hoje inexistente na empresa, criando o padrão que
+              times futuros vão seguir
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="up" style="animation-delay: 0.6s">
+        <div class="sec-label"><span>03</span><small>Requisitos</small></div>
+        <div class="cols">
+          <ul>
+            <li>
+              Experiência com sistemas complexos: gestão, dashboards, mapas ou
+              dados
+            </li>
+            <li>
+              Domínio de Figma: componentes, variáveis/tokens e organização de
+              biblioteca
+            </li>
+            <li>Experiência criando ou evoluindo design systems</li>
+          </ul>
+          <ul>
+            <li>
+              Vivência com pesquisa com usuários — planejamento, entrevistas e
+              síntese
+            </li>
+            <li>
+              Perfil investigativo, disposto a entender a rotina de diferentes
+              áreas antes de propor soluções
+            </li>
+            <li>
+              Experiência desenhando fluxos personalizados por perfil de
+              usuário, não telas genéricas
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="up" style="animation-delay: 0.7s">
+        <div class="sec-label"><span>04</span><small>Diferenciais</small></div>
+        <div class="chips">
+          <span class="chip">Sistemas B2B ou de operação de campo</span>
+          <span class="chip">Logística, frotas ou IoT</span>
+          <span class="chip">Redesign de sistemas legados</span>
+          <span class="chip">Automação de fluxos e tarefas repetitivas</span>
+          <span class="chip">Visualização de dados</span>
+          <span class="chip">Acessibilidade</span>
+          <span class="chip">Ferramentas de IA no fluxo de design</span>
+        </div>
+      </section>
+
+      <footer class="up" style="animation-delay: 0.8s">
+        <div class="left">Intelicity · Time de Engenharia de Software</div>
+        <div class="right">Julho · 2026</div>
+      </footer>
+    </div>
+  </body>
+</html>

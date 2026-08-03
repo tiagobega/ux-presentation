@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<title>Workshops — Panfleto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --text: #1a1225;
+    --purple: #7c3aed;
+    --purple-deep: #6d28d9;
+    --bg: #fdfcff;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  @page { size: A4 portrait; margin: 0; }
+
+  html, body { background: var(--bg); }
+  body {
+    font-family: 'Inter', sans-serif;
+    color: var(--text);
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* A4 fixo para impressão/PNG; a página em si rola na tela */
+  .page {
+    position: relative;
+    width: 794px;   /* A4 @ 96dpi */
+    height: 1123px;
+    overflow: hidden;
+  }
+
+  /* ── nebula background (static) ── */
+  .nebula-a, .nebula-b {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .nebula-a {
+    width: 620px; height: 620px;
+    background: radial-gradient(circle, rgba(109,40,217,0.09) 0%, transparent 65%);
+    top: -180px; left: -160px;
+    filter: blur(50px);
+  }
+  .nebula-b {
+    width: 480px; height: 480px;
+    background: radial-gradient(circle, rgba(167,139,250,0.08) 0%, transparent 65%);
+    bottom: -120px; right: -120px;
+    filter: blur(60px);
+  }
+
+  .flyer {
+    position: relative;
+    z-index: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 42px 52px 30px;
+  }
+
+  /* ── eyebrow ── */
+  .eyebrow { display: flex; align-items: center; gap: 12px; }
+  .eyebrow .sq { width: 11px; height: 11px; background: var(--purple); flex-shrink: 0; }
+  .eyebrow span:last-child {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+    color: rgba(26,18,37,0.6);
+  }
+
+  h1 {
+    margin-top: 16px;
+    font-size: 44px;
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+  }
+  h1 .hl { color: var(--purple); }
+  .sub {
+    margin-top: 11px;
+    font-size: 15px;
+    color: rgba(26,18,37,0.62);
+    letter-spacing: -0.01em;
+    line-height: 1.45;
+    max-width: 660px;
+  }
+  .sub strong { color: var(--text); font-weight: 600; }
+  .sub .arrow { color: var(--purple-deep); font-weight: 700; }
+
+  /* ── agenda list ── */
+  .agenda-label {
+    margin-top: 22px;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+    color: rgba(26,18,37,0.5);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .agenda-label .rule {
+    flex: 1;
+    height: 1px;
+    background: rgba(26,18,37,0.12);
+  }
+  .agenda-label .legend {
+    color: var(--purple-deep);
+    letter-spacing: 0.14em;
+  }
+  /* separador de mês */
+  .agenda-label.month { color: var(--purple); }
+  .agenda-label.month .rule { background: rgba(124,58,237,0.3); }
+  .agenda-label.month.tbd { color: rgba(26,18,37,0.4); }
+  .agenda-label.month.tbd .rule { background: rgba(26,18,37,0.14); }
+  .session:has(+ .agenda-label) { border-bottom: none; }
+
+  .session {
+    display: grid;
+    grid-template-columns: 122px 1fr auto;
+    gap: 18px;
+    align-items: center;
+    padding: 15px 4px;
+    border-bottom: 1px solid rgba(26,18,37,0.1);
+  }
+  .session:last-of-type { border-bottom: none; }
+  .session.no-sep { border-bottom: none; }   /* mesmo dia do item seguinte */
+  .session .when {
+    font-family: 'Space Mono', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--purple);
+    line-height: 1.25;
+  }
+  .session .when small {
+    display: block;
+    color: rgba(26,18,37,0.5);
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    margin-top: 3px;
+    font-size: 11px;
+  }
+  .session .when small.loc { margin-top: 1px; font-size: 10px; }
+  .session .when strong {
+    font-weight: 700;
+    color: rgba(26,18,37,0.85);
+    text-transform: none;
+    font-size: 12px;
+  }
+  .session .when.tbd { color: rgba(26,18,37,0.4); font-weight: 400; }
+  .session h3 { font-size: 16.5px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; }
+  .session p {
+    margin-top: 4px;
+    font-size: 12.5px;
+    color: rgba(26,18,37,0.6);
+    line-height: 1.4;
+  }
+
+  .tags { display: flex; flex-direction: column; align-items: flex-end; gap: 5px; }
+  .tags .aud { display: flex; gap: 5px; }
+  .tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    padding: 4px 10px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .tag.users { background: rgba(16,185,129,0.12); color: #047857; }
+  .tag.mgmt  { background: rgba(124,58,237,0.12); color: #6d28d9; }
+  .tag.tech  { background: rgba(26,18,37,0.08);  color: rgba(26,18,37,0.75); }
+  .tag.all   { background: rgba(37,99,235,0.12); color: #1d4ed8; }
+  .tag.owner {
+    background: #fff;
+    border: 1px solid rgba(124,58,237,0.45);
+    color: var(--purple-deep);
+    font-weight: 700;
+  }
+  .tag.owner.tbd {
+    border-color: rgba(26,18,37,0.2);
+    color: rgba(26,18,37,0.5);
+    font-weight: 400;
+  }
+
+  /* ── footer ── */
+  footer {
+    margin-top: auto;
+    border-top: 1px solid rgba(26,18,37,0.1);
+    padding-top: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+  }
+  footer .left { color: rgba(26,18,37,0.5); }
+  footer .right { color: var(--purple); }
+</style>
+</head>
+<body>
+<div class="page">
+<div class="nebula-a"></div>
+<div class="nebula-b"></div>
+
+<div class="flyer">
+  <div class="eyebrow">
+    <span class="sq"></span>
+    <span>Intelicity · Workshops</span>
+  </div>
+
+  <h1>
+    Workshops.
+    <span class="hl">Abertos a toda a Intelicity.</span>
+  </h1>
+  <p class="sub">
+    Uma agenda para <strong>nivelar o conhecimento entre todos os times:</strong> que cada pessoa da Intelicity
+    saiba o que construímos aqui, como cada produto funciona e onde o seu trabalho se conecta com o resto.
+  </p>
+
+  <div class="agenda-label month">
+    <span>Agosto</span>
+    <span class="rule"></span>
+    <span class="legend">→ quem procurar</span>
+  </div>
+
+  <div class="session no-sep">
+    <div class="when">Seg 03/08<small><strong>13h30</strong></small><small class="loc">Sala de reuniões</small></div>
+    <div>
+      <h3>InteliFleets</h3>
+      <p>O hub do ecossistema de ponta a ponta: o que resolve, como navegar, o que cada perfil consegue fazer.</p>
+    </div>
+    <div class="tags">
+      <div class="aud">
+        <span class="tag users">Usuários</span>
+        <span class="tag mgmt">Gestores</span>
+      </div>
+      <span class="tag owner">→ Godoy</span>
+    </div>
+  </div>
+
+  <div class="session">
+    <div class="when"><small><strong>15h</strong></small><small class="loc">Sala de reuniões</small></div>
+    <div>
+      <h3>Informs</h3>
+      <p>Para os motoverificadores, como a ferramenta funciona no dia a dia; para gestores, como implementar no seu projeto.</p>
+    </div>
+    <div class="tags">
+      <div class="aud">
+        <span class="tag users">Usuários</span>
+        <span class="tag mgmt">Gestores</span>
+      </div>
+      <span class="tag owner">→ Godoy</span>
+    </div>
+  </div>
+
+  <div class="session">
+    <div class="when">Sex 07/08<small><strong>15h</strong></small><small class="loc">Online</small></div>
+    <div>
+      <h3>SGC 4.0 · CVAT</h3>
+      <p>Conhecendo o SGC, primeiros passos e hands on.</p>
+    </div>
+    <div class="tags">
+      <div class="aud">
+        <span class="tag users">Usuários</span>
+        <span class="tag mgmt">Gestores</span>
+      </div>
+      <span class="tag owner">→ Matheus Marins</span>
+    </div>
+  </div>
+
+  <div class="session">
+    <div class="when">Seg 10/08<small><strong>14h</strong></small><small class="loc">Sala de reuniões</small></div>
+    <div>
+      <h3>IA para gestores, financeiro, RH</h3>
+      <p>Configurar o seu workspace e estudos de caso reais — POCs para gestores; Word e Excel para RH e demais áreas.</p>
+    </div>
+    <div class="tags">
+      <div class="aud">
+        <span class="tag mgmt">Áreas de negócio</span>
+      </div>
+      <span class="tag owner">→ Godoy</span>
+    </div>
+  </div>
+
+  <div class="session">
+    <div class="when">Seg 17/08<small><strong>14h</strong></small><small class="loc">Sala de reuniões</small></div>
+    <div>
+      <h3>InteliVision</h3>
+      <p>O produto de visão computacional de ponta a ponta: o que ele detecta e o que dá para fazer com os resultados.</p>
+    </div>
+    <div class="tags">
+      <div class="aud">
+        <span class="tag all">Todos</span>
+      </div>
+      <span class="tag owner">→ Gabriel Lima</span>
+    </div>
+  </div>
+
+  <div class="session">
+    <div class="when">Seg 24/08<small><strong>14h</strong></small><small class="loc">Sala de reuniões</small></div>
+    <div>
+      <h3>Gates</h3>
+      <p>Como a ferramenta funciona e o roadmap de adoção: o que é preciso para aplicar o Gates nos projetos.</p>
+    </div>
+    <div class="tags">
+      <div class="aud">
+        <span class="tag mgmt">Gestores</span>
+        <span class="tag tech">Time técnico</span>
+      </div>
+      <span class="tag owner">→ Godoy</span>
+    </div>
+  </div>
+
+  <div class="agenda-label month">
+    <span>Setembro</span>
+    <span class="rule"></span>
+  </div>
+
+  <div class="session">
+    <div class="when">Seg 21/09<small><strong>14h</strong></small><small class="loc">Sala de reuniões</small></div>
+    <div>
+      <h3>IA no desenvolvimento: MCPs, skills e ADRs</h3>
+      <p>O que temos construído para o nosso desenvolvimento e como estamos usando no dia a dia, com exemplos reais.</p>
+    </div>
+    <div class="tags">
+      <span class="tag tech">Time técnico</span>
+      <span class="tag owner">→ Godoy</span>
+    </div>
+  </div>
+
+  <div class="agenda-label month tbd">
+    <span>A definir</span>
+    <span class="rule"></span>
+  </div>
+
+  <div class="session">
+    <div class="when tbd"><small class="loc">Local a definir</small></div>
+    <div>
+      <h3>Front-end modular: componentes + micro front-ends</h3>
+      <p>Biblioteca de componentes e micro front-ends na prática — foco na integração entre o time de front e o time Apex.</p>
+    </div>
+    <div class="tags">
+      <span class="tag owner tbd">→ A definir</span>
+    </div>
+  </div>
+
+  <footer>
+    <div class="left">Intelicity · Workshops internos</div>
+  </footer>
+</div>
+</div>
+</body>
+</html>

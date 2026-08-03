@@ -1,0 +1,521 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Workshops — Agenda</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --text: #1a1225;
+        --purple: #7c3aed;
+        --bg: #fdfcff;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Inter", sans-serif;
+        color: var(--text);
+        background: var(--bg);
+        min-height: 100svh;
+      }
+
+      /* ── nebula background ── */
+      body::before {
+        content: "";
+        position: fixed;
+        width: 700px;
+        height: 700px;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          rgba(109, 40, 217, 0.07) 0%,
+          transparent 65%
+        );
+        top: -200px;
+        left: -150px;
+        filter: blur(60px);
+        animation: nf 12s ease-in-out infinite;
+        pointer-events: none;
+      }
+      body::after {
+        content: "";
+        position: fixed;
+        width: 500px;
+        height: 500px;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          rgba(167, 139, 250, 0.06) 0%,
+          transparent 65%
+        );
+        bottom: -100px;
+        right: -100px;
+        filter: blur(80px);
+        animation: nf 16s ease-in-out infinite reverse;
+        pointer-events: none;
+      }
+      @keyframes nf {
+        0%,
+        100% {
+          transform: translate(0, 0) scale(1);
+        }
+        33% {
+          transform: translate(30px, -20px) scale(1.05);
+        }
+        66% {
+          transform: translate(-20px, 15px) scale(0.97);
+        }
+      }
+
+      .slide {
+        position: relative;
+        z-index: 1;
+        min-height: 100svh;
+        max-width: 1280px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        padding: clamp(28px, 4.5vh, 56px) 6vw clamp(24px, 4vh, 48px);
+      }
+
+      /* ── entrance animation (deck-style stagger) ── */
+      @keyframes up {
+        from {
+          opacity: 0;
+          transform: translateY(24px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .up {
+        opacity: 0;
+        animation: up 0.55s cubic-bezier(0, 0, 0.2, 1) forwards;
+      }
+
+      /* ── eyebrow ── */
+      .eyebrow {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+      .eyebrow .sq {
+        width: 11px;
+        height: 11px;
+        background: var(--purple);
+        flex-shrink: 0;
+      }
+      .eyebrow span:last-child {
+        font-family: "Space Mono", monospace;
+        font-size: clamp(11px, 1vw, 14px);
+        text-transform: uppercase;
+        letter-spacing: 0.28em;
+        color: rgba(26, 18, 37, 0.6);
+      }
+
+      /* ── title ── */
+      h1 {
+        margin-top: 2.6vh;
+        font-size: clamp(34px, 4.2vw, 60px);
+        font-weight: 800;
+        line-height: 1.06;
+        letter-spacing: -0.03em;
+      }
+      h1 .hl {
+        color: var(--purple);
+      }
+      .sub {
+        margin-top: 1.4vh;
+        font-size: clamp(15px, 1.4vw, 20px);
+        color: rgba(26, 18, 37, 0.62);
+        letter-spacing: -0.01em;
+      }
+      .sub strong {
+        color: var(--text);
+        font-weight: 600;
+      }
+
+      /* ── agenda ── */
+      .agenda {
+        flex: 1;
+        min-height: 0;
+        margin-top: 3.2vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+      .session {
+        display: grid;
+        grid-template-columns: minmax(120px, 160px) 1fr auto;
+        gap: clamp(16px, 2.5vw, 40px);
+        align-items: center;
+        padding: 1.6vh 18px;
+        border-top: 1px solid rgba(26, 18, 37, 0.1);
+        border-radius: 6px;
+        transition: background 0.25s;
+      }
+      .session:last-of-type {
+        border-bottom: 1px solid rgba(26, 18, 37, 0.1);
+      }
+      .session:hover {
+        background: rgba(124, 58, 237, 0.06);
+      }
+      .week {
+        font-family: "Space Mono", monospace;
+        font-size: clamp(11px, 1vw, 14px);
+        text-transform: uppercase;
+        letter-spacing: 0.16em;
+        color: rgba(124, 58, 237, 0.9);
+      }
+      .week small {
+        display: block;
+        color: rgba(26, 18, 37, 0.45);
+        letter-spacing: 0.12em;
+        margin-top: 3px;
+        font-size: clamp(10px, 0.85vw, 12px);
+      }
+      .session h3 {
+        font-size: clamp(18px, 1.8vw, 26px);
+        font-weight: 700;
+        letter-spacing: -0.02em;
+      }
+      .session p {
+        margin-top: 4px;
+        font-size: clamp(13px, 1.15vw, 17px);
+        color: rgba(26, 18, 37, 0.6);
+        line-height: 1.4;
+        max-width: 640px;
+      }
+      .tags {
+        display: flex;
+        gap: 8px;
+        justify-content: flex-end;
+      }
+      .tag {
+        font-family: "Space Mono", monospace;
+        font-size: clamp(9px, 0.8vw, 12px);
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        padding: 6px 12px;
+        border-radius: 999px;
+        white-space: nowrap;
+      }
+      .tag.users {
+        background: rgba(16, 185, 129, 0.1);
+        color: #047857;
+      }
+      .tag.mgmt {
+        background: rgba(124, 58, 237, 0.1);
+        color: #6d28d9;
+      }
+      .tag.tech {
+        background: rgba(26, 18, 37, 0.07);
+        color: rgba(26, 18, 37, 0.75);
+      }
+
+      /* ── footer ── */
+      footer {
+        border-top: 1px solid rgba(26, 18, 37, 0.1);
+        padding-top: 2vh;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        font-family: "Space Mono", monospace;
+        font-size: clamp(11px, 0.95vw, 14px);
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+      }
+      footer .left {
+        color: rgba(26, 18, 37, 0.5);
+      }
+      footer .right {
+        color: var(--purple);
+      }
+
+      /* ── compact mode for short screens (notebooks) ── */
+      @media (max-height: 860px) {
+        .slide {
+          padding: 3vh 6vw 2.4vh;
+        }
+        h1 {
+          margin-top: 1.6vh;
+          font-size: clamp(26px, 3.2vw, 40px);
+        }
+        .sub {
+          margin-top: 0.8vh;
+          font-size: clamp(13px, 1.2vw, 16px);
+        }
+        .agenda {
+          margin-top: 1.8vh;
+        }
+        .session {
+          padding: 0.9vh 14px;
+        }
+        .session h3 {
+          font-size: clamp(15px, 1.5vw, 20px);
+        }
+        .session p {
+          margin-top: 2px;
+          font-size: clamp(12px, 1vw, 14px);
+        }
+        .week {
+          font-size: clamp(10px, 0.9vw, 12px);
+        }
+        .week small {
+          margin-top: 1px;
+          font-size: clamp(9px, 0.8vw, 11px);
+        }
+        .tag {
+          padding: 4px 10px;
+        }
+        footer {
+          padding-top: 1.2vh;
+        }
+      }
+      /* ── print / PDF (A4) ── */
+      @media print {
+        body {
+          background: #fff;
+          min-height: auto;
+        }
+        body::before,
+        body::after {
+          display: none;
+        }
+        .up {
+          opacity: 1;
+          animation: none;
+        }
+        .slide {
+          min-height: auto;
+          max-width: none;
+          padding: 0;
+        }
+        h1 {
+          margin-top: 12px;
+          font-size: 30px;
+        }
+        .sub {
+          margin-top: 6px;
+          font-size: 13px;
+        }
+        .agenda {
+          margin-top: 18px;
+        }
+        .session {
+          padding: 10px 8px;
+          break-inside: avoid;
+        }
+        .session:hover {
+          background: none;
+        }
+        .session h3 {
+          font-size: 16px;
+        }
+        .session p {
+          font-size: 12px;
+        }
+        .week {
+          font-size: 11px;
+        }
+        .week small {
+          font-size: 9px;
+        }
+        .tag {
+          font-size: 9px;
+          padding: 4px 10px;
+          border: 1px solid rgba(26, 18, 37, 0.15);
+        }
+        footer {
+          margin-top: 18px;
+          padding-top: 12px;
+          font-size: 10px;
+        }
+        @page {
+          size: A4;
+          margin: 14mm 12mm;
+        }
+      }
+
+      /* ── responsive ── */
+      @media (max-width: 900px) {
+        .session {
+          grid-template-columns: minmax(100px, 130px) 1fr;
+        }
+        .tags {
+          grid-column: 2;
+          justify-content: flex-start;
+          flex-wrap: wrap;
+          margin-top: 8px;
+        }
+      }
+      @media (max-width: 640px) {
+        body {
+          height: auto;
+          min-height: 100svh;
+          overflow: auto;
+        }
+        .slide {
+          height: auto;
+          min-height: 100svh;
+          padding: 4vh 6vw 3vh;
+        }
+        .agenda {
+          justify-content: flex-start;
+          gap: 0;
+        }
+        .session {
+          grid-template-columns: 1fr;
+          padding: 14px 4px;
+        }
+        .session p {
+          max-width: none;
+        }
+        .week {
+          display: flex;
+          align-items: baseline;
+          gap: 10px;
+        }
+        .week small {
+          margin-top: 0;
+        }
+        .tags {
+          grid-column: 1;
+        }
+        footer {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 6px;
+          margin-top: 3vh;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="slide">
+      <div class="eyebrow up" style="animation-delay: 0s">
+        <span class="sq"></span>
+        <span>Engenharia de Software · Workshops</span>
+      </div>
+
+      <h1 class="up" style="animation-delay: 0.15s">
+        Workshops.
+        <span class="hl">6 encontros · 60 minutos.</span>
+      </h1>
+      <p class="sub up" style="animation-delay: 0.3s">
+        Encontros abertos para toda a empresa: nossos produtos, ferramentas e o
+        jeito como construímos software.
+      </p>
+
+      <div class="agenda">
+        <div class="session up" style="animation-delay: 0.45s">
+          <div class="week">03/08<small>Segunda · 13h30 · 60min</small></div>
+          <div>
+            <h3>InteliFleets</h3>
+            <p>
+              O hub do ecossistema de ponta a ponta: o que resolve, como
+              navegar, o que cada perfil consegue fazer.
+            </p>
+          </div>
+          <div class="tags">
+            <span class="tag users">Usuários</span>
+            <span class="tag mgmt">Gestores</span>
+          </div>
+        </div>
+
+        <div class="session up" style="animation-delay: 0.55s">
+          <div class="week">03/08<small>Segunda · 15h · 60min</small></div>
+          <div>
+            <h3>Informs</h3>
+            <p>
+              Para os motoverificadores, como a ferramenta funciona no dia a
+              dia; para gestores, como funciona e como implementar no seu
+              projeto.
+            </p>
+          </div>
+          <div class="tags">
+            <span class="tag users">Usuários</span>
+            <span class="tag mgmt">Gestores</span>
+          </div>
+        </div>
+
+        <div class="session up" style="animation-delay: 0.65s">
+          <div class="week">
+            A definir<small>Segunda · 60min</small>
+          </div>
+          <div>
+            <h3>Gates</h3>
+            <p>
+              Como a ferramenta funciona e o roadmap de implementação: o que é
+              preciso para adotar o Gates nos projetos.
+            </p>
+          </div>
+          <div class="tags">
+            <span class="tag tech">Time técnico</span>
+          </div>
+        </div>
+
+        <div class="session up" style="animation-delay: 0.75s">
+          <div class="week">
+            A definir<small>Segunda · 60min</small>
+          </div>
+          <div>
+            <h3>Vibecoding: do prompt ao deploy</h3>
+            <p>
+              Como usar as ferramentas de IA no dia a dia da gestão: apoio nas
+              demandas, apresentações e POCs, com casos de uso reais.
+            </p>
+          </div>
+          <div class="tags">
+            <span class="tag mgmt">Gestores</span>
+          </div>
+        </div>
+
+        <div class="session up" style="animation-delay: 0.85s">
+          <div class="week">
+            A definir<small>Segunda · 60min</small>
+          </div>
+          <div>
+            <h3>Dev com IA: por dentro do nosso fluxo</h3>
+            <p>
+              Tudo que estamos usando e está dando certo — Claude, MCPs, specs,
+              docs e mais — na prática, com exemplos reais.
+            </p>
+          </div>
+          <div class="tags">
+            <span class="tag tech">Time técnico</span>
+          </div>
+        </div>
+
+        <div class="session up" style="animation-delay: 0.95s">
+          <div class="week">A definir<small>60min</small></div>
+          <div>
+            <h3>Front-end modular: componentes + micro front-ends</h3>
+            <p>
+              Biblioteca de componentes e micro front-ends na prática — com foco
+              na integração entre o time de front e o time Apex.
+            </p>
+          </div>
+          <div class="tags">
+            <span class="tag tech">Time técnico</span>
+          </div>
+        </div>
+      </div>
+
+      <footer class="up" style="animation-delay: 1.1s">
+        <div class="left">Intelicity · Time de Engenharia de Software</div>
+        <div class="right">Julho · 2026</div>
+      </footer>
+    </div>
+  </body>
+</html>

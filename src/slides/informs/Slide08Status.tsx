@@ -5,7 +5,7 @@ import { SlideShell, SlideHeader, Accent, easeIn, easeOut, drama } from '../kit'
 
 const STEP2 = 'O laranja'
 
-export default function Slide07Status({ action }: SlideProps) {
+export default function Slide08Status({ action }: SlideProps) {
   const phase = action === STEP2 ? 1 : 0
 
   return (

@@ -1,62 +1,86 @@
 import type { Deck } from '../config'
 import Slide00Capa from './Slide00Capa'
-import Slide01Problema from './Slide01Problema'
-import Slide02Solucao from './Slide02Solucao'
-import Slide03Anatomia from './Slide03Anatomia'
-import Slide04Campos from './Slide04Campos'
-import Slide05Autenticacao from './Slide05Autenticacao'
-import Slide06Listagem from './Slide06Listagem'
-import Slide07Status from './Slide07Status'
-import Slide08Preencher from './Slide08Preencher'
-import Slide09Duplicacao from './Slide09Duplicacao'
-import Slide10Cancelamento from './Slide10Cancelamento'
-import Slide11Offline from './Slide11Offline'
-import Slide12Roteirizacao from './Slide12Roteirizacao'
-import Slide13Rastreio from './Slide13Rastreio'
-import Slide14Template from './Slide14Template'
-import Slide15Formulario from './Slide15Formulario'
-import Slide16CriarEmCampo from './Slide16CriarEmCampo'
-import Slide17Integracao from './Slide17Integracao'
+import Slide01PorQueExiste from './Slide01PorQueExiste'
+import Slide02Arquitetura from './Slide02Arquitetura'
+import Slide03Consequencias from './Slide03Consequencias'
+import Slide04Anatomia from './Slide04Anatomia'
+import Slide05Campos from './Slide05Campos'
+import Slide06Autenticacao from './Slide06Autenticacao'
+import Slide07Listagem from './Slide07Listagem'
+import Slide08Status from './Slide08Status'
+import Slide09Preencher from './Slide09Preencher'
+import Slide10Duplicacao from './Slide10Duplicacao'
+import Slide11Cancelamento from './Slide11Cancelamento'
+import Slide12Offline from './Slide12Offline'
+import Slide13Roteirizacao from './Slide13Roteirizacao'
+import Slide14Rastreio from './Slide14Rastreio'
+import Slide15Template from './Slide15Template'
+import Slide16Formulario from './Slide16Formulario'
+import Slide17CriarEmCampo from './Slide17CriarEmCampo'
 import Slide18Implantacao from './Slide18Implantacao'
 import Slide19ProximosPassos from './Slide19ProximosPassos'
 import Slide20Encerramento from './Slide20Encerramento'
 
-// 0 Capa · 1 O problema · 2 A resposta · 3 Anatomia · 4 Tipos de campo
-// 5-13 Fluxo do app · 14-18 Fluxo do sistema de origem (a criação em campo
-// fecha o bloco, logo depois da criação de formulário pela API)
-// 19 Próximos passos · 20 Encerramento
+// 0 Capa · 1 Por que existe · 2 Arquitetura · 3 Consequências (pergunta →
+// resposta → uma dor/ganho por step, mesma mecânica nos slides 1 e 3) ·
+// 4 Anatomia · 5 Tipos de campo · 6-14 Fluxo do app · 15-17 Fluxo do sistema
+// de origem (a criação em campo fecha o bloco, logo depois da criação de
+// formulário pela API — o contrato de integração já foi coberto na
+// Arquitetura, no slide 2) · 18 Próximos passos · 19 Encerramento
 export const INFORMS_DECK: Deck = {
   id: 'informs',
   brand: 'INTELICITY · INFORMS',
   title: 'Intelicity · Informs',
   slides: [
     Slide00Capa,
-    Slide01Problema,
-    Slide02Solucao,
-    Slide03Anatomia,
-    Slide04Campos,
-    Slide05Autenticacao,
-    Slide06Listagem,
-    Slide07Status,
-    Slide08Preencher,
-    Slide09Duplicacao,
-    Slide10Cancelamento,
-    Slide11Offline,
-    Slide12Roteirizacao,
-    Slide13Rastreio,
-    Slide14Template,
-    Slide15Formulario,
-    Slide16CriarEmCampo,
-    Slide17Integracao,
+    Slide01PorQueExiste,
+    Slide02Arquitetura,
+    Slide03Consequencias,
+    Slide04Anatomia,
+    Slide05Campos,
+    Slide06Autenticacao,
+    Slide07Listagem,
+    Slide08Status,
+    Slide09Preencher,
+    Slide10Duplicacao,
+    Slide11Cancelamento,
+    Slide12Offline,
+    Slide13Roteirizacao,
+    Slide14Rastreio,
+    Slide15Template,
+    Slide16Formulario,
+    Slide17CriarEmCampo,
     Slide18Implantacao,
     Slide19ProximosPassos,
     Slide20Encerramento,
   ],
   config: [
     { label: 'Capa', actions: ['Capa'] },
-    { label: 'O problema', actions: ['A cena'] },
-    { label: 'A resposta', actions: ['Dores', 'Como resolvemos'] },
-    { label: 'Anatomia', actions: ['Campos → Sessões', 'Template → Formulário'] },
+    {
+      label: 'Por que existe',
+      actions: [
+        'A pergunta',
+        'A resposta',
+        'Formulários rígidos',
+        'Campo sem conectividade',
+        'Zero visibilidade',
+        'Mudança vira projeto',
+      ],
+    },
+    { label: 'Arquitetura', actions: ['Fluxo'] },
+    {
+      label: 'Consequências',
+      actions: [
+        'A pergunta',
+        'A resposta',
+        'Templates dinâmicos',
+        'Offline-first',
+        'Rastreio em tempo real',
+        'Publicação instantânea',
+        'O foco',
+      ],
+    },
+    { label: 'Anatomia', actions: ['Anatomia'] },
     { label: 'Tipos de campo', actions: ['Campos'] },
     { label: 'Autenticação', actions: ['Gates'] },
     { label: 'Listagem', actions: ['Fila do dia'] },
@@ -70,7 +94,6 @@ export const INFORMS_DECK: Deck = {
     { label: 'Template', actions: ['Molde'] },
     { label: 'Formulário', actions: ['Demanda'] },
     { label: 'Criar em campo', actions: ['Criação'] },
-    { label: 'Integração', actions: ['Publicação', 'Retorno'] },
     { label: 'Implantação', actions: ['Duas frentes'] },
     { label: 'Próximos passos', actions: ['Fila do produto'] },
     { label: 'Encerramento', actions: ['Fim'] },

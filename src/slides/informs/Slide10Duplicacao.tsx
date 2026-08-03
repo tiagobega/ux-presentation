@@ -9,7 +9,7 @@ const instancias = [
   { titulo: 'Equipamento 3', campos: ['Caixa de emenda', 'Série 1177-B', '4 fotos'] },
 ]
 
-export default function Slide09Duplicacao({ action: _ }: SlideProps) {
+export default function Slide10Duplicacao({ action: _ }: SlideProps) {
   void _
   return (
     <SlideShell className='gap-7'>

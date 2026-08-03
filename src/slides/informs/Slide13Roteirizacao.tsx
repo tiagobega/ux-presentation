@@ -35,7 +35,7 @@ const paradas = [
   { x: 86, y: 52 },
 ]
 
-export default function Slide12Roteirizacao({ action: _ }: SlideProps) {
+export default function Slide13Roteirizacao({ action: _ }: SlideProps) {
   void _
   return (
     <SlideShell className='gap-7'>

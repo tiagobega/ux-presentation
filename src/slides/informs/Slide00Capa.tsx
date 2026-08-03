@@ -81,7 +81,10 @@ export default function Slide00Capa({ action: _ }: SlideProps) {
 
       <div>
         {/* O nome carrega o corte do wordmark do app: "in" escuro, "forms" em cor. */}
-        <h1 className='text-[172px] font-bold leading-[0.88] tracking-[-0.055em] text-text'>
+        <h1
+          className='text-[172px] font-bold leading-[0.88] tracking-[-0.055em] text-text'
+          style={{ fontFamily: "'Exo 2', sans-serif" }}
+        >
           <span
             className='inline-block overflow-hidden'
             style={{ verticalAlign: 'bottom' }}

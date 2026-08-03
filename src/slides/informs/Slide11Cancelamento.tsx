@@ -11,7 +11,7 @@ const justificativas = [
   { motivo: 'Imóvel demolido', texto: false, foto: true },
 ]
 
-export default function Slide10Cancelamento({ action: _ }: SlideProps) {
+export default function Slide11Cancelamento({ action: _ }: SlideProps) {
   void _
   return (
     <SlideShell className='gap-6'>

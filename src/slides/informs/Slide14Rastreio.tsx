@@ -32,7 +32,7 @@ const pontos: { Icon: LucideIcon; titulo: string; texto: string }[] = [
   },
 ]
 
-export default function Slide13Rastreio({ action: _ }: SlideProps) {
+export default function Slide14Rastreio({ action: _ }: SlideProps) {
   void _
   return (
     <SlideShell className='gap-6'>

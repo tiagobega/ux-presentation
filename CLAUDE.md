@@ -18,7 +18,9 @@ React + Vite + TypeScript fullscreen slide presentation. The original static HTM
 
 **Decks** — a deck is `{ id, brand, title, slides, config }` (type in `src/slides/config.ts`), declared in `<deck>/deck.ts`. `src/slides/decks.ts` picks the active one: **Informs** by default, `?deck=fleets-demo` and `?deck=fleets` for the others. `Presentation.tsx` and `Nav.tsx` read `SLIDES` / `SLIDE_CONFIG` / `DECK` from there and know nothing about which deck is loaded. `config.ts` deliberately imports no deck — the slides import `SLIDE_PADDING` from it, so importing a deck back would close a cycle.
 
-**Adding a slide** — create `src/slides/<deck>/SlideNN.tsx`, import it in `<deck>/deck.ts`, append to `slides`, and add the matching entry (label + actions) to `config` at the same index (Nav labels and the dot nav derive from it). Each slide applies `SLIDE_PADDING` (from `../config`) on its own root for the standard padding; omit it for a full-bleed slide. `src/slides/kit.tsx` holds the vocabulary shared by every deck (`SlideShell`, `SlideHeader`, `Punch`, `Bar`, `Chip`, `Accent`, `FlowSteps`, the `up()` motion helper and the easings) — prefer it over re-declaring the same boilerplate. `src/slides/fleets/kit.tsx` is just a re-export of it. The demo deck has its own `src/slides/fleets-demo/kit.tsx` with the extra `LiveBadge` and `DemoSlide`, and Informs has `src/slides/informs/ui.tsx` with the phone mockups.
+**Adding a slide** — create `src/slides/<deck>/SlideNN.tsx`, import it in `<deck>/deck.ts`, append to `slides`, and add the matching entry (label + actions) to `config` at the same index (Nav labels and the dot nav derive from it). Each slide applies `SLIDE_PADDING` (from `../config`) on its own root for the standard padding; omit it for a full-bleed slide. `src/slides/kit.tsx` holds the vocabulary shared by every deck (`SlideShell`, `SlideHeader`, `Punch`, `Bar`, `Chip`, `Accent`, `FlowSteps`, `Reveal`, the `up()` motion helper and the easings) — prefer it over re-declaring the same boilerplate. `src/slides/fleets/kit.tsx` is just a re-export of it. The demo deck has its own `src/slides/fleets-demo/kit.tsx` with the extra `LiveBadge` and `DemoSlide`, and Informs has `src/slides/informs/ui.tsx` with the phone mockups.
+
+**Mecânica pergunta → resposta** — usada nos slides de abertura e de conclusão de um bloco (`Slide01PorQueExiste`, `Slide03Consequencias`): o título entra grande sozinho (a pergunta), recua com `scale` quando a resposta aparece, e depois uma faixa de cards abre por `max-height` (`Reveal` com `fade={false}`) com um item por step — a fala apresenta um de cada vez. Os itens da conclusão espelham, na mesma ordem, os da abertura.
 
 **Cards that fill a row** — a `flex-1 min-h-0 grid` stretches its cards to the full row height, which leaves dead space inside them. Wrap the grid in `flex-1 min-h-0 flex items-center` and give the inner `grid` a plain `w-full`: cards then hug their content, stay equal-height (grid stretch) and sit centered in the free area.
 
@@ -35,23 +37,23 @@ Order is governed by `INFORMS_DECK` in `src/slides/informs/deck.ts`. Full script
 | # | File | Label | Title / theme |
 |---|------|-------|---------------|
 | 0 | `Slide00Capa.tsx` | Capa | O nome como elemento principal, com a tagline "do template ao envio" |
-| 1 | `Slide01Problema.tsx` | O problema | A cena do moto-verificador e as 4 dores |
-| 2 | `Slide02Solucao.tsx` | A resposta | Tabela dor → solução; step 2 acende a coluna da direita |
-| 3 | `Slide03Anatomia.tsx` | Anatomia | Pirâmide campo → sessão → template → formulário; step 2 fecha o topo e traz Sistema de Origem e Justificativa |
-| 4 | `Slide04Campos.tsx` | Tipos de campo | Os 10 campos de coleta e os 4 informativos |
-| 5 | `Slide05Autenticacao.tsx` | Autenticação | Gates (Cognito + PKCE), WebView embutida, perfil carregado no login |
-| 6 | `Slide06Listagem.tsx` | Listagem | Abas por status com contador, busca e filtro, prioridades |
-| 7 | `Slide07Status.tsx` | Status | Os 5 status na linha do tempo; step 2 isola "Completo e não enviado" |
-| 8 | `Slide08Preencher.tsx` | Preenchimento | Sessão a sessão, validação na hora, autosave do rascunho |
-| 9 | `Slide09Duplicacao.tsx` | Duplicação | Uma sessão duplicável virando N instâncias independentes |
-| 10 | `Slide10Cancelamento.tsx` | Cancelamento | Justificativas e o que cada motivo exige (texto/foto) |
-| 11 | `Slide11Offline.tsx` | Offline-first | Fila de mutations persistida; step 2 mostra a sincronização |
-| 12 | `Slide12Roteirizacao.tsx` | Roteirização | Modos da rota e maquete de mapa com paradas ordenadas |
-| 13 | `Slide13Rastreio.tsx` | Rastreio | WebSocket, GPS em background, buffer offline, permissão INSPECTOR |
-| 14 | `Slide14Template.tsx` | Template | O molde: nome, sistema de origem, ativo, sessões |
-| 15 | `Slide15Formulario.tsx` | Formulário | O template ganha localização, prioridade, prazo e verificador |
-| 16 | `Slide16CriarEmCampo.tsx` | Criar em campo | O outro caminho: o verificador gera o formulário na rua |
-| 17 | `Slide17Integracao.tsx` | Integração | Diagrama origem ↔ API ↔ app em 6 mensagens (2 steps) |
+| 1 | `Slide01PorQueExiste.tsx` | Por que existe | Pergunta → resposta (a cena do moto-verificador) → uma dor por step (4 dores) |
+| 2 | `Slide02Arquitetura.tsx` | Arquitetura | Sistema de origem ↔ Informs ↔ Moto-verificador, um step só |
+| 3 | `Slide03Consequencias.tsx` | Consequências | Pergunta → resposta → um ganho por step, espelhando as 4 dores do slide 1; fecha com a frase "o que se pergunta e como se preenche são coisas separadas" |
+| 4 | `Slide04Anatomia.tsx` | Anatomia | Full-bleed: só o título centralizado e o mockup `src/assets/form-anatomy.svg`, revelado por `clipPath` de cima para baixo; um step só |
+| 5 | `Slide05Campos.tsx` | Tipos de campo | Os 10 campos de coleta e os 4 informativos |
+| 6 | `Slide06Autenticacao.tsx` | Autenticação | Gates (Cognito + PKCE), WebView embutida, perfil carregado no login |
+| 7 | `Slide07Listagem.tsx` | Listagem | Abas por status com contador, busca e filtro, prioridades |
+| 8 | `Slide08Status.tsx` | Status | Os 5 status na linha do tempo; step 2 isola "Completo e não enviado" |
+| 9 | `Slide09Preencher.tsx` | Preenchimento | Sessão a sessão, validação na hora, autosave do rascunho |
+| 10 | `Slide10Duplicacao.tsx` | Duplicação | Uma sessão duplicável virando N instâncias independentes |
+| 11 | `Slide11Cancelamento.tsx` | Cancelamento | Justificativas e o que cada motivo exige (texto/foto) |
+| 12 | `Slide12Offline.tsx` | Offline-first | Fila de mutations persistida; step 2 mostra a sincronização |
+| 13 | `Slide13Roteirizacao.tsx` | Roteirização | Modos da rota e maquete de mapa com paradas ordenadas |
+| 14 | `Slide14Rastreio.tsx` | Rastreio | WebSocket, GPS em background, buffer offline, permissão INSPECTOR |
+| 15 | `Slide15Template.tsx` | Template | O molde: nome, sistema de origem, ativo, sessões |
+| 16 | `Slide16Formulario.tsx` | Formulário | O template ganha localização, prioridade, prazo e verificador |
+| 17 | `Slide17CriarEmCampo.tsx` | Criar em campo | O outro caminho: o verificador gera o formulário na rua |
 | 18 | `Slide18Implantacao.tsx` | Implantação | As duas frentes: Gates e APIs |
 | 19 | `Slide19ProximosPassos.tsx` | Próximos passos | PWA, App Store, rebranding, responsivo, rastreio integrado |
 | 20 | `Slide20Encerramento.tsx` | Encerramento | Informs hoje e amanhã, "Perguntas?" |

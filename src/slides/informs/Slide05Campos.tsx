@@ -3,7 +3,7 @@ import type { SlideProps } from '../config'
 import { TIPOS_CAMPO, CAMPOS_INFO } from '../../data/informs'
 import { SlideShell, SlideHeader, Accent, up, easeIn, easeOut } from '../kit'
 
-export default function Slide04Campos({ action: _ }: SlideProps) {
+export default function Slide05Campos({ action: _ }: SlideProps) {
   void _
   return (
     <SlideShell className='gap-6'>

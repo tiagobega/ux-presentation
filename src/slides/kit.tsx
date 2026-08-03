@@ -144,6 +144,56 @@ export function Chip({
 }
 
 /**
+ * Bloco que abre e fecha por `max-height` — para a história crescer step a
+ * step sem que o conteúdo já visível mude de lugar.
+ *
+ * - `max` em px precisa ser um pouco maior que a altura real do conteúdo
+ *   aberto: `max-height` só limita, então o bloco para de crescer no tamanho
+ *   dele.
+ * - O espaçamento vai DENTRO (`pt-*` no filho), senão o `gap` do pai sobra
+ *   enquanto o bloco está fechado.
+ * - `fade={false}` anima só a altura: use quando o conteúdo deve aparecer
+ *   DEPOIS da abertura, com um fade próprio e atrasado.
+ */
+export function Reveal({
+  shown,
+  children,
+  max,
+  delay = 0,
+  fade = true,
+  className = '',
+}: {
+  shown: boolean
+  children: ReactNode
+  /** Teto em px — a altura do conteúdo aberto, com uma folga curta. */
+  max: number
+  delay?: number
+  fade?: boolean
+  className?: string
+}) {
+  return (
+    <motion.div
+      initial={false}
+      animate={{
+        maxHeight: shown ? max : 0,
+        ...(fade ? { opacity: shown ? 1 : 0 } : {}),
+      }}
+      transition={{
+        maxHeight: { duration: 0.5, ease: easeIn, delay: shown ? delay : 0 },
+        opacity: {
+          duration: shown ? 0.4 : 0.2,
+          ease: easeIn,
+          delay: shown ? delay + 0.08 : 0,
+        },
+      }}
+      className={`overflow-hidden ${className}`}
+    >
+      {children}
+    </motion.div>
+  )
+}
+
+/**
  * Passos numerados de um fluxo ponta a ponta, revelados em duas fases.
  * `split` = quantos passos aparecem na fase 0.
  */

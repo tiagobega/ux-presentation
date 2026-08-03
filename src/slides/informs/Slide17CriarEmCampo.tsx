@@ -32,7 +32,7 @@ const templates = [
   { nome: 'Levantamento de fachada', sistema: 'Recife' },
 ]
 
-export default function Slide16CriarEmCampo({ action: _ }: SlideProps) {
+export default function Slide17CriarEmCampo({ action: _ }: SlideProps) {
   void _
   return (
     <SlideShell className='gap-7'>

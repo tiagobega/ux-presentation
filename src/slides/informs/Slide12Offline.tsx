@@ -25,7 +25,7 @@ const retomada = [
   },
 ]
 
-export default function Slide11Offline({ action }: SlideProps) {
+export default function Slide12Offline({ action }: SlideProps) {
   const phase = action === STEP2 ? 1 : 0
 
   return (

@@ -26,7 +26,7 @@ const pontos: { Icon: LucideIcon; titulo: string; texto: string }[] = [
   },
 ]
 
-export default function Slide05Autenticacao({ action: _ }: SlideProps) {
+export default function Slide06Autenticacao({ action: _ }: SlideProps) {
   void _
   return (
     <SlideShell className='gap-7'>

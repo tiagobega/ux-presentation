@@ -46,7 +46,7 @@ const cards = [
   },
 ]
 
-export default function Slide06Listagem({ action: _ }: SlideProps) {
+export default function Slide07Listagem({ action: _ }: SlideProps) {
   void _
   return (
     <SlideShell className='gap-6'>

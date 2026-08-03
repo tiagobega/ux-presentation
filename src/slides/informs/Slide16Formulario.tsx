@@ -40,7 +40,7 @@ const atributos: { Icon: LucideIcon; rotulo: string; valor: string; nota: string
   },
 ]
 
-export default function Slide15Formulario({ action: _ }: SlideProps) {
+export default function Slide16Formulario({ action: _ }: SlideProps) {
   void _
   return (
     <SlideShell className='gap-7'>

@@ -17,7 +17,7 @@ const define = [
   { rotulo: 'Ativo', valor: 'Sim' },
 ]
 
-export default function Slide14Template({ action: _ }: SlideProps) {
+export default function Slide15Template({ action: _ }: SlideProps) {
   void _
   return (
     <SlideShell className='gap-7'>

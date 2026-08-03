@@ -1,99 +1,117 @@
 import { motion } from 'motion/react'
+import QRCode from 'react-qr-code'
 import type { SlideProps } from '../config'
-import { SlideShell, SlideHeader, Bar, Accent, up, easeIn } from './kit'
+import { GRUPOS, OURO, TERMOS } from '../../data/glossario'
+import { useGlossarioUrl } from '../../hooks/useGlossarioUrl'
+import { SlideShell, SlideHeader, Punch, up, easeIn } from './kit'
 
-const STEP2 = 'Frase de ouro'
+/**
+ * O slide não descreve o vocabulário — ele entrega o QR e mostra a extensão
+ * dele. A definição de cada palavra vive no celular da plateia
+ * (`plugins/remoteControl.ts` → `/glossario`), que acompanha o slide atual.
+ * Só os dois contratos ficam na tela: é a distinção que a fala precisa fazer.
+ */
+const PAREDE = GRUPOS.map((grupo) => ({
+  grupo,
+  termos: TERMOS.filter((t) => t.grupo === grupo && !t.ouro),
+}))
 
-interface Termo {
-  nome: string
-  /** Os dois contratos: o que a frase de ouro separa. */
-  ouro?: boolean
-}
-
-// Agrupamento igual ao de `fleets-slides.md`: contratação · quem e o quê · operação.
-const linhas: Termo[][] = [
-  [
-    { nome: 'Contrato de dados', ouro: true },
-    { nome: 'Centro de custo', ouro: true },
-    { nome: 'Meta' },
-  ],
-  [
-    { nome: 'Colaborador' },
-    { nome: 'Veículo' },
-    { nome: 'Dispositivo' },
-    { nome: 'Versão' },
-  ],
-  [{ nome: 'Instalação' }, { nome: 'Chip' }, { nome: 'Alerta' }],
-]
-
-export default function Slide05Glossario({ action }: SlideProps) {
-  const phase = action === STEP2 ? 1 : 0
-  let ordem = -1
+export default function Slide05Glossario({ action: _ }: SlideProps) {
+  void _
+  const url = useGlossarioUrl()
 
   return (
-    <SlideShell className='gap-8'>
-      <SlideHeader
-        eyebrow='Glossário'
-        title={
-          <>
-            O vocabulário <Accent>do Fleets.</Accent>
-          </>
-        }
-        lead='Dez palavras. Sem elas, nenhum fluxo daqui pra frente faz sentido.'
-      />
+    <SlideShell className='gap-7'>
+      <SlideHeader eyebrow='Vocabulário da plataforma' title='Glossário' />
 
-      <div className='flex-1 min-h-0 flex flex-col items-center justify-center gap-5'>
-        {linhas.map((linha, li) => (
-          <div key={li} className='flex items-center justify-center gap-5'>
-            {linha.map((t) => {
-              ordem += 1
-              const apagado = phase === 1 && !t.ouro
-              return (
+      <div className='flex-1 min-h-0 flex items-center gap-14'>
+        <motion.div
+          {...up(0.22)}
+          className='shrink-0 flex flex-col items-center gap-5'
+        >
+          {/* Fundo claro e sólido: o QR é lido de longe, no celular da plateia. */}
+          <div className='bg-white border border-purple/20 p-5'>
+            {url ? (
+              <QRCode
+                value={url}
+                size={300}
+                bgColor='#ffffff'
+                fgColor='#1a1225'
+              />
+            ) : (
+              <div className='size-[300px] flex items-center justify-center font-mono text-[22px] text-text/25'>
+                …
+              </div>
+            )}
+          </div>
+
+          <div className='text-center max-w-[280px]'>
+            <div className='text-[24px] font-bold text-text tracking-[-0.02em] leading-none'>
+              Aponte a câmera
+            </div>
+            <div className='mt-2 text-[16px] text-text/50 leading-[1.45]'>
+              O glossário abre no seu celular e acompanha o que estamos vendo.
+            </div>
+          </div>
+        </motion.div>
+
+        <div className='flex-1 min-w-0 flex flex-col gap-9'>
+          <div className='grid grid-cols-2 gap-5'>
+            {OURO.map((t, i) => (
+              <motion.div
+                key={t.id}
+                {...up(0.34 + i * 0.08, easeIn)}
+                className='border border-purple/45 bg-purple/[0.1] px-7 py-6 flex flex-col gap-2'
+              >
+                <div className='text-[30px] font-bold text-purple tracking-[-0.03em] leading-none'>
+                  {t.nome}
+                </div>
+                <div className='text-[18px] text-text/55 leading-[1.4]'>
+                  {t.resumo}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          <div className='flex flex-col gap-5'>
+            <motion.div
+              {...up(0.5, easeIn)}
+              className='font-mono text-[12px] tracking-[0.16em] text-purple/50 uppercase'
+            >
+              + outros {TERMOS.length - OURO.length} termos no seu celular
+            </motion.div>
+
+            <div className='grid grid-cols-4 gap-x-7'>
+              {PAREDE.map((col, ci) => (
                 <motion.div
-                  key={t.nome}
-                  {...up(0.28 + ordem * 0.07, easeIn)}
+                  key={col.grupo}
+                  {...up(0.58 + ci * 0.07, easeIn)}
+                  className='flex flex-col gap-2.5'
                 >
-                  <motion.div
-                    animate={{
-                      opacity: apagado ? 0.22 : 1,
-                      scale: phase === 1 && t.ouro ? 1.04 : 1,
-                    }}
-                    transition={{ duration: 0.45, ease: easeIn }}
-                    className={`border px-9 py-8 ${
-                      phase === 1 && t.ouro
-                        ? 'border-purple/45 bg-purple/[0.1]'
-                        : 'border-purple/15 bg-purple/[0.03]'
-                    }`}
-                  >
-                    <span
-                      className={`text-[34px] font-bold tracking-[-0.03em] leading-none whitespace-nowrap ${
-                        phase === 1 && t.ouro ? 'text-purple' : 'text-text/85'
-                      }`}
+                  <div className='font-mono text-[11px] tracking-[0.16em] text-text/30 uppercase pb-1.5 border-b border-text/10'>
+                    {col.grupo}
+                  </div>
+                  {col.termos.map((t) => (
+                    <div
+                      key={t.id}
+                      className='text-[19px] text-text/65 leading-[1.25]'
                     >
                       {t.nome}
-                    </span>
-                  </motion.div>
+                    </div>
+                  ))}
                 </motion.div>
-              )
-            })}
+              ))}
+            </div>
           </div>
-        ))}
-
-        <motion.div
-          animate={{ opacity: phase === 1 ? 0 : 1 }}
-          transition={{ duration: 0.3 }}
-          className='font-mono text-[12px] tracking-[0.14em] text-text/30 uppercase mt-3'
-        >
-          Definições na fala · detalhe na documentação
-        </motion.div>
+        </div>
       </div>
 
-      <Bar kicker='Frase de ouro' visible={phase === 1} delay={0.15}>
-        <span className='text-purple'>Contrato de dados</span> é para onde o
-        device manda dado.{' '}
-        <span className='text-purple'>Centro de custo</span> é de onde sai o
-        pagamento da pessoa.
-      </Bar>
+      <Punch delay={0.9}>
+        Contrato de dados é para onde o device manda dado.{' '}
+        <span className='text-purple'>
+          Centro de custo é de onde sai o pagamento da pessoa.
+        </span>
+      </Punch>
     </SlideShell>
   )
 }

@@ -12,9 +12,9 @@ import QROverlay from "./QROverlay";
 import { useRemoteControl } from "../hooks/useRemoteControl";
 import Slide00Capa from "../slides/fleets-demo/Slide00Capa";
 import Slide01PorQueExiste from "../slides/fleets-demo/Slide01PorQueExiste";
-import Slide02OQueResolvemos from "../slides/fleets-demo/Slide02OQueResolvemos";
-import Slide03Ecossistema from "../slides/fleets-demo/Slide03Ecossistema";
-import Slide04Usuarios from "../slides/fleets-demo/Slide04Usuarios";
+import Slide02Arquitetura from "../slides/fleets-demo/Slide02Arquitetura";
+import Slide03Usuarios from "../slides/fleets-demo/Slide03Usuarios";
+import Slide04OQueResolvemos from "../slides/fleets-demo/Slide04OQueResolvemos";
 import Slide05Glossario from "../slides/fleets-demo/Slide05Glossario";
 import Slide06DemoAuth from "../slides/fleets-demo/Slide06DemoAuth";
 import Slide07DemoCadastros from "../slides/fleets-demo/Slide07DemoCadastros";
@@ -30,17 +30,17 @@ import Slide16Perguntas from "../slides/fleets-demo/Slide16Perguntas";
 import { SLIDE_CONFIG, type SlideProps } from "../slides/config";
 
 // Order matches SLIDE_CONFIG indices (e `fleets-slides.md`):
-// 0 Capa · 1 Por que existe · 2 O que resolvemos · 3 Ecossistema
-// 4 Usuários · 5 Glossário
-// 6–14 [DEMO]: Autenticação · Cadastros · Contrato · Colaboradores
-//              Dispositivos · Coleta em campo · Pagamentos · Alertas · Gestores
+// 0 Capa · 1 Por que existe · 2 Arquitetura · 3 Usuários
+// 4 O que resolvemos · 5 Glossário (o vocabulário fecha o contexto e abre a demo)
+// 6–14 fluxos [DEMO]: Autenticação · Cadastros · Contrato · Colaboradores
+//              Dispositivos · Coleta em campo · Pagamentos · Alertas · Dashboards
 // 15 Próximos passos · 16 Perguntas
 const SLIDES: ComponentType<SlideProps>[] = [
   Slide00Capa,
   Slide01PorQueExiste,
-  Slide02OQueResolvemos,
-  Slide03Ecossistema,
-  Slide04Usuarios,
+  Slide02Arquitetura,
+  Slide03Usuarios,
+  Slide04OQueResolvemos,
   Slide05Glossario,
   Slide06DemoAuth,
   Slide07DemoCadastros,

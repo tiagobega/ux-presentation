@@ -1,16 +1,12 @@
 import type { SlideProps } from '../config'
-import { DemoSlide, Accent } from './kit'
+import { DemoSlide } from './kit'
 
 export default function Slide10DemoDispositivos({ action: _ }: SlideProps) {
   void _
   return (
     <DemoSlide
-      eyebrow='Fluxo 05 · Dispositivos'
-      title={
-        <>
-          Ciclo <Accent>do hardware.</Accent>
-        </>
-      }
+      eyebrow='Fluxo 05'
+      title='Dispositivos'
       chips={['Mapa', 'Tabela', 'Instalação', 'Lote']}
     />
   )

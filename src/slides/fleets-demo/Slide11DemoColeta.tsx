@@ -1,5 +1,5 @@
 import type { SlideProps } from '../config'
-import { DemoSlide, Accent } from './kit'
+import { DemoSlide } from './kit'
 
 /**
  * Módulo ainda não fechado — o roteiro pede para definir com o time
@@ -9,13 +9,9 @@ export default function Slide11DemoColeta({ action: _ }: SlideProps) {
   void _
   return (
     <DemoSlide
-      eyebrow='Fluxo 06 · Coleta em campo'
+      eyebrow='Fluxo 06'
       tag='A confirmar'
-      title={
-        <>
-          Módulo <Accent>novo.</Accent>
-        </>
-      }
+      title='Coleta em campo'
       note='(fluxo a fechar com o time)'
     />
   )

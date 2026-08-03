@@ -2,6 +2,7 @@ import type { Plugin } from 'vite'
 import type { IncomingMessage, ServerResponse } from 'http'
 import { networkInterfaces } from 'os'
 import { createSocket } from 'dgram'
+import { TERMOS, FOCO, GRUPOS } from '../src/data/glossario'
 
 function getLocalIP(): string {
   try {
@@ -131,6 +132,16 @@ export function remoteControlPlugin(): Plugin {
         req.on('close', () => sseClients.delete(res))
       })
 
+      // A plateia fica com a página aberta a apresentação inteira: um comentário
+      // SSE a cada 25s impede que a conexão morra em silêncio no wi-fi.
+      const keepAlive = setInterval(() => {
+        companionClients.forEach((client) => {
+          try { client.write(': ping\n\n') } catch { companionClients.delete(client) }
+        })
+      }, 25_000)
+      keepAlive.unref?.()
+      server.httpServer?.once('close', () => clearInterval(keepAlive))
+
       // Companion clients subscribe here for read-only slide state (no legacy mobile-events)
       server.middlewares.use('/slide-state', (req: IncomingMessage, res: ServerResponse) => {
         res.setHeader('Content-Type', 'text/event-stream')
@@ -193,8 +204,23 @@ export function remoteControlPlugin(): Plugin {
       // React app fetches this to build the QR code URL — now points to profile selection
       server.middlewares.use('/remote-info', (_req: IncomingMessage, res: ServerResponse) => {
         const ip = getLocalIP()
+        const base = `http://${ip}:${actualPort}`
         res.setHeader('Content-Type', 'application/json')
-        res.end(JSON.stringify({ remoteUrl: `http://${ip}:${actualPort}/remote` }))
+        res.end(JSON.stringify({
+          remoteUrl: `${base}/remote`,
+          glossarioUrl: `${base}/glossario`,
+        }))
+      })
+
+      // /glossario → o glossário da plateia: acompanha o slide pelo SSE e
+      // abre a folha com todos os termos. É o destino do QR do slide 5.
+      server.middlewares.use('/glossario', (req: IncomingMessage, res: ServerResponse, next: () => void) => {
+        const url = (req.url ?? '').split('?')[0]
+        if (url !== '/' && url !== '') { next(); return }
+        const host = req.headers.host ?? `localhost:${actualPort}`
+        res.setHeader('Content-Type', 'text/html; charset=utf-8')
+        res.setHeader('Cache-Control', 'no-store')
+        res.end(buildGlossarioHTML(host))
       })
 
       // /remote → profile selection landing page
@@ -412,6 +438,331 @@ function buildCompanionHTML(
       es.onerror = () => {
         document.getElementById('dot').classList.remove('on');
         document.getElementById('status-text').textContent = 'RECONECTANDO...';
+        es.close();
+        setTimeout(connect, 3000);
+      };
+    }
+    connect();
+  </script>
+</body>
+</html>`
+}
+
+/**
+ * Glossário da plateia (celular). Dois modos no mesmo documento:
+ *  - **relevância** — os termos do slide que está no ar, trocados pelo SSE;
+ *  - **folha completa** — todos os termos, agrupados e com busca, para quem
+ *    quiser passear pelo vocabulário fora da ordem da fala.
+ *
+ * Conteúdo inline de `src/data/glossario.ts` — a mesma fonte do slide.
+ */
+function buildGlossarioHTML(host: string): string {
+  const slideStateUrl = `http://${host}/slide-state`
+
+  return `<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#13111a" />
+  <title>Fleets · Glossário</title>
+  ${SHARED_FONTS}
+  <style>
+    ${BASE_CSS}
+    :root { --purple: #a78bfa; --sheet-pad: 20px; }
+    body { overflow-y: auto; overscroll-behavior-y: none; -webkit-text-size-adjust: 100%; }
+    .layout { min-height: 100%; padding: 22px var(--sheet-pad) 132px; }
+
+    header { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-bottom: 18px; border-bottom: 1px solid rgba(255,255,255,.06); }
+    .wordmark { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: .2em; color: rgba(167,139,250,.4); }
+    .live { display: flex; align-items: center; gap: 7px; font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: .16em; color: rgba(237,233,246,.28); }
+    .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(167,139,250,.3); transition: background .4s, box-shadow .4s; }
+    .dot.on { background: #3ad47e; box-shadow: 0 0 8px rgba(58,212,126,.5); }
+
+    .now { padding: 22px 0 18px; }
+    .now-kicker { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: .22em; color: rgba(167,139,250,.45); text-transform: uppercase; }
+    .now-slide { display: block; margin-top: 8px; font-size: 21px; font-weight: 600; letter-spacing: -.02em; color: rgba(237,233,246,.95); line-height: 1.2; }
+    .nota { margin-top: 10px; font-size: 13px; font-weight: 300; line-height: 1.6; color: rgba(237,233,246,.42); }
+    .nota:empty { display: none; }
+
+    .cards { display: flex; flex-direction: column; gap: 10px; }
+    .card { border: 1px solid rgba(255,255,255,.07); border-left: 2px solid rgba(167,139,250,.35); background: rgba(255,255,255,.03); padding: 16px 17px; opacity: 0; animation: cardIn .45s cubic-bezier(0,0,.2,1) forwards; }
+    .card:active { background: rgba(255,255,255,.06); }
+    .card.ouro { border-left-color: var(--purple); background: rgba(167,139,250,.07); }
+    @keyframes cardIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+    .card-name { font-size: 17px; font-weight: 600; letter-spacing: -.02em; color: rgba(237,233,246,.95); }
+    .card.ouro .card-name { color: #c4b5fd; }
+    .card-resumo { margin-top: 5px; font-size: 13px; font-weight: 300; line-height: 1.55; color: rgba(237,233,246,.5); }
+    .card-more { display: inline-block; margin-top: 11px; font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: .14em; color: rgba(167,139,250,.5); text-transform: uppercase; }
+
+    .tokens { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 11px; }
+    .token { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: .1em; text-transform: uppercase; color: rgba(237,233,246,.4); border: 1px solid rgba(255,255,255,.09); padding: 3px 7px; }
+    .tag-plan { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: .12em; text-transform: uppercase; color: rgba(212,165,58,.8); border: 1px solid rgba(212,165,58,.3); background: rgba(212,165,58,.07); padding: 2px 6px; margin-left: 8px; vertical-align: 2px; }
+
+    .empty { padding: 30px 2px; font-size: 13px; font-weight: 300; line-height: 1.7; color: rgba(237,233,246,.28); }
+
+    .all-btn { position: fixed; left: var(--sheet-pad); right: var(--sheet-pad); bottom: calc(20px + env(safe-area-inset-bottom)); z-index: 30; display: flex; align-items: center; justify-content: center; gap: 9px; height: 54px; border: 1px solid rgba(167,139,250,.35); background: rgba(31,25,45,.92); backdrop-filter: blur(12px); color: #c4b5fd; font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .16em; text-transform: uppercase; cursor: pointer; }
+    .all-btn:active { transform: scale(.985); background: rgba(167,139,250,.16); }
+    .all-btn .count { color: rgba(167,139,250,.45); }
+
+    .scrim { position: fixed; inset: 0; z-index: 40; background: rgba(9,7,14,.7); opacity: 0; pointer-events: none; transition: opacity .3s; }
+    .scrim.open { opacity: 1; pointer-events: auto; }
+
+    .sheet { position: fixed; left: 0; right: 0; bottom: 0; z-index: 50; height: 90vh; height: 90dvh; display: flex; flex-direction: column; background: #16131f; border-top: 1px solid rgba(167,139,250,.22); transform: translateY(101%); transition: transform .34s cubic-bezier(.32,.72,0,1); }
+    .sheet.open { transform: none; }
+    .sheet-head { padding: 10px var(--sheet-pad) 14px; border-bottom: 1px solid rgba(255,255,255,.06); flex-shrink: 0; }
+    .grabber { width: 36px; height: 4px; border-radius: 3px; background: rgba(255,255,255,.14); margin: 0 auto 14px; }
+    .sheet-row { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 13px; }
+    .sheet-title { font-size: 16px; font-weight: 600; letter-spacing: -.02em; color: rgba(237,233,246,.92); }
+    .close { background: none; border: none; color: rgba(167,139,250,.55); font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: .14em; text-transform: uppercase; cursor: pointer; padding: 4px 0 4px 16px; }
+    .search { width: 100%; height: 42px; padding: 0 13px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08); color: #ede9f6; font-family: 'DM Sans', sans-serif; font-size: 15px; outline: none; }
+    .search:focus { border-color: rgba(167,139,250,.4); }
+    .search::placeholder { color: rgba(237,233,246,.25); }
+
+    .sheet-body { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; padding: 4px var(--sheet-pad) calc(40px + env(safe-area-inset-bottom)); }
+    .group-name { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: .22em; text-transform: uppercase; color: rgba(167,139,250,.4); padding: 22px 0 9px; }
+    .term { border-top: 1px solid rgba(255,255,255,.06); }
+    .term-head { display: flex; align-items: baseline; gap: 9px; padding: 14px 0; cursor: pointer; }
+    .term-name { font-size: 15px; font-weight: 600; color: rgba(237,233,246,.9); letter-spacing: -.01em; flex-shrink: 0; }
+    .term.open .term-name { color: #c4b5fd; }
+    .term-resumo { flex: 1; font-size: 12px; font-weight: 300; color: rgba(237,233,246,.35); line-height: 1.45; }
+    .term.open .term-resumo { display: none; }
+    .agora { width: 5px; height: 5px; border-radius: 50%; background: #3ad47e; flex-shrink: 0; align-self: center; }
+    .term-detail { max-height: 0; overflow: hidden; opacity: 0; transition: max-height .32s cubic-bezier(.32,.72,0,1), opacity .25s; }
+    .term.open .term-detail { max-height: 560px; opacity: 1; }
+    .term-detail p { font-size: 14px; font-weight: 300; line-height: 1.7; color: rgba(237,233,246,.62); padding-bottom: 2px; }
+    .veja { display: flex; flex-wrap: wrap; gap: 6px; margin: 13px 0 18px; }
+    .veja-label { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: .14em; text-transform: uppercase; color: rgba(237,233,246,.25); align-self: center; margin-right: 2px; }
+    .veja-chip { font-size: 12px; color: rgba(167,139,250,.75); border: 1px solid rgba(167,139,250,.25); background: rgba(167,139,250,.06); padding: 5px 9px; cursor: pointer; }
+    .veja-chip:active { background: rgba(167,139,250,.18); }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <header>
+      <div class="wordmark">FLEETS &middot; GLOSS&Aacute;RIO</div>
+      <div class="live"><span class="dot" id="dot"></span><span id="st">CONECTANDO&hellip;</span></div>
+    </header>
+
+    <div class="now">
+      <span class="now-kicker">Agora na apresenta&ccedil;&atilde;o</span>
+      <span class="now-slide" id="slide-label">&mdash;</span>
+      <p class="nota" id="nota"></p>
+    </div>
+
+    <div class="cards" id="cards"></div>
+    <div class="empty" id="empty">Aguardando a apresenta&ccedil;&atilde;o&hellip;</div>
+  </div>
+
+  <button class="all-btn" id="all-btn">Todos os termos <span class="count" id="count"></span></button>
+
+  <div class="scrim" id="scrim"></div>
+  <section class="sheet" id="sheet" aria-hidden="true">
+    <div class="sheet-head">
+      <div class="grabber"></div>
+      <div class="sheet-row">
+        <span class="sheet-title">Gloss&aacute;rio completo</span>
+        <button class="close" id="close">Fechar</button>
+      </div>
+      <input class="search" id="search" placeholder="Buscar termo&hellip;" autocomplete="off" autocapitalize="off" spellcheck="false" />
+    </div>
+    <div class="sheet-body" id="sheet-body"></div>
+  </section>
+
+  <script>
+    var TERMOS = ${JSON.stringify(TERMOS)};
+    var FOCO = ${JSON.stringify(FOCO)};
+    var GRUPOS = ${JSON.stringify(GRUPOS)};
+    var SLIDE_STATE_URL = '${slideStateUrl}';
+
+    var byId = {};
+    TERMOS.forEach(function (t) { byId[t.id] = t; });
+    var focoIds = [];
+
+    var el = function (id) { return document.getElementById(id); };
+    document.getElementById('count').textContent = TERMOS.length;
+
+    function esc(s) {
+      return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+    /** Busca sem acento e sem caixa: "condicao" acha "Condição". */
+    function norm(s) {
+      return String(s).toLowerCase().normalize('NFD').replace(/[\\u0300-\\u036f]/g, '');
+    }
+    function tokensHtml(t) {
+      if (!t.tokens || !t.tokens.length) return '';
+      return '<div class="tokens">' + t.tokens.map(function (k) {
+        return '<span class="token">' + esc(k) + '</span>';
+      }).join('') + '</div>';
+    }
+    function planHtml(t) {
+      return t.planejado ? '<span class="tag-plan">planejado</span>' : '';
+    }
+
+    /* ── relevância: o que está no ar agora ── */
+
+    function focoDe(slide, action) {
+      var exato = null, doSlide = null;
+      FOCO.forEach(function (f) {
+        if (f.slide !== slide) return;
+        if (f.action === action) exato = f;
+        else if (!f.action && !doSlide) doSlide = f;
+      });
+      return exato || doSlide;
+    }
+
+    function renderNow(state) {
+      el('slide-label').textContent = state.slideLabel || '—';
+
+      var foco = focoDe(state.slide, state.action);
+      el('nota').textContent = foco ? foco.nota : '';
+
+      var cards = el('cards');
+      var empty = el('empty');
+
+      if (!foco) {
+        cards.innerHTML = '';
+        empty.style.display = 'block';
+        empty.textContent = 'Nenhum termo específico neste momento — abra a lista completa para navegar à vontade.';
+        focoIds = [];
+        return;
+      }
+
+      empty.style.display = 'none';
+      focoIds = foco.termos.slice();
+      cards.innerHTML = foco.termos.map(function (id, i) {
+        var t = byId[id];
+        if (!t) return '';
+        return '<article class="card' + (t.ouro ? ' ouro' : '') + '" data-id="' + t.id + '"'
+          + ' style="animation-delay:' + (i * 70) + 'ms">'
+          + '<div class="card-name">' + esc(t.nome) + planHtml(t) + '</div>'
+          + '<div class="card-resumo">' + esc(t.resumo) + '</div>'
+          + tokensHtml(t)
+          + '<span class="card-more">ver definição &rarr;</span>'
+          + '</article>';
+      }).join('');
+    }
+
+    el('cards').addEventListener('click', function (e) {
+      var card = e.target.closest ? e.target.closest('.card') : null;
+      if (card) openSheet(card.getAttribute('data-id'));
+    });
+
+    /* ── folha com todos os termos ── */
+
+    function termHtml(t) {
+      var veja = (t.veja || []).filter(function (id) { return byId[id]; });
+      var vejaHtml = veja.length
+        ? '<div class="veja"><span class="veja-label">veja também</span>' + veja.map(function (id) {
+            return '<span class="veja-chip" data-goto="' + id + '">' + esc(byId[id].nome) + '</span>';
+          }).join('') + '</div>'
+        : '<div class="veja"></div>';
+
+      return '<div class="term" id="term-' + t.id + '" data-id="' + t.id + '">'
+        + '<div class="term-head">'
+        + (focoIds.indexOf(t.id) > -1 ? '<span class="agora" title="no slide atual"></span>' : '')
+        + '<span class="term-name">' + esc(t.nome) + planHtml(t) + '</span>'
+        + '<span class="term-resumo">' + esc(t.resumo) + '</span>'
+        + '</div>'
+        + '<div class="term-detail"><p>' + esc(t.detalhe) + '</p>' + tokensHtml(t) + vejaHtml + '</div>'
+        + '</div>';
+    }
+
+    function renderSheet(query) {
+      var q = norm(query || '').trim();
+      var hits = TERMOS.filter(function (t) {
+        if (!q) return true;
+        return norm(t.nome + ' ' + t.resumo + ' ' + t.detalhe + ' ' + (t.tokens || []).join(' ')).indexOf(q) > -1;
+      });
+
+      var body = el('sheet-body');
+      if (!hits.length) {
+        body.innerHTML = '<div class="empty">Nenhum termo com “' + esc(query) + '”.</div>';
+        return;
+      }
+
+      body.innerHTML = GRUPOS.map(function (g) {
+        var doGrupo = hits.filter(function (t) { return t.grupo === g; });
+        if (!doGrupo.length) return '';
+        return '<div class="group-name">' + esc(g) + '</div>' + doGrupo.map(termHtml).join('');
+      }).join('');
+
+      // Busca com resultado curto já abre tudo: economiza um toque.
+      if (q && hits.length <= 3) {
+        Array.prototype.forEach.call(body.querySelectorAll('.term'), function (t) {
+          t.classList.add('open');
+        });
+      }
+    }
+
+    el('sheet-body').addEventListener('click', function (e) {
+      var goto = e.target.getAttribute && e.target.getAttribute('data-goto');
+      if (goto) { revealTerm(goto); return; }
+      var head = e.target.closest ? e.target.closest('.term-head') : null;
+      if (head) head.parentNode.classList.toggle('open');
+    });
+
+    /** Abre um termo na folha e traz ele para a tela. */
+    function revealTerm(id) {
+      var node = el('term-' + id);
+      if (!node) {
+        el('search').value = '';
+        renderSheet('');
+        node = el('term-' + id);
+        if (!node) return;
+      }
+      Array.prototype.forEach.call(document.querySelectorAll('.term.open'), function (t) {
+        if (t !== node) t.classList.remove('open');
+      });
+      node.classList.add('open');
+      node.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    var sheetOpen = false;
+    function openSheet(id) {
+      renderSheet(el('search').value);
+      el('sheet').classList.add('open');
+      el('sheet').setAttribute('aria-hidden', 'false');
+      el('scrim').classList.add('open');
+      if (!sheetOpen) history.pushState({ sheet: true }, '');
+      sheetOpen = true;
+      if (id) setTimeout(function () { revealTerm(id); }, 60);
+    }
+    function closeSheet(fromHistory) {
+      el('sheet').classList.remove('open');
+      el('sheet').setAttribute('aria-hidden', 'true');
+      el('scrim').classList.remove('open');
+      if (sheetOpen && !fromHistory) history.back();
+      sheetOpen = false;
+      el('search').blur();
+    }
+
+    el('all-btn').addEventListener('click', function () { openSheet(); });
+    el('close').addEventListener('click', function () { closeSheet(); });
+    el('scrim').addEventListener('click', function () { closeSheet(); });
+    // Voltar do Android fecha a folha em vez de sair da página.
+    window.addEventListener('popstate', function () { if (sheetOpen) closeSheet(true); });
+    el('search').addEventListener('input', function (e) { renderSheet(e.target.value); });
+
+    /* ── canal com a apresentação ── */
+
+    var es;
+    function connect() {
+      es = new EventSource(SLIDE_STATE_URL);
+      es.onopen = function () {
+        el('dot').classList.add('on');
+        el('st').textContent = 'AO VIVO';
+      };
+      es.onmessage = function (e) {
+        try {
+          var state = JSON.parse(e.data);
+          if ('slide' in state) renderNow(state);
+        } catch (err) { /* ignora */ }
+      };
+      es.onerror = function () {
+        el('dot').classList.remove('on');
+        el('st').textContent = 'RECONECTANDO…';
         es.close();
         setTimeout(connect, 3000);
       };

@@ -10,12 +10,10 @@ import {
   Tv,
 } from 'lucide-react'
 import type { SlideProps } from '../config'
-import { SlideShell, SlideHeader, Accent, up, easeIn } from './kit'
-
-const STEP2 = 'Amarração'
+import { SlideShell, SlideHeader, up, easeIn } from './kit'
 
 interface Frente {
-  /** Ataca qual dor da abertura. */
+  /** Dor da abertura que a coluna ataca. */
   ataca: string
   itens: { Icon: LucideIcon; nome: string }[]
 }
@@ -30,7 +28,7 @@ const frentes: Frente[] = [
     ],
   },
   {
-    ataca: 'Matar o erro humano',
+    ataca: 'Mitigar o erro humano',
     itens: [
       { Icon: Smartphone, nome: 'App do motorista' },
       { Icon: QrCode, nome: 'QR Code de hardware' },
@@ -46,69 +44,50 @@ const frentes: Frente[] = [
   },
 ]
 
-export default function Slide15ProximosPassos({ action }: SlideProps) {
-  const phase = action === STEP2 ? 1 : 0
+export default function Slide15ProximosPassos({ action: _ }: SlideProps) {
+  void _
   let ordem = -1
 
   return (
-    <SlideShell className='gap-8'>
-      <SlideHeader
-        eyebrow='Próximos passos'
-        title={
-          <>
-            Sete frentes, <Accent>três dores.</Accent>
-          </>
-        }
-      />
+    <SlideShell className='gap-9'>
+      <SlideHeader eyebrow='Roadmap' title='Próximos passos' />
 
       <div className='flex-1 min-h-0 flex items-center'>
         <div className='grid grid-cols-3 gap-6 w-full'>
-        {frentes.map((f, fi) => (
-          <div key={f.ataca} className='flex flex-col gap-4 min-h-0'>
-            <motion.div
-              animate={{ opacity: phase === 1 ? 1 : 0.18 }}
-              transition={{ duration: 0.45, ease: easeIn, delay: fi * 0.1 }}
-              className='flex items-center gap-3 shrink-0'
-            >
-              <span className='font-mono text-[12px] tracking-[0.16em] text-purple/70 uppercase whitespace-nowrap'>
-                {f.ataca}
-              </span>
-              <span className='h-px flex-1 bg-purple/25' />
-            </motion.div>
+          {frentes.map((f, fi) => (
+            <div key={f.ataca} className='flex flex-col gap-4 min-h-0'>
+              <motion.div
+                {...up(0.22 + fi * 0.08, easeIn)}
+                className='flex items-center gap-3 shrink-0'
+              >
+                <span className='text-[19px] font-semibold text-purple tracking-[-0.01em] whitespace-nowrap'>
+                  {f.ataca}
+                </span>
+                <span className='h-px flex-1 bg-purple/25' />
+              </motion.div>
 
-            {f.itens.map((it) => {
-              ordem += 1
-              return (
-                <motion.div
-                  key={it.nome}
-                  {...up(0.3 + ordem * 0.08, easeIn)}
-                  className='border border-purple/18 bg-purple/[0.04] px-7 py-8 flex items-center gap-5'
-                >
-                  <it.Icon
-                    className='size-9 text-purple/55 shrink-0'
-                    strokeWidth={1.4}
-                  />
-                  <span className='text-[27px] font-bold text-text tracking-[-0.03em] leading-[1.1]'>
-                    {it.nome}
-                  </span>
-                </motion.div>
-              )
-            })}
-          </div>
-        ))}
+              {f.itens.map((it) => {
+                ordem += 1
+                return (
+                  <motion.div
+                    key={it.nome}
+                    {...up(0.34 + ordem * 0.08, easeIn)}
+                    className='border border-purple/18 bg-purple/[0.04] px-7 py-10 flex items-center gap-5'
+                  >
+                    <it.Icon
+                      className='size-9 text-purple/55 shrink-0'
+                      strokeWidth={1.4}
+                    />
+                    <span className='text-[27px] font-bold text-text tracking-[-0.03em] leading-[1.1]'>
+                      {it.nome}
+                    </span>
+                  </motion.div>
+                )
+              })}
+            </div>
+          ))}
         </div>
       </div>
-
-      <motion.div
-        animate={{ opacity: phase === 1 ? 1 : 0 }}
-        transition={{ duration: 0.45, ease: easeIn, delay: 0.35 }}
-        className='text-[26px] font-bold text-center text-text tracking-[-0.02em] leading-[1.25]'
-      >
-        Nada disso parte do zero:{' '}
-        <span className='text-purple'>
-          o registry de tipos e o perfil DRIVER já existem.
-        </span>
-      </motion.div>
     </SlideShell>
   )
 }

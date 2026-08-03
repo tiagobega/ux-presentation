@@ -149,6 +149,55 @@ export function Chip({
   )
 }
 
+/**
+ * Bloco que abre e fecha por `max-height` — para a história crescer step a step
+ * sem que o conteúdo já visível mude de lugar.
+ *
+ * - `max` em px precisa ser um pouco maior que a altura real do conteúdo aberto:
+ *   `max-height` só limita, então o bloco para de crescer no tamanho dele.
+ * - O espaçamento vai DENTRO (`pt-*` no filho), senão o `gap` do pai sobra
+ *   enquanto o bloco está fechado.
+ * - `fade={false}` anima só a altura: use quando o conteúdo deve aparecer
+ *   DEPOIS da abertura, com um fade próprio e atrasado.
+ */
+export function Reveal({
+  shown,
+  children,
+  max,
+  delay = 0,
+  fade = true,
+  className = '',
+}: {
+  shown: boolean
+  children: ReactNode
+  /** Teto em px — a altura do conteúdo aberto, com uma folga curta. */
+  max: number
+  delay?: number
+  fade?: boolean
+  className?: string
+}) {
+  return (
+    <motion.div
+      initial={false}
+      animate={{
+        maxHeight: shown ? max : 0,
+        ...(fade ? { opacity: shown ? 1 : 0 } : {}),
+      }}
+      transition={{
+        maxHeight: { duration: 0.5, ease: easeIn, delay: shown ? delay : 0 },
+        opacity: {
+          duration: shown ? 0.4 : 0.2,
+          ease: easeIn,
+          delay: shown ? delay + 0.08 : 0,
+        },
+      }}
+      className={`overflow-hidden ${className}`}
+    >
+      {children}
+    </motion.div>
+  )
+}
+
 /** Selo pulsante: a atenção da plateia deve estar no outro monitor. */
 export function LiveBadge({ delay = 0.1 }: { delay?: number }) {
   return (
@@ -172,13 +221,13 @@ export function LiveBadge({ delay = 0.1 }: { delay?: number }) {
 
 /**
  * Slide de demo: enquanto a aplicação roda no monitor 2, o slide só sinaliza
- * onde estamos. Título grande, tokens do fluxo, nada mais — sem parágrafos.
+ * onde estamos. Serve para a plateia se localizar — nome do domínio e os
+ * tokens do fluxo, sem frase de efeito e sem parágrafo.
  */
 export function DemoSlide({
   eyebrow,
   title,
   titleSize = 'text-[80px]',
-  sub,
   chips,
   note,
   tag,
@@ -187,7 +236,6 @@ export function DemoSlide({
   title: ReactNode
   /** Títulos longos pedem um passo abaixo na escala. */
   titleSize?: string
-  sub?: ReactNode
   /** Tokens do fluxo, separados por `·` — máximo 4. */
   chips?: string[]
   /** Ressalva curta, entre parênteses. */
@@ -210,25 +258,17 @@ export function DemoSlide({
         <LiveBadge delay={0.15} />
       </div>
 
-      <div className='flex-1 min-h-0 flex flex-col justify-center gap-9'>
+      {/* Slide de localização: o bloco fica no centro da página, não à esquerda. */}
+      <div className='flex-1 min-h-0 flex flex-col justify-center items-center text-center gap-9'>
         <motion.h1
           {...up(0.22)}
-          className={`${titleSize} font-bold leading-[1.0] text-text tracking-[-0.04em] max-w-[1500px]`}
+          className={`${titleSize} font-bold leading-none text-text tracking-[-0.04em] max-w-[1500px]`}
         >
           {title}
         </motion.h1>
 
-        {sub && (
-          <motion.div
-            {...up(0.34)}
-            className='text-[32px] text-text/40 leading-[1.2] tracking-[-0.02em]'
-          >
-            {sub}
-          </motion.div>
-        )}
-
         {chips && chips.length > 0 && (
-          <div className='flex items-center flex-wrap gap-x-5 gap-y-3'>
+          <div className='flex items-center justify-center flex-wrap gap-x-5 gap-y-3'>
             {chips.map((c, i) => (
               <motion.div
                 key={c}

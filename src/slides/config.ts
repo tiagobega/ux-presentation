@@ -1,7 +1,8 @@
 /**
  * Deck Fleets (apresentação com demo ao vivo) — 17 slides.
- * Espelha `fleets-slides.md`; a fala de cada slide está em `fleets-roteiro.md`.
- * Slides 7–15 do roteiro são `[DEMO]`: o slide é pano de fundo, a aplicação
+ * Espelha `fleets-slides.md` + os ajustes de `fleets-ajustes.md`;
+ * a fala de cada slide está em `fleets-roteiro.md`.
+ * Slides 6–14 são de fluxo: só marcam o domínio enquanto a aplicação
  * roda no monitor 2 — por isso têm um único step.
  */
 export const SLIDE_CONFIG = [
@@ -10,64 +11,80 @@ export const SLIDE_CONFIG = [
     actions: ['Capa'],
   },
   {
+    // Pergunta → resposta → uma dor por step (cada uma com a descrição).
     label: 'Por que existe',
-    actions: ['A planilha'],
+    actions: [
+      'A pergunta',
+      'A resposta',
+      'Não escala',
+      'Não conversa',
+      'Sem regra',
+    ],
   },
   {
-    label: 'O que resolvemos',
-    actions: ['Fonte única'],
-  },
-  {
-    label: 'Ecossistema',
-    actions: ['Fluxo do dado', 'Auth & permissão'],
+    // O diagrama sobe camada por camada; o 2º step acende o que falta construir.
+    label: 'Arquitetura',
+    actions: ['Hoje', 'Em construção'],
   },
   {
     label: 'Usuários',
-    actions: ['5 perfis', 'LGPD'],
+    actions: ['Permissões'],
+  },
+  {
+    // Mesma mecânica da abertura: pergunta → resposta → um ganho por step → fecho.
+    label: 'O que resolvemos',
+    actions: [
+      'A pergunta',
+      'A resposta',
+      'Regra de negócio',
+      'Visibilidade',
+      'Rastreabilidade',
+      'O foco',
+    ],
   },
   {
     label: 'Glossário',
-    actions: ['Vocabulário', 'Frase de ouro'],
+    actions: ['Vocabulário'],
   },
   {
-    label: 'Demo · Autenticação',
+    label: 'Fluxo · Autenticação',
     actions: ['Autenticação'],
   },
   {
-    label: 'Demo · Cadastros base',
+    label: 'Fluxo · Cadastros base',
     actions: ['Cadastros'],
   },
   {
-    label: 'Demo · Contrato',
+    label: 'Fluxo · Contrato',
     actions: ['Contrato'],
   },
   {
-    label: 'Demo · Colaboradores',
+    label: 'Fluxo · Colaboradores',
     actions: ['Pessoas'],
   },
   {
-    label: 'Demo · Dispositivos',
+    label: 'Fluxo · Dispositivos',
     actions: ['Hardware'],
   },
   {
-    label: 'Demo · Coleta em campo',
+    label: 'Fluxo · Coleta em campo',
     actions: ['Coleta'],
   },
   {
-    label: 'Demo · Pagamentos',
+    label: 'Fluxo · Pagamentos',
     actions: ['Pagamentos'],
   },
   {
-    label: 'Demo · Alertas',
+    label: 'Fluxo · Alertas',
     actions: ['Alertas'],
   },
   {
-    label: 'Demo · Para gestores',
+    label: 'Fluxo · Dashboards',
     actions: ['Indicadores'],
   },
   {
     label: 'Próximos passos',
-    actions: ['Sete frentes', 'Amarração'],
+    actions: ['Roadmap'],
   },
   {
     label: 'Perguntas',

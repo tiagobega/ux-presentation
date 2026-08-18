@@ -16,7 +16,7 @@ React + Vite + TypeScript fullscreen slide presentation. The original static HTM
 
 **Slide flow** — `src/components/Presentation.tsx` holds the navigation state (`slide` index + `action` step). All slides are rendered side-by-side in one horizontal track ("esteira"); a Framer Motion `x` translate pans the "camera" to `-slide` viewport widths. A slide only mounts when it is first reached (`activated` set, after `ENTER_DELAY_MS`), so its entrance animation (motion/GSAP) fires as the camera lands on it; from then on it stays mounted. The active slide gets the current `action`; slides left behind freeze on the last step they showed (`actionMemory`). Keyboard (←→↑↓), swipe (touch), QR remote, and dot/button clicks all funnel through `prev()` / `next()` / `gotoSlide()`.
 
-**Decks** — a deck is `{ id, brand, title, slides, config }` (type in `src/slides/config.ts`), declared in `<deck>/deck.ts`. `src/slides/decks.ts` picks the active one: **Informs** by default, `?deck=fleets-demo` and `?deck=fleets` for the others. `Presentation.tsx` and `Nav.tsx` read `SLIDES` / `SLIDE_CONFIG` / `DECK` from there and know nothing about which deck is loaded. `config.ts` deliberately imports no deck — the slides import `SLIDE_PADDING` from it, so importing a deck back would close a cycle.
+**Decks** — a deck is `{ id, brand, title, slides, config }` (type in `src/slides/config.ts`), declared in `<deck>/deck.ts`. `src/slides/decks.ts` picks the active one: **Informs para gestores** by default, `?deck=informs` for the full Informs deck, `?deck=fleets-demo` and `?deck=fleets` for the others. `Presentation.tsx` and `Nav.tsx` read `SLIDES` / `SLIDE_CONFIG` / `DECK` from there and know nothing about which deck is loaded. `config.ts` deliberately imports no deck — the slides import `SLIDE_PADDING` from it, so importing a deck back would close a cycle.
 
 **Adding a slide** — create `src/slides/<deck>/SlideNN.tsx`, import it in `<deck>/deck.ts`, append to `slides`, and add the matching entry (label + actions) to `config` at the same index (Nav labels and the dot nav derive from it). Each slide applies `SLIDE_PADDING` (from `../config`) on its own root for the standard padding; omit it for a full-bleed slide. `src/slides/kit.tsx` holds the vocabulary shared by every deck (`SlideShell`, `SlideHeader`, `Punch`, `Bar`, `Chip`, `Accent`, `FlowSteps`, `Reveal`, the `up()` motion helper and the easings) — prefer it over re-declaring the same boilerplate. `src/slides/fleets/kit.tsx` is just a re-export of it. The demo deck has its own `src/slides/fleets-demo/kit.tsx` with the extra `LiveBadge` and `DemoSlide`, and Informs has `src/slides/informs/ui.tsx` with the phone mockups.
 
@@ -28,7 +28,36 @@ React + Vite + TypeScript fullscreen slide presentation. The original static HTM
 
 ## Slide maps
 
-Four decks live in this repo. **Informs** (`src/slides/informs/`) is the active one; **Fleets · demo ao vivo** (`src/slides/fleets-demo/`) and the self-contained **Fleets** deck (`src/slides/fleets/`) are one URL param away; the **Branding & UX** deck (`src/slides/Slide00`–`Slide12`) stays as reference and renders nowhere until wrapped in a `deck.ts` and registered in `decks.ts`.
+Five decks live in this repo. **Informs para gestores** (`src/slides/informs-workshop/`) is the active one; the full **Informs** deck (`src/slides/informs/`), **Fleets · demo ao vivo** (`src/slides/fleets-demo/`) and the self-contained **Fleets** deck (`src/slides/fleets/`) are one URL param away; the **Branding & UX** deck (`src/slides/Slide00`–`Slide12`) stays as reference and renders nowhere until wrapped in a `deck.ts` and registered in `decks.ts`.
+
+### Informs para gestores — 12 slides (`src/slides/informs-workshop/`)
+
+Order is governed by `INFORMS_WORKSHOP_DECK` in `src/slides/informs-workshop/deck.ts`. Full script, timing and FAQ: [`informs-workshop-roteiro.md`](informs-workshop-roteiro.md).
+
+**Formato** — workshop interno para gestores da Intelicity que já sabem o que o Informs é. O deck responde três perguntas: quando faz sentido usar, como um projeto entra, e quando a necessidade já passou do limite e virou outro app. São poucos slides porque o miolo do tempo é demonstração: o 4 explica PWA com o tablet na mão (app de loja e PWA lado a lado), o 5 anda uma fase por step enquanto o site novo aparece ao lado, e só o 6 anima sozinho. Blocos: 0-3 modelo mental e controle, 4-6 PWA, ciclo e rastreio (o mais longo), 7-8 decisão e limite, 9-11 implantação e fecho.
+
+| # | File | Label | Title / theme |
+|---|------|-------|---------------|
+| 0 | `Slide00Capa.tsx` | Capa | O wordmark, "para gestores", "quando usar, como integrar e onde termina o produto" |
+| 1 | `Slide01Papel.tsx` | O papel | Sistema de origem ↔ Informs ↔ Campo, com as faixas de input e output em chips; step 2 abre quem faz o quê |
+| 2 | `Slide02Ganhos.tsx` | O que vem pronto | As 10 capacidades que o projeto não precisa reconstruir |
+| 3 | `Slide03Controle.tsx` | O que vocês controlam | O painel de controle do projeto (step 1) e como um sistema novo entra, no modelo GAIA/Apex (step 2) |
+| 4 | `Slide04PWA.tsx` | O que é PWA | "O site que vira app": tabela de 6 linhas contra o app de loja e a deixa para a demo no tablet |
+| 5 | `Slide05Ciclo.tsx` | O ciclo | As 7 fases do formulário sobre a trilha de status, **uma por step**; os rótulos vêm de `CICLO_ACOES`, exportado pelo próprio slide |
+| 6 | `Slide06Rastreio.tsx` | Rastreio | Mapa animado em loop: o percurso se desenhando ping a ping, com janela sem sinal e flush do buffer |
+| 7 | `Slide07Semaforo.tsx` | A decisão | Semáforo verde / amarelo / vermelho, uma luz por step; o step 3 abre a nota do limite |
+| 8 | `Slide08SGISV.tsx` | SGISV | Estudo de caso Tapa-Buraco: o que caberia no Informs (step 1) e o que passa do limite (step 2) |
+| 9 | `Slide09Implementar.tsx` | Implementar | Fit, Desenho, Gates, Integração, Piloto, Produção; step 2 diz que a implantação é conjunta |
+| 10 | `Slide10QuemProcurar.tsx` | Quem procurar | O caminho de triagem em 5 passos, com entrada única |
+| 11 | `Slide11Encerramento.tsx` | Encerramento | "Antes de criar outro app de campo, avalie Informs" + "Perguntas?" |
+
+**Escala tipográfica** — este deck tem piso de 20px em **todo** texto, inclusive o mono de apoio: é projetado numa sala, e 14px não se lê. Por isso ele importa de `./kit` e não de `../kit`: `src/slides/informs-workshop/kit.tsx` reexporta o vocabulário compartilhado e substitui `SlideHeader`, `Bar`, `Chip` e `FlowSteps` pelas versões de 20px. Os outros decks seguem com a escala original. Ao mexer aqui, nada abaixo de `text-[20px]`.
+
+**Slide 3, o controle** — a lista do que o projeto controla vem do domínio real (`informs-back` ADR-0004 campos polimórficos, ADR-0009 templates). O caminho de entrada é o ADR-0010: o sistema de origem publica template e formulários pela API, e o Informs devolve o preenchido por POST em lote no endpoint dele, com checkpoint por sistema (`SyncState`), retry automático (`SyncErrorForm`) e webhook de callback. Esse é o precedente citado no slide: é o que o GAIA já faz com o Oracle Apex.
+
+**Slide 6, o rastreio** — a animação é `requestAnimationFrame` sobre `getPointAtLength` do path do trajeto, em loop de 18 s, com uma janela sem sinal entre 42% e 66% do ciclo. Os números e o payload são o comportamento real: `informs_front/clients/native/stores/tracking-store.ts` (GPS a cada 5 s ou 10 m, buffer quando o WS cai, flush na reconexão) e `informs-back/ws_server` (payload `{lat, lng, ts_device, accuracy}`, fan-out `location` para ADMIN, histórico no DynamoDB sem TTL). Se o produto mudar, corrija aqui também.
+
+**Regras de conteúdo deste deck** — o público já conhece o produto, então nada de explicar o Informs do zero. Não prometer white-label, URL própria por projeto nem layout próprio: personalizar formulário é esperado, personalizar produto é outro escopo. A URL `pwa-test.d2woj7njq3qi3q.amplifyapp.com` aparece só como ambiente demonstrativo. O semáforo, o SGISV e o rastreio são os slides que carregam cor fora do roxo do deck (verde, âmbar, vermelho e o laranja de offline), porque ali a cor é o próprio conteúdo. Fontes do estudo de caso: `SGISV_App_Tapa-Buraco_Documentacao_Tecnica.pdf` e `SGISV_App_Tapa-Buraco_Documentacao_projeto de telas.pdf`, na raiz do repo.
 
 ### Informs — 21 slides (`src/slides/informs/`)
 

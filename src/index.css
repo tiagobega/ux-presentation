@@ -4,6 +4,59 @@
   --color-text: #1a1225;
   --color-purple: #7c3aed;
   --font-family-mono: 'Space Mono', monospace;
+
+  /* Deck Ilum (src/slides/ilum/): fonte própria e as animações de entrada do
+     diagrama. Só o que utility não expressa mora aqui — o resto do deck é
+     utility inline, como nos outros decks. Os atrasos vão no `style`. */
+  --font-ilum: 'DM Sans', sans-serif;
+  --animate-ilum-fade: ilum-fade 0.5s both;
+  --animate-ilum-tip: ilum-fade 0.28s both;
+  --animate-ilum-rise: ilum-rise 0.5s both;
+  --animate-ilum-in: ilum-in 0.4s both;
+  --animate-ilum-note: ilum-in 0.45s both;
+  --animate-ilum-draw: ilum-draw 0.6s both;
+  --animate-ilum-pop: ilum-pop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  --animate-ilum-sweep: ilum-sweep 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  /* Entra como os outros cartões e depois fica pulsando: as duas animações
+     numa utility só, porque `animate-*` escreve a propriedade `animation`
+     inteira e duas classes se anulariam. O `animation-delay` correspondente
+     vai inline, com um valor para cada uma. */
+  --animate-ilum-destaque: ilum-rise 0.5s both, ilum-pulse 2.2s ease-in-out infinite;
+}
+
+/* ── DECK ILUM ── */
+
+@keyframes ilum-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes ilum-rise {
+  from { opacity: 0; transform: translateY(9px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes ilum-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: none; }
+}
+/* Desenha a linha: o `pathLength={1}` do path normaliza o comprimento. */
+@keyframes ilum-draw {
+  from { stroke-dashoffset: 1; }
+  to   { stroke-dashoffset: 0; }
+}
+@keyframes ilum-pop {
+  from { opacity: 0; transform: scale(0.3); }
+  to   { opacity: 1; transform: scale(1); }
+}
+/* Varre da esquerda para a direita: a linha do tempo do Cronograma macro. */
+@keyframes ilum-sweep {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+/* Halo que abre e some. Em `box-shadow` de propósito: não ocupa espaço, então
+   o cartão não empurra os vizinhos a cada batida. */
+@keyframes ilum-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(124, 58, 237, 0.4); }
+  50%      { box-shadow: 0 0 0 12px rgba(124, 58, 237, 0); }
 }
 
 /* ── SLIDE TRANSITIONS ── */

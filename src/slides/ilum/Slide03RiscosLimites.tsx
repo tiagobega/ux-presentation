@@ -56,7 +56,6 @@ export default function Slide03RiscosLimites({ action }: SlideProps) {
   return (
     <Frame
       title='Dificuldades, riscos e responsabilidades'
-      note='Tratamentos propostos para discussão · escopo e responsáveis ainda serão confirmados.'
     >
       <div className='grid grid-cols-3 gap-[25px] max-[900px]:grid-cols-2'>
         {BLOCOS.map((b) => (

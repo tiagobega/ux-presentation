@@ -165,13 +165,33 @@ export default function Slide01Arquitetura({ action }: SlideProps) {
     const svg = el.querySelector('svg')
     if (!svg) return
 
-    const tl = gsap.from([...svg.children], {
-      opacity: 0,
-      y: 8,
-      duration: 0.4,
-      stagger: 0.008,
-      ease: 'power2.out',
-    })
+    const filhos = [...svg.children]
+
+    /**
+     * `fromTo`, não `from`, e com `clearProps` no fim.
+     *
+     * O StrictMode roda este efeito duas vezes em desenvolvimento: monta,
+     * limpa, monta de novo. A limpeza mata o tween no meio e deixa
+     * `opacity` inline em algum valor parcial — e um `from` anima *até o
+     * valor atual do elemento*, que passa a ser esse parcial. O desenho
+     * congelava em 40% e a animação nunca terminava.
+     *
+     * Com os dois extremos escritos, repetir o efeito sempre termina em
+     * opacidade 1, e o `clearProps` devolve os elementos ao estado natural
+     * para a passagem seguinte começar limpa.
+     */
+    const tl = gsap.fromTo(
+      filhos,
+      { opacity: 0, y: 8 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.4,
+        stagger: 0.008,
+        ease: 'power2.out',
+        clearProps: 'opacity,transform',
+      },
+    )
 
     /**
      * Rede de segurança: o GSAP anda por `requestAnimationFrame`, que o
@@ -186,6 +206,9 @@ export default function Slide01Arquitetura({ action }: SlideProps) {
     return () => {
       window.clearTimeout(guarda)
       tl.kill()
+      // Sem isto, a segunda passagem do StrictMode começaria do valor parcial
+      // em que o tween morreu.
+      gsap.set(filhos, { clearProps: 'opacity,transform' })
     }
   }, [])
 

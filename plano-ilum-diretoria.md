@@ -2,12 +2,12 @@
 
 > **Plateia:** diretoria da Intelicity.
 > **Objetivo:** informar — formalizar a direção de front-end, os marcos e a incorporação de produtos no ILUM.
-> **Tempo:** sem restrição · quatro slides.
+> **Tempo:** sem restrição · cinco slides.
 > **Formato:** somente slides.
 
-## Revisão de 22/09 — deck de quatro slides
+## Revisão de 22/09 — deck de cinco slides
 
-O deck foi reduzido a quatro slides. As seções detalhadas mais abaixo **continuam valendo como reserva de fala, ressalvas e notas de preparação**, mas não são mais a estrutura do deck: o que está no ar é o que esta seção descreve.
+O deck foi reduzido a cinco slides. As seções detalhadas mais abaixo **continuam valendo como reserva de fala, ressalvas e notas de preparação**, mas não são mais a estrutura do deck: o que está no ar é o que esta seção descreve.
 
 ### Slide 1 — Arquitetura [diagrama + vocabulário]
 **Passos:** Infraestrutura · Vocabulário · De onde vem cada um
@@ -55,6 +55,25 @@ O parêntese diz o que a frente é, não por que ela importa — a justificativa
 | Adaptação de plataformas | a partir de FEV/27 |
 
 Só os marcos que têm data mostram data. “Adaptação de novos produtos” não tem, e inventar uma transformaria uma sequência em compromisso.
+
+### Slide 5 — Entregas em paralelo [título+grade]
+**Passos:** As entregas
+
+Cinco bloquinhos com o que o time entrega **além** do que o plano do ILUM prevê.
+
+| Bloco | Na tela |
+|---|---|
+| Fleets | Auxiliar de agendamento e instalação |
+| Obras · Planejamento | Produto construído com os gerentes de projeto |
+| Informs | Formulários em campo, do template ao envio |
+| ERP | Ferramenta de solicitação de reembolso |
+| Comgas | Aplicação de RFID |
+
+Fecha o deck depois do cronograma de propósito: primeiro a diretoria vê o plano, depois vê que ele não é o único compromisso em curso.
+
+Os descritores dizem **o que a coisa é**, não em que pé ela está. Status de portfólio envelhece entre a escrita e a reunião, e a tela não tem como mostrar que envelheceu; o que cada produto é, não muda. Se a fala precisar de situação, ela está na seção "Slide 7 — O portfólio em andamento", mais abaixo, com a data em que foi levantada.
+
+**Fala.** “Vale dizer que nada disso para o resto. Em paralelo ao plano, o time entrega o auxiliar de agendamento e instalação do Fleets, o produto de obra e planejamento com os gerentes de projeto, o Informs, a ferramenta de solicitação de reembolso no ERP e a aplicação de RFID da Comgas.”
 
 ---
 

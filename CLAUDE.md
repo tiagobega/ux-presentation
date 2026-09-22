@@ -30,7 +30,7 @@ React + Vite + TypeScript fullscreen slide presentation. The original static HTM
 
 Seven decks live in this repo. **ILUM · diretoria** (`src/slides/diretoria/`) is the active one; **Front-end** (`src/slides/front/`, rascunho anterior do mesmo assunto), **Ilum** (`src/slides/ilum/`), **Informs** (`src/slides/informs/`), **Fleets · demo ao vivo** (`src/slides/fleets-demo/`) and the self-contained **Fleets** deck (`src/slides/fleets/`) are one URL param away; the **Branding & UX** deck (`src/slides/Slide00`–`Slide12`) stays as reference and renders nowhere until wrapped in a `deck.ts` and registered in `decks.ts`.
 
-### ILUM · diretoria — 4 slides (`src/slides/diretoria/`)
+### ILUM · diretoria — 5 slides (`src/slides/diretoria/`)
 
 A apresentação para a diretoria. **A fonte é [`plano-ilum-diretoria.md`](plano-ilum-diretoria.md)**: a seção "Revisão de 22/09" descreve o deck atual, e as seções seguintes guardam a versão anterior, de treze slides, como reserva de fala e de ressalvas. [`briefing-ilum-diretoria.md`](briefing-ilum-diretoria.md) guarda a plateia, o objetivo e as pendências. Não há roteiro separado — o plano é o roteiro.
 
@@ -42,6 +42,7 @@ Order is governed by `DIRETORIA_DECK` in `src/slides/diretoria/deck.ts`.
 | 2 | `Slide02CidadeX.tsx` | Cidade X | Composição por prompt: digitação, clique, montagem e a aplicação preenchida |
 | 3 | `Slide03ComoFazer.tsx` | Como fazer | As oito frentes, em grade |
 | 4 | `Slide04Cronograma.tsx` | Cronograma | Cinco marcos numa linha do tempo |
+| 5 | `Slide05EntregasParalelas.tsx` | Em paralelo | Cinco bloquinhos com o que o time entrega além do plano |
 
 **Critério editorial** — na tela entram títulos, termos, dados e status; a explicação longa é a fala. Por isso o `Frame` de `src/slides/diretoria/ui.tsx` **não tem rodapé de nota**, ao contrário do `Frame` do deck Ilum. As definições curtas do slide 1 são a exceção combinada: são vocabulário, e sem elas a diretoria não acompanha o resto.
 
@@ -55,6 +56,8 @@ Order is governed by `DIRETORIA_DECK` in `src/slides/diretoria/deck.ts`.
 **O cartão do slide 1 é um recorte do `fluxo-novo.svg`** — os nomes das peças (Banco · Front-end · Back-end; Obras · Lens (BI) · Planejamento Recape · Query · Mapas) vêm de lá, não de esboço. Ao mexer, confira o SVG antes de inventar.
 
 **A cadeia do slide 2** — o clique simulado dispara a montagem sozinho (plataforma, depois os módulos voando). Um clique que não causa nada lê como animação quebrada, que foi o defeito da primeira versão. Sobra um único avanço manual, o que preenche a aplicação: o apresentador nunca aperta seta sem que algo mude na tela. A digitação conta por **tempo decorrido** em `requestAnimationFrame`, não um caractere por tique de `setInterval` — cada caractere provoca um render do palco inteiro, e com intervalo fixo o tique atrasava e a frase levava o dobro do previsto.
+
+**Descritor, não status** — no slide 5 cada bloquinho diz o que a coisa é, não em que pé ela está. Status de portfólio envelhece entre a escrita e a reunião, e a tela não tem como mostrar que envelheceu. A situação de cada frente, com a data do levantamento, vive na seção "Slide 7 — O portfólio em andamento" do plano.
 
 **Regra de layout do deck** — nada entra empurrando o vizinho. O que aparece numa etapa posterior já está no DOM desde o primeiro quadro, só apagado.
 

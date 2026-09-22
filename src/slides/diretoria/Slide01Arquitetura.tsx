@@ -53,75 +53,42 @@ const CARTAO_DESTINO = { x: 30, y: 110 }
  * vez de trocar o conteúdo, aproximar o que já está lá.
  */
 const CAMERA_CHEIA = '0 0 1087 646'
-const CAMERA_RECORTE = '10 100 990 470'
-
-/** Coluna dos termos, à direita do cartão. */
-const TERMO_X = 390
-
-interface BlocoTermo {
-  termo: string
-  descricao: string
-  /**
-   * O teste que decide o enquadramento. É o que a diretoria leva da reunião:
-   * a definição diz o que a coisa é, o critério diz como reconhecer.
-   */
-  criterio: string
-  nomeY: number
-  descY: number
-  criterioY: number
-  /** Altura da seta que liga o cartão a este bloco. */
-  setaY: number
-  /** Onde as peças deste termo param. Uma posição por peça do bloco. */
-  destinos: { x: number; y: number }[]
-}
+const CAMERA_RECORTE = '10 100 1010 445'
 
 /**
- * Os destinos respeitam a **largura original de cada pastilha**: nada é
- * reescalado, senão o texto virado path distorceria. Por isso os cinco
- * produtos, que são largos, param em duas colunas em vez de uma fileira.
+ * O enquadramento, como forma.
+ *
+ * Em vez de três rótulos empilhados, os termos viram **um desenho que já diz
+ * a relação**:
+ *
+ * - a **plataforma** é uma caixa fechada e sólida — o core, estrutura prévia;
+ * - os **serviços** ficam *dentro* dela, porque existem só para ela;
+ * - o **encaixe** é a borda por onde se acopla o que vem de fora;
+ * - os **produtos** ficam *fora*, cada um com a própria borda — o escopo das
+ *   suas regras — e uma plataforma fantasma ao lado mostra que o mesmo
+ *   produto encaixa em outra.
+ *
+ * Dentro/fora é a informação, e ela não depende de ninguém ler o rótulo.
+ * Com três linhas de texto, "serviço" e "produto" tinham o mesmo peso visual
+ * e a diferença ficava por conta da frase.
  */
-const TERMOS: BlocoTermo[] = [
-  {
-    termo: 'Plataforma',
-    descricao: '(base principal)',
-    criterio: 'É a aplicação do cliente',
-    nomeY: 155,
-    descY: 178,
-    criterioY: 198,
-    setaY: 175,
-    destinos: [{ x: TERMO_X, y: 210 }],
-  },
-  {
-    termo: 'Serviço',
-    descricao: '(código específico da plataforma, representado como módulo)',
-    criterio: 'Vale só para esta plataforma',
-    nomeY: 278,
-    descY: 301,
-    criterioY: 321,
-    setaY: 298,
-    // As larguras (50 · 79 · 72) vêm do desenho; os vãos são de 16.
-    destinos: [
-      { x: TERMO_X, y: 333 },
-      { x: TERMO_X + 66, y: 333 },
-      { x: TERMO_X + 161, y: 333 },
-    ],
-  },
-  {
-    termo: 'Produto',
-    descricao: '(módulo acoplado a um host)',
-    criterio: 'Vale para mais de uma plataforma',
-    nomeY: 401,
-    descY: 424,
-    criterioY: 444,
-    setaY: 421,
-    destinos: [
-      { x: TERMO_X, y: 456 },
-      { x: TERMO_X + 300, y: 456 },
-      { x: TERMO_X, y: 490 },
-      { x: TERMO_X + 300, y: 490 },
-      { x: TERMO_X, y: 524 },
-    ],
-  },
+const COLUNA_X = 390
+const COLUNA_W = 620
+
+/** Onde cada peça do cartão para. Título, três serviços, cinco produtos. */
+const DESTINOS: { x: number; y: number }[] = [
+  { x: 406, y: 172 },
+  // As larguras dos serviços (50 · 79 · 72) vêm do desenho; os vãos são 16.
+  { x: 406, y: 234 },
+  { x: 472, y: 234 },
+  { x: 567, y: 234 },
+  // Produtos em duas colunas: a pastilha tem 284 de largura no desenho e não
+  // é reescalada, então cinco lado a lado não caberiam.
+  { x: 406, y: 376 },
+  { x: 702, y: 376 },
+  { x: 406, y: 410 },
+  { x: 702, y: 410 },
+  { x: 406, y: 444 },
 ]
 
 export const ACTIONS = ['Infraestrutura', 'Vocabulário', 'De onde vem cada um']
@@ -146,7 +113,8 @@ interface Desenho {
   cartaoDx: number
   cartaoDy: number
   pecas: Peca[]
-  termos: SVGGElement[]
+  /** A caixa da plataforma, o encaixe e a área dos produtos. */
+  estrutura: SVGGElement
   /** Elementos folha, para a animação de entrada. */
   folhas: SVGGraphicsElement[]
 }
@@ -169,6 +137,98 @@ function texto(conteudo: string, x: number, y: number, tamanho: number, peso: st
   t.setAttribute('fill', cor)
   t.textContent = conteudo
   return t
+}
+
+/** Rótulo em caixa alta, espaçado. Abre um bloco da estrutura. */
+function rotulo(conteudo: string, x: number, y: number, cor = '#77618e') {
+  const t = texto(conteudo, x, y, 12, '700', cor)
+  t.setAttribute('letter-spacing', '1.2')
+  return t
+}
+
+function retangulo(
+  x: number,
+  y: number,
+  w: number,
+  h: number,
+  preenchimento: string,
+  contorno: string,
+  espessura: number,
+  tracejado?: string,
+) {
+  const r = document.createElementNS(NS, 'rect')
+  r.setAttribute('x', String(x))
+  r.setAttribute('y', String(y))
+  r.setAttribute('width', String(w))
+  r.setAttribute('height', String(h))
+  r.setAttribute('rx', '12')
+  r.setAttribute('fill', preenchimento)
+  r.setAttribute('stroke', contorno)
+  r.setAttribute('stroke-width', String(espessura))
+  if (tracejado) r.setAttribute('stroke-dasharray', tracejado)
+  return r
+}
+
+/**
+ * Desenha o enquadramento vazio: a caixa da plataforma com o espaço dos
+ * serviços dentro, a faixa de encaixe na borda e a área dos produtos fora,
+ * com a plataforma fantasma que mostra o reuso. As peças do cartão caem aqui
+ * na etapa seguinte.
+ */
+function criarEstrutura(svg: SVGSVGElement): SVGGElement {
+  const g = document.createElementNS(NS, 'g')
+  g.setAttribute('data-arq-extra', 'estrutura')
+  g.style.opacity = '0'
+
+  // ── A plataforma: caixa fechada e sólida. Os serviços vivem dentro. ──
+  g.appendChild(retangulo(COLUNA_X, 115, COLUNA_W, 165, '#f3ebff', '#7c3aed', 2.5))
+  g.appendChild(texto('Plataforma', 406, 143, 24, '700', '#3d2b52'))
+  g.appendChild(texto('core · estrutura prévia, onde tudo se apoia', 406, 163, 13, '400', '#64566f'))
+
+  const divisoria = document.createElementNS(NS, 'line')
+  divisoria.setAttribute('x1', '406')
+  divisoria.setAttribute('y1', '200')
+  divisoria.setAttribute('x2', String(COLUNA_X + COLUNA_W - 16))
+  divisoria.setAttribute('y2', '200')
+  divisoria.setAttribute('stroke', '#c3aadc')
+  g.appendChild(divisoria)
+
+  g.appendChild(rotulo('SERVIÇOS', 406, 222, '#5a3581'))
+  g.appendChild(texto('criados para esta plataforma', 484, 222, 13, '400', '#64566f'))
+
+  // ── O encaixe: a borda por onde entra o que vem de fora. ──
+  g.appendChild(retangulo(COLUNA_X, 292, COLUNA_W, 24, 'none', '#a58cc4', 1.5, '6 5'))
+  const encaixe = texto('ENCAIXE · MICROFRONT-ENDS', COLUNA_X + COLUNA_W / 2, 309, 11, '700', '#77618e')
+  encaixe.setAttribute('letter-spacing', '1.2')
+  encaixe.setAttribute('text-anchor', 'middle')
+  g.appendChild(encaixe)
+
+  // Pinos curtos dos dois lados da faixa: é o acoplamento, não uma camada.
+  ;[500, 700, 900].forEach((x) => {
+    ;[
+      [280, 292],
+      [316, 330],
+    ].forEach(([y1, y2]) => {
+      const pino = document.createElementNS(NS, 'line')
+      pino.setAttribute('x1', String(x))
+      pino.setAttribute('y1', String(y1))
+      pino.setAttribute('x2', String(x))
+      pino.setAttribute('y2', String(y2))
+      pino.setAttribute('stroke', '#a58cc4')
+      pino.setAttribute('stroke-width', '1.5')
+      g.appendChild(pino)
+    })
+  })
+
+  // ── Os produtos: fora da caixa, cada um com a própria borda. ──
+  g.appendChild(rotulo('PRODUTOS', 406, 348, '#5a3581'))
+  g.appendChild(texto('fora da plataforma', 490, 348, 13, '400', '#64566f'))
+  g.appendChild(
+    texto('valem para mais de uma plataforma · regras próprias, escopadas', 406, 366, 13, '600', '#7c3aed'),
+  )
+
+  svg.appendChild(g)
+  return g
 }
 
 function classificar(svg: SVGSVGElement): Desenho | null {
@@ -266,7 +326,7 @@ function classificar(svg: SVGSVGElement): Desenho | null {
     'cartao',
   )
 
-  const destinos = TERMOS.flatMap((t) => t.destinos)
+  const destinos = DESTINOS
   if (destinos.length !== grupos.length) return null
 
   const pecas: Peca[] = grupos.map((membros, n) => {
@@ -303,32 +363,14 @@ function classificar(svg: SVGSVGElement): Desenho | null {
     }
   })
 
-  const termos = TERMOS.map((t) => {
-    const g = document.createElementNS(NS, 'g')
-    g.setAttribute('data-arq-extra', 'termo')
-    g.style.opacity = '0'
-
-    /**
-     * A seta do cartão para o bloco. É ela que diz "isto daqui se enquadra
-     * assim": sem o traço, os três termos leem como uma lista solta ao lado
-     * do cartão, e não como o enquadramento do que está dentro dele.
-     */
-    const seta = document.createElementNS(NS, 'path')
-    seta.setAttribute(
-      'd',
-      `M350 ${t.setaY} L368 ${t.setaY} M362 ${t.setaY - 5} L368 ${t.setaY} L362 ${t.setaY + 5}`,
-    )
-    seta.setAttribute('fill', 'none')
-    seta.setAttribute('stroke', '#8e73ad')
-    seta.setAttribute('stroke-width', '2')
-    g.appendChild(seta)
-
-    g.appendChild(texto(t.termo, TERMO_X, t.nomeY, 30, '700', '#3d2b52'))
-    g.appendChild(texto(t.descricao, TERMO_X, t.descY, 14, '400', '#64566f'))
-    g.appendChild(texto(t.criterio, TERMO_X, t.criterioY, 15, '600', '#7c3aed'))
-    svg.appendChild(g)
-    return g
-  })
+  const estrutura = criarEstrutura(svg)
+  /**
+   * O cartão volta para o fim da lista: em SVG não há `z-index`, quem pinta
+   * por último fica por cima. A estrutura é criada depois do cartão e o
+   * preenchimento da caixa da plataforma escondia as peças que pousam dentro
+   * dela — só os produtos, que param fora, apareciam.
+   */
+  svg.appendChild(cartao)
 
   return {
     svg,
@@ -337,7 +379,7 @@ function classificar(svg: SVGSVGElement): Desenho | null {
     cartaoDx: CARTAO_DESTINO.x - areaCartao.x,
     cartaoDy: CARTAO_DESTINO.y - areaCartao.y,
     pecas,
-    termos,
+    estrutura,
     folhas: filhos,
   }
 }
@@ -358,7 +400,7 @@ function aplicarFase(d: Desenho, fase: number, instantaneo: boolean) {
   mexer(d.svg, { attr: { viewBox: recorte ? CAMERA_RECORTE : CAMERA_CHEIA } })
   mexer(d.fora, { opacity: recorte ? 0 : 1 }, 0.45)
   mexer(d.cartao, { x: recorte ? d.cartaoDx : 0, y: recorte ? d.cartaoDy : 0 })
-  d.termos.forEach((t) => mexer(t, { opacity: recorte ? 1 : 0 }, 0.45))
+  mexer(d.estrutura, { opacity: recorte ? 1 : 0 }, 0.45)
   d.pecas.forEach((p) => {
     mexer(p.g, { x: voou ? p.dx : 0, y: voou ? p.dy : 0 })
     mexer(p.fantasma, { opacity: voou ? 0.25 : 0 }, 0.45)
@@ -457,7 +499,7 @@ export default function Slide01Arquitetura({ action }: SlideProps) {
         // o `preserveAspectRatio` ajusta o desenho ao `viewBox` corrente.
         className='flex-1 min-h-0 [&_svg]:w-full [&_svg]:h-full'
         role='img'
-        aria-label='Fluxo da arquitetura: gestão de frota e fontes de dados alimentam o Ilum, que troca com o Vision, salva no Banco Yoda e roteia para a plataforma do projeto; dela saem os termos plataforma, serviço e produto'
+        aria-label='Fluxo da arquitetura: gestão de frota e fontes de dados alimentam o Ilum, que troca com o Vision, salva no Banco Yoda e roteia para a plataforma do projeto; dela sai o enquadramento em plataforma, serviço e produto'
       />
     </section>
   )

@@ -13,17 +13,19 @@ O deck foi reduzido a cinco slides. As seções detalhadas mais abaixo **continu
 **Passos:** Infraestrutura · Vocabulário · De onde vem cada um
 
 1. *Infraestrutura*: o desenho inteiro, que é o `src/assets/fluxo-novo.svg` do deck Ilum. Gestão de frota e fontes de dados alimentam o Ilum, que troca com o Vision, salva no Banco Yoda e roteia para a plataforma do projeto.
-2. *Vocabulário*: tudo que não é o cartão do projeto some, o cartão desliza para a esquerda e a câmera fecha nele; os três termos entram à direita. Nada é substituído por uma réplica: o cartão que se move é o do próprio desenho, e o fade fica só no que sai de foco.
+2. *Vocabulário*: tudo que não é o cartão do projeto some, o cartão desliza para a esquerda e a câmera fecha nele; à direita entra o **enquadramento**, vazio. Nada é substituído por uma réplica: o cartão que se move é o do próprio desenho, e o fade fica só no que sai de foco.
+3. *De onde vem cada um*: as peças do cartão pousam no enquadramento, deixando uma cópia apagada no lugar para o cartão não esvaziar.
 
-   | Termo | Na tela | Critério de enquadramento |
-   |---|---|---|
-   | Plataforma | base principal | É a aplicação do cliente |
-   | Serviço | código específico da plataforma, representado como módulo | Vale só para esta plataforma |
-   | Produto | módulo acoplado a um host | Vale para mais de uma plataforma |
+O enquadramento é um desenho, não três rótulos empilhados — a relação já está na forma:
 
-   Uma seta liga o cartão a cada bloco. O critério é o que a diretoria leva da reunião: a definição diz o que a coisa é, o critério diz como reconhecer. Sem ele os três termos leem como uma lista solta ao lado do cartão, e não como o enquadramento do que está dentro dele.
+| Termo | Como aparece | Na tela |
+|---|---|---|
+| **Plataforma** | Caixa fechada e sólida | core · estrutura prévia, onde tudo se apoia |
+| **Serviço** | *Dentro* da caixa | criados para esta plataforma |
+| **Encaixe** | Faixa tracejada na borda | encaixe · microfront-ends |
+| **Produto** | *Fora* da caixa, cada um com a própria borda | fora da plataforma · valem para mais de uma plataforma · regras próprias, escopadas |
 
-3. *De onde vem cada um*: as peças do cartão se movem para a linha do termo a que pertencem, deixando uma cópia apagada no lugar para o cartão não esvaziar. O título do projeto vai para **Plataforma**; os SERVIÇOS DEDICADOS (Banco, Front-end, Back-end) vão para **Serviço**; os PRODUTOS (Obras, Lens (BI), Planejamento Recape, Query, Mapas) vão para **Produto**. A equipe dedicada fica no cartão: não é um dos três termos.
+Dentro/fora é a informação, e ela não depende de ninguém ler o rótulo. Com três linhas de texto, "serviço" e "produto" tinham o mesmo peso visual e a diferença ficava por conta da frase.
 
 Os nomes das peças são os do `fluxo-novo.svg`, não os do esboço à mão: o cartão é um recorte daquele desenho, e divergir faria o terceiro passo parecer outra coisa.
 

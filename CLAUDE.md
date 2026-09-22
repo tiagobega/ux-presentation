@@ -65,7 +65,13 @@ Isso exige classificar o SVG por geometria em tempo de execução, porque o expo
 
 **A cadeia do slide 2** — o clique simulado dispara a montagem sozinho (plataforma, depois os módulos voando). Um clique que não causa nada lê como animação quebrada, que foi o defeito da primeira versão. Sobra um único avanço manual, o que preenche a aplicação: o apresentador nunca aperta seta sem que algo mude na tela. A digitação conta por **tempo decorrido** em `requestAnimationFrame`, não um caractere por tique de `setInterval` — cada caractere provoca um render do palco inteiro, e com intervalo fixo o tique atrasava e a frase levava o dobro do previsto.
 
-**O vocabulário do slide 1 atravessa o deck** — cada termo carrega um **critério de enquadramento** ("vale só para esta plataforma" / "vale para mais de uma"), não só a definição, e uma seta liga o cartão a cada bloco. O slide 3 usa esse mesmo vocabulário para separar **interno** de **produto**: sem a separação, design system e Lens apareciam com o mesmo peso, e a diretoria não tinha como saber o que dali vira oferta.
+**O enquadramento é uma forma, não três rótulos** — no slide 1 os termos viram um desenho em que a relação já está dita: a **plataforma** é uma caixa fechada e sólida (o core, estrutura prévia), os **serviços** ficam *dentro* dela porque existem só para ela, o **encaixe** é a borda por onde se acopla o que vem de fora, e os **produtos** ficam *fora*, cada um com a própria borda — o escopo das suas regras. Dentro/fora é a informação, e não depende de ninguém ler o rótulo; com três linhas de texto, "serviço" e "produto" tinham o mesmo peso visual e a diferença ficava por conta da frase.
+
+A estrutura entra vazia no passo 2 (o vocabulário como forma) e as peças do cartão pousam nela no passo 3.
+
+**Em SVG não há `z-index`** — quem pinta por último fica por cima. A estrutura é criada depois do cartão, então o cartão é reanexado ao fim (`svg.appendChild(cartao)`): sem isso o preenchimento da caixa da plataforma esconde as peças que pousam dentro dela, e só os produtos, que param fora, aparecem.
+
+O slide 3 usa esse mesmo vocabulário para separar **interno** de **produto**: sem a separação, design system e Lens apareciam com o mesmo peso, e a diretoria não tinha como saber o que dali vira oferta.
 
 **Data derivada nunca se apresenta como compromisso** — no cronograma só 15/10 e FEV/27 vieram do usuário; as outras três janelas são derivadas da ordem dos marcos entre esses dois âncoras, e o rodapé do slide diz isso na tela. No slide 5, só o Fleets tem data informada: as demais frentes dizem "a confirmar" em vez de exibir uma data inventada, e o rodapé carrega a data do levantamento (SET/26). Status envelhece entre a escrita e a reunião; datar o levantamento é o que permite mostrá-lo sem que vire promessa. Ao acrescentar marco ou frente, mantenha a regra: dado do usuário em destaque, derivado rotulado, desconhecido explícito.
 

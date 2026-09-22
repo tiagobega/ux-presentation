@@ -111,8 +111,15 @@ interface Peca {
 
 interface Desenho {
   svg: SVGSVGElement
-  /** Tudo que não é o cartão do projeto: some no passo 2. */
-  fora: SVGGraphicsElement[]
+  /**
+   * Tudo que não é o cartão do projeto, num grupo só: some no passo 2.
+   *
+   * É um **grupo**, e não a lista de elementos, de propósito. `aplicarFase`
+   * anima a opacidade daqui; a entrada anima a opacidade de cada folha. Em
+   * SVG as duas se multiplicam, então cada animação escreve na sua própria
+   * propriedade e nenhuma precisa sobrescrever a outra.
+   */
+  fora: SVGGElement
   cartao: SVGGElement
   /** Deslocamento do cartão até a coluna da esquerda. */
   cartaoDx: number
@@ -120,6 +127,8 @@ interface Desenho {
   pecas: Peca[]
   /** Um grupo por conceito: cada um entra na sua etapa. */
   blocos: { plataforma: SVGGElement; servico: SVGGElement; produto: SVGGElement }
+  /** As folhas do desenho original, uma a uma: é o que a entrada anima. */
+  folhas: SVGGraphicsElement[]
 }
 
 /** Move `els` para dentro de um `<g>` novo, preservando a ordem. */
@@ -388,6 +397,13 @@ function classificar(svg: SVGSVGElement): Desenho | null {
     }
   })
 
+  /**
+   * O `fora` vira um grupo, e ele fica no começo da lista para continuar
+   * pintando por baixo de tudo (em SVG quem pinta por último fica por cima).
+   */
+  const foraG = agrupar(svg, fora, 'fora')
+  svg.insertBefore(foraG, svg.firstChild)
+
   const blocos = criarEstrutura(svg)
   /**
    * O cartão volta para o fim da lista: em SVG não há `z-index`, quem pinta
@@ -399,12 +415,13 @@ function classificar(svg: SVGSVGElement): Desenho | null {
 
   return {
     svg,
-    fora,
+    fora: foraG,
     cartao,
     cartaoDx: CARTAO_DESTINO.x - areaCartao.x,
     cartaoDy: CARTAO_DESTINO.y - areaCartao.y,
     pecas,
     blocos,
+    folhas: filhos,
   }
 }
 
@@ -484,34 +501,66 @@ export default function Slide01Arquitetura({ action }: SlideProps) {
   }, [])
 
   /**
-   * Entrada: uma varredura do recipiente, e **nada dentro do SVG**.
+   * Entrada: **cada elemento do desenho acende sozinho**, varrendo da
+   * esquerda para a direita.
    *
-   * Antes a entrada animava a opacidade dos 118 elementos, um a um. Isso
-   * disputava com `aplicarFase`, que anima a opacidade dos mesmos elementos
-   * com `overwrite: "auto"` — cada um matava os tweens do outro no meio, e o
-   * desenho piscava e parecia reiniciar. Duas animações escrevendo a mesma
-   * propriedade nos mesmos nós nunca vai ser estável.
+   * O que quebrava antes não era animar item a item, era animar item a item
+   * *na mesma propriedade que `aplicarFase` já usava*: ela apagava o `fora`
+   * mexendo na opacidade de cada elemento de lá, com `overwrite: "auto"`, e
+   * os dois tweens se matavam no meio — o desenho piscava e parecia
+   * reiniciar.
    *
-   * Agora quem anima é o `clip-path` da div que hospeda o SVG: **um tween, um
-   * elemento, fora do desenho**. A varredura continua, `aplicarFase` fica
-   * dona exclusiva da opacidade, e não há estado parcial possível dentro do
-   * SVG.
+   * Agora o `fora` é um grupo: `aplicarFase` anima a opacidade **do grupo** e
+   * a entrada anima a opacidade **de cada folha**. Em SVG as duas se
+   * multiplicam, então são propriedades diferentes em nós diferentes e nunca
+   * disputam. Os grupos criados aqui (estrutura e fantasmas) também estão
+   * fora da lista de folhas.
+   *
+   * `fromTo`, não `from`: um `from` anima *até o valor atual do elemento*, e
+   * se um tween anterior morreu no meio esse valor é um parcial — o desenho
+   * congelava em 40%.
+   *
+   * Sem deslocamento (`y`): um cartão do desenho é feito de vários elementos
+   * soltos (o preenchimento, o contorno, cada texto), e como o `stagger` dá a
+   * cada um o seu instante, deslocá-los fazia cada caixa aparecer com a borda
+   * duplicada.
    */
   useLayoutEffect(() => {
     if (!desenho) return
     aplicarFase(desenho, stepRef.current, true)
 
-    const el = host.current
-    if (!el) return
+    const ordenadas = [...desenho.folhas].sort((a, b) => {
+      try {
+        return a.getBBox().x - b.getBBox().x
+      } catch {
+        return 0
+      }
+    })
+
+    /**
+     * **Cada elemento acende até a opacidade que ele tem no arquivo, não até
+     * 1.** As sete linhas tracejadas do fluxo nascem com `opacity="0.12"` no
+     * export: levá-las a 1 e depois devolver o valor do arquivo no
+     * `clearProps` fazia elas caírem de 1 para 0.12 num quadro só. Isso era
+     * uma piscada de verdade, no fim da entrada.
+     *
+     * O `clearProps` limpa antes de medir, para o valor lido ser o do arquivo
+     * e nunca o parcial de um tween que morreu no meio.
+     */
+    gsap.set(ordenadas, { clearProps: 'opacity' })
+    const repouso = new Map(
+      ordenadas.map((el) => [el, Number(getComputedStyle(el).opacity) || 1] as const),
+    )
 
     const tl = gsap.fromTo(
-      el,
-      { clipPath: 'inset(0 100% 0 0)' },
+      ordenadas,
+      { opacity: 0 },
       {
-        clipPath: 'inset(0 0% 0 0)',
-        duration: 1.1,
-        ease: 'power2.inOut',
-        clearProps: 'clipPath',
+        opacity: (_i: number, el: SVGGraphicsElement) => repouso.get(el) ?? 1,
+        duration: 0.5,
+        stagger: 0.006,
+        ease: 'power1.out',
+        clearProps: 'opacity',
       },
     )
 
@@ -524,13 +573,14 @@ export default function Slide01Arquitetura({ action }: SlideProps) {
     return () => {
       window.clearTimeout(guarda)
       tl.kill()
-      gsap.set(el, { clearProps: 'clipPath' })
+      gsap.set(ordenadas, { clearProps: 'opacity' })
     }
   }, [desenho])
 
   /**
-   * A primeira aplicação é instantânea: na montagem não há transição a fazer,
-   * e animar aqui só criaria tweens concorrentes com a entrada.
+   * A primeira aplicação é instantânea: na montagem não há transição a fazer.
+   * Animar aqui poria a câmera e as peças em movimento enquanto o desenho
+   * ainda está acendendo.
    */
   const jaAplicou = useRef(false)
   useEffect(() => {

@@ -30,36 +30,29 @@ React + Vite + TypeScript fullscreen slide presentation. The original static HTM
 
 Seven decks live in this repo. **ILUM · diretoria** (`src/slides/diretoria/`) is the active one; **Front-end** (`src/slides/front/`, rascunho anterior do mesmo assunto), **Ilum** (`src/slides/ilum/`), **Informs** (`src/slides/informs/`), **Fleets · demo ao vivo** (`src/slides/fleets-demo/`) and the self-contained **Fleets** deck (`src/slides/fleets/`) are one URL param away; the **Branding & UX** deck (`src/slides/Slide00`–`Slide12`) stays as reference and renders nowhere until wrapped in a `deck.ts` and registered in `decks.ts`.
 
-### ILUM · diretoria — 13 slides e um anexo (`src/slides/diretoria/`)
+### ILUM · diretoria — 4 slides (`src/slides/diretoria/`)
 
-A apresentação para a diretoria. **A fonte é [`plano-ilum-diretoria.md`](plano-ilum-diretoria.md)**: fala, montagem e notas de preparação de cada slide estão lá, e [`briefing-ilum-diretoria.md`](briefing-ilum-diretoria.md) guarda a plateia, o objetivo e as pendências. Não há roteiro separado para este deck — o plano é o roteiro, e duplicá-lo garantiria divergência.
+A apresentação para a diretoria. **A fonte é [`plano-ilum-diretoria.md`](plano-ilum-diretoria.md)**: a seção "Revisão de 22/09" descreve o deck atual, e as seções seguintes guardam a versão anterior, de treze slides, como reserva de fala e de ressalvas. [`briefing-ilum-diretoria.md`](briefing-ilum-diretoria.md) guarda a plateia, o objetivo e as pendências. Não há roteiro separado — o plano é o roteiro.
 
-Order is governed by `DIRETORIA_DECK` in `src/slides/diretoria/deck.ts`. **Os números dos arquivos seguem os números do plano** (`Slide01` é o slide 1 do plano), e não a posição na esteira: é a única exceção do repositório à convenção `Slide00`–, e existe para não haver conversão mental ao comparar deck e plano. Daí o salto de `Slide02` para `Slide05`: o slide 2 absorveu os antigos 3 e 4, e renumerar o resto só faria deck e plano divergirem.
+Order is governed by `DIRETORIA_DECK` in `src/slides/diretoria/deck.ts`.
 
-| # | File | Label | Arquétipo · tema |
-|---|------|-------|------------------|
-| 1 | `Slide01Compromisso.tsx` | O compromisso | pergunta-em-camadas · POC 15/10 e os seis meses seguintes |
-| 2 | `Slide02Arquitetura.tsx` | Arquitetura | diagrama-svg · três faixas, base compartilhada e Query; uma definição por etapa |
-| 5 | `Slide05Apex.tsx` | APEX | comparação · quatro etapas, faixa do APEX até a homologação |
-| 6 | `Slide06Demandas.tsx` | Demandas | matriz · onde cada tipo de demanda é absorvido |
-| 7 | `Slide07Portfolio.tsx` | Portfólio | tabela · status e entregas por frente |
-| 8 | `Slide08Incorporacao.tsx` | Incorporação | matriz · destino proposto de cada iniciativa |
-| 9 | `Slide09Frentes.tsx` | Frentes | seis frentes numeradas, sem régua de tempo |
-| 10 | `Slide10Poc.tsx` | POC · 15/10 | título+grade · os quatro itens de aceite proposto |
-| 11 | `Slide11SeisMeses.tsx` | Seis meses | linha-do-tempo · três blocos depois da POC |
-| 12 | `Slide12Criterios.tsx` | Critérios | tabela · entregável e aceite proposto |
-| 13 | `Slide13Conducao.tsx` | Condução | título+grade · as quatro responsabilidades |
-| 14 | `Slide14Formalizacao.tsx` | Formalização | título+grade · os compromissos, prazos em destaque |
-| 15 | `Slide15CidadeX.tsx` | Cidade X | mockup · composição por prompt, quatro etapas |
-| 16 | `SlideAnexoQuery.tsx` | Anexo · Query | diagrama-svg · Query ↔ Integração ↔ Módulos, MCP ilustrativo |
+| # | File | Label | Tema |
+|---|------|-------|------|
+| 1 | `Slide01Arquitetura.tsx` | Arquitetura | `fluxo-novo.svg` → o cartão do projeto → as peças se movem para plataforma / serviço / produto |
+| 2 | `Slide02CidadeX.tsx` | Cidade X | Composição por prompt: digitação, clique, montagem e a aplicação preenchida |
+| 3 | `Slide03ComoFazer.tsx` | Como fazer | As oito frentes, em grade |
+| 4 | `Slide04Cronograma.tsx` | Cronograma | Cinco marcos numa linha do tempo |
 
-**Critério editorial (vale para todo slide novo deste deck)** — na tela entram apenas títulos, termos, dados e status. Sem punchline, sem subtítulo explicativo e sem descrição dentro do cartão: a explicação é a fala do apresentador. Por isso o `Frame` de `src/slides/diretoria/ui.tsx` **não tem rodapé de nota**, ao contrário do `Frame` do deck Ilum. A única exceção é a faixa de definição do slide 2, e ela mostra **uma definição por vez**: o vocabulário precisa de uma linha de explicação, e uma por vez mantém a tela com uma ideia só.
+**Critério editorial** — na tela entram títulos, termos, dados e status; a explicação longa é a fala. Por isso o `Frame` de `src/slides/diretoria/ui.tsx` **não tem rodapé de nota**, ao contrário do `Frame` do deck Ilum. As definições curtas do slide 1 são a exceção combinada: são vocabulário, e sem elas a diretoria não acompanha o resto.
 
-**Onde entra a base compartilhada** — o slide 2 responde isso pela geometria, e é o argumento dele: o design system liga na plataforma, o registry liga na faixa dos módulos e o microfront-end liga no conector entre as duas, porque é o encaixe e não uma camada. As ligações da base são pontilhadas — sustentam o desenho, não são o fluxo.
+**Palco de tamanho fixo** — os slides 1 e 2 desenham num palco de dimensões fixas escalado por `ResizeObserver` (1240×560 e 1180×520). É o que torna o movimento das peças exato: origem e destino são coordenadas escritas no código, sem medir nada do DOM. As duas armadilhas já pagas:
 
-**Arquétipos** — cada slide do plano declara o seu, e eles moram em `ui.tsx` (`Grade`, `Matriz`, `Numerados`, mais `Cartao` / `Termo` / `Rotulo` / `estadoDe`). É o que mantém o deck legível: o mesmo tipo de conteúdo tem sempre a mesma forma, e a única variação forte é o destaque da etapa corrente. Ao acrescentar um slide, use o arquétipo que o plano indica em vez de inventar um layout.
+- **`Lugar` guarda `x/y/w/h` e `caixa()` converte para `left/top/width/height`.** Espalhar `{x,y,w,h}` direto no `style` não posiciona nada — CSS ignora essas chaves — e todas as peças empilham no canto do palco.
+- **Origem e destino podem ter tamanhos diferentes**, então a peça anima `left`/`top`/`width` de um para o outro. Um FLIP por `transform` exigiria tamanhos iguais ou escalaria o texto.
 
-**O palco do slide 15** — `Slide15CidadeX.tsx` desenha num palco de tamanho fixo (1180×520) escalado por `ResizeObserver` para caber no slide. É isso que torna o voo dos módulos exato: cada cópia é posicionada no destino (a entrada do menu) e começa deslocada pelo delta até a peça no catálogo, um FLIP sem medir nada do DOM. Todo o estado sai do `step`, então voltar uma etapa restaura o quadro sozinho e a digitação reinicia ao voltar para `Prompt`.
+**O cartão do slide 1 é um recorte do `fluxo-novo.svg`** — os nomes das peças (Banco · Front-end · Back-end; Obras · Lens (BI) · Planejamento Recape · Query · Mapas) vêm de lá, não de esboço. Ao mexer, confira o SVG antes de inventar.
+
+**A cadeia do slide 2** — o clique simulado dispara a montagem sozinho (plataforma, depois os módulos voando). Um clique que não causa nada lê como animação quebrada, que foi o defeito da primeira versão. Sobra um único avanço manual, o que preenche a aplicação: o apresentador nunca aperta seta sem que algo mude na tela. A digitação conta por **tempo decorrido** em `requestAnimationFrame`, não um caractere por tique de `setInterval` — cada caractere provoca um render do palco inteiro, e com intervalo fixo o tique atrasava e a frase levava o dobro do previsto.
 
 **Regra de layout do deck** — nada entra empurrando o vizinho. O que aparece numa etapa posterior já está no DOM desde o primeiro quadro, só apagado.
 

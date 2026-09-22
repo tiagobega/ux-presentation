@@ -4,10 +4,9 @@ import type { SlideProps } from '../config'
 import { Rotulo, delay } from './ui'
 
 /**
- * Slide 15 do plano — Composição de uma aplicação. Arquétipo mockup.
+ * Slide 2 — Composição de uma aplicação (Cidade X).
  *
- * Quatro etapas sobre um cenário só: prompt e catálogo à esquerda, prévia da
- * aplicação à direita. A prévia ocupa o seu espaço desde o primeiro quadro,
+ * Um cenário só: prompt e catálogo à esquerda, prévia da aplicação à direita. A prévia ocupa o seu espaço desde o primeiro quadro,
  * para a animação nunca reposicionar o conteúdo, e o título, a indicação de
  * visão futura e o prompt ficam no mesmo lugar do começo ao fim.
  *
@@ -17,9 +16,15 @@ import { Rotulo, delay } from './ui'
  * catálogo — um FLIP sem medir nada do DOM. Medir filhos daria a mesma
  * animação com muito mais chance de sair torta numa tela diferente.
  *
- * Todo o estado sai do `step`, então voltar uma etapa restaura o quadro
- * correspondente sozinho; a digitação reinicia quando a etapa volta a ser
- * `Prompt`, que é o "repetir a sequência" pedido no plano.
+ * **O clique no botão dispara a montagem.** Antes a digitação terminava, o
+ * botão acendia, o clique acontecia — e nada mais, até o apresentador avançar.
+ * Um clique simulado que não causa nada lê como animação quebrada. Agora a
+ * cadeia corre sozinha a partir dele: plataforma, depois os módulos voando
+ * para o menu. Sobra um único avanço, o que preenche a aplicação, para o
+ * apresentador não ficar apertando seta sem que nada mude na tela.
+ *
+ * A fase desenhada sai do `step` ou da cadeia automática, então voltar para a
+ * primeira etapa reinicia a digitação e toda a sequência.
  *
  * Cuidado de conteúdo: isto é uma simulação da experiência desejada. Não
  * demonstra geração, publicação ou provisionamento já implementados, e a
@@ -71,7 +76,7 @@ const CATEGORIAS: { nome: string; valor: number; cor: string }[] = [
   { nome: 'Ruim', valor: 0.13, cor: '#c4573f' },
 ]
 
-export const ACTIONS = ['Prompt', 'Plataforma', 'Produtos', 'Aplicação']
+export const ACTIONS = ['Composição', 'Aplicação']
 
 /** Escala que faz o palco de tamanho fixo caber no espaço disponível. */
 function useEscala(alvo: RefObject<HTMLDivElement | null>) {
@@ -94,7 +99,17 @@ function useEscala(alvo: RefObject<HTMLDivElement | null>) {
   return escala
 }
 
-/** Digita o prompt caractere a caractere enquanto a etapa for a primeira. */
+/**
+ * Digita o prompt enquanto a etapa for a primeira.
+ *
+ * A conta é por **tempo decorrido**, num `requestAnimationFrame`, e não um
+ * caractere por tique de `setInterval`: cada caractere provoca um render do
+ * palco inteiro, e com intervalo fixo o tique atrasava — a frase levava o
+ * dobro do previsto e o apresentador ficava esperando. Por tempo decorrido a
+ * digitação dura o mesmo em qualquer máquina; o que varia é a suavidade.
+ */
+const DURACAO_DIGITACAO = 2600
+
 function useDigitacao(ativo: boolean) {
   const [texto, setTexto] = useState('')
   const [pronto, setPronto] = useState(false)
@@ -113,25 +128,69 @@ function useDigitacao(ativo: boolean) {
     setPronto(false)
     setClicado(false)
 
-    let i = 0
+    const comeco = performance.now()
+    let raf = 0
     const timers: number[] = []
-    const escrevendo = window.setInterval(() => {
-      i += 1
-      setTexto(PROMPT.slice(0, i))
-      if (i >= PROMPT.length) {
-        window.clearInterval(escrevendo)
-        timers.push(window.setTimeout(() => setPronto(true), 260))
-        timers.push(window.setTimeout(() => setClicado(true), 900))
+
+    const concluir = () => {
+      setTexto(PROMPT)
+      setPronto(true)
+      timers.push(window.setTimeout(() => setClicado(true), 620))
+    }
+
+    const passo = () => {
+      const fracao = (performance.now() - comeco) / DURACAO_DIGITACAO
+      if (fracao >= 1) {
+        concluir()
+        return
       }
-    }, 16)
+      setTexto(PROMPT.slice(0, Math.ceil(fracao * PROMPT.length)))
+      raf = requestAnimationFrame(passo)
+    }
+    raf = requestAnimationFrame(passo)
+
+    /**
+     * Rede de segurança: `requestAnimationFrame` congela em aba oculta, e sem
+     * isto chegar no slide com a janela atrás de outra deixaria o prompt
+     * parado pela metade. `setTimeout` continua correndo.
+     */
+    const guarda = window.setTimeout(() => {
+      cancelAnimationFrame(raf)
+      concluir()
+    }, DURACAO_DIGITACAO + 400)
 
     return () => {
-      window.clearInterval(escrevendo)
+      cancelAnimationFrame(raf)
+      window.clearTimeout(guarda)
       timers.forEach(window.clearTimeout)
     }
   }, [ativo])
 
   return { texto, pronto, clicado }
+}
+
+/**
+ * A cadeia automática que o clique dispara: plataforma e, depois, os módulos.
+ * A última fase (o conteúdo da aplicação) fica com o apresentador.
+ */
+function useCadeia(noPrompt: boolean, clicado: boolean) {
+  const [fase, setFase] = useState(0)
+
+  // Reentrar na primeira etapa recomeça a sequência do zero.
+  useEffect(() => {
+    if (noPrompt) setFase(0)
+  }, [noPrompt])
+
+  useEffect(() => {
+    if (!noPrompt || !clicado) return
+    const timers = [
+      window.setTimeout(() => setFase(1), 320),
+      window.setTimeout(() => setFase(2), 1400),
+    ]
+    return () => timers.forEach(window.clearTimeout)
+  }, [noPrompt, clicado])
+
+  return fase
 }
 
 function PecaVisual({ nome, marcada }: { nome: string; marcada: boolean }) {
@@ -160,11 +219,15 @@ export default function Slide15CidadeX({ action }: SlideProps) {
   const step = Math.max(0, ACTIONS.indexOf(action))
   const palco = useRef<HTMLDivElement>(null)
   const escala = useEscala(palco)
-  const { texto, pronto, clicado } = useDigitacao(step === 0)
+  const noPrompt = step === 0
+  const { texto, pronto, clicado } = useDigitacao(noPrompt)
+  const faseAuto = useCadeia(noPrompt, clicado)
+  /** 0 prompt · 1 plataforma · 2 módulos · 3 aplicação preenchida. */
+  const fase = noPrompt ? faseAuto : 3
 
-  const temPlataforma = step >= 1
-  const temProdutos = step >= 2
-  const temConteudo = step >= 3
+  const temPlataforma = fase >= 1
+  const temProdutos = fase >= 2
+  const temConteudo = fase >= 3
 
   return (
     <section className='flex flex-1 min-h-0 flex-col font-ilum text-[#251a34] px-[52px] pt-8 pb-8 max-[900px]:p-5'>
@@ -190,7 +253,7 @@ export default function Slide15CidadeX({ action }: SlideProps) {
             <Rotulo>PROMPT</Rotulo>
             <div className='mt-2.5 h-[92px] rounded-lg border border-[#d9cfe2] bg-white px-3.5 py-2.5 text-[15px] leading-[1.45] text-[#3d2b52]'>
               {texto}
-              {step === 0 && !pronto && (
+              {noPrompt && !pronto && (
                 <span className='inline-block w-[2px] h-[16px] translate-y-[3px] bg-[#7c3aed] animate-dir-caret motion-reduce:animate-none' />
               )}
             </div>

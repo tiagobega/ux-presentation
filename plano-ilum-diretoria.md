@@ -2,12 +2,65 @@
 
 > **Plateia:** diretoria da Intelicity.
 > **Objetivo:** informar — formalizar a direção de front-end, os marcos e a incorporação de produtos no ILUM.
-> **Tempo:** sem restrição · 13 slides principais e um anexo.
+> **Tempo:** sem restrição · quatro slides.
 > **Formato:** somente slides.
+
+## Revisão de 22/09 — deck de quatro slides
+
+O deck foi reduzido a quatro slides. As seções detalhadas mais abaixo **continuam valendo como reserva de fala, ressalvas e notas de preparação**, mas não são mais a estrutura do deck: o que está no ar é o que esta seção descreve.
+
+### Slide 1 — Arquitetura [diagrama + vocabulário]
+**Passos:** Infraestrutura · Vocabulário · De onde vem cada um
+
+1. *Infraestrutura*: o desenho inteiro, que é o `src/assets/fluxo-novo.svg` do deck Ilum. Gestão de frota e fontes de dados alimentam o Ilum, que troca com o Vision, salva no Banco Yoda e roteia para a plataforma do projeto.
+2. *Vocabulário*: o desenho recua e sobra o cartão do projeto, com os três termos à direita.
+
+   | Termo | Na tela |
+   |---|---|
+   | Plataforma | base principal |
+   | Serviço | código específico da plataforma, representado como módulo |
+   | Produto | módulo acoplado a um host |
+
+3. *De onde vem cada um*: as peças do cartão se movem para a linha do termo a que pertencem. O título do projeto vai para **Plataforma**; os SERVIÇOS DEDICADOS (Banco, Front-end, Back-end) vão para **Serviço**; os PRODUTOS (Obras, Lens (BI), Planejamento Recape, Query, Mapas) vão para **Produto**. A equipe dedicada fica no cartão: não é um dos três termos.
+
+Os nomes das peças são os do `fluxo-novo.svg`, não os do esboço à mão: o cartão é um recorte daquele desenho, e divergir faria o terceiro passo parecer outra coisa.
+
+**Fala.** “Esta é a arquitetura que já está em execução. Olhando só para o projeto, dentro dele estão as três coisas que preciso que a gente chame pelo mesmo nome: a plataforma é a base principal; o serviço é o código específico daquela plataforma, representado como módulo; o produto é o módulo acoplado a um host. Não são definições novas — é o que já está no desenho.”
+
+### Slide 2 — Cidade X [mockup]
+**Passos:** Composição · Aplicação
+
+A sequência do prompt corre sozinha a partir do clique: a frase é digitada, o botão acende, o clique acontece e **a montagem começa em seguida** — a plataforma aparece e os módulos escolhidos vão para o menu. O segundo passo, no controle do apresentador, preenche a aplicação com Mapas e o painel do Lens.
+
+Antes o clique não causava nada até alguém avançar, o que lia como animação quebrada. A cadeia automática é a correção.
+
+Continua valendo: é uma simulação da experiência desejada, não demonstração de geração, publicação ou provisionamento já implementados, e a criação por prompt não entra nos compromissos da POC.
+
+### Slide 3 — Como vamos fazer isso acontecer? [título+grade]
+**Passos:** As frentes
+
+Oito frentes, em grade de duas colunas, numa etapa só: Design system · Padrões de front-end (arquitetura de projeto) · Registry (biblioteca de componentes) · Microfront-ends (produtos) · BI (Lens) · Query (IA assistente da aplicação inteira, não mais só do mapa) · Comunicação back e front (padronizada) · Qualidade (ferramentas de identificação de bugs e testes).
+
+O parêntese diz o que a frente é, não por que ela importa — a justificativa é a fala.
+
+### Slide 4 — Cronograma [linha-do-tempo]
+**Passos:** Os marcos
+
+| Marco | Situação |
+|---|---|
+| Levantamento | OK |
+| Criação da base | Em execução |
+| POC · Uberlândia | 15/10 |
+| Adaptação de novos produtos | A seguir |
+| Adaptação de plataformas | a partir de FEV/27 |
+
+Só os marcos que têm data mostram data. “Adaptação de novos produtos” não tem, e inventar uma transformaria uma sequência em compromisso.
+
+---
 
 ## Critérios editoriais
 
-“Na tela” contém apenas títulos, termos, dados e status. Sem punchlines, subtítulos explicativos ou descrições nos cartões. As explicações ficam em “Fala”; “Montagem” orienta a composição visual. Notas e referências são apoio do apresentador.
+As seções abaixo descrevem a versão anterior, de treze slides, e seguem como reserva de fala e de ressalvas. “Na tela” contém apenas títulos, termos, dados e status. Sem punchlines, subtítulos explicativos ou descrições nos cartões. As explicações ficam em “Fala”; “Montagem” orienta a composição visual. Notas e referências são apoio do apresentador.
 
 O plano distingue fatos informados pelo usuário, escopo registrado no Linear e propostas para a execução. Não atribui conclusão a tarefas apenas planejadas. Produto já entregue não significa produto já integrado à nova plataforma.
 

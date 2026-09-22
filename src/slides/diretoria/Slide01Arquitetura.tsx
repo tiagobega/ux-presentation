@@ -445,6 +445,20 @@ export default function Slide01Arquitetura({ action }: SlideProps) {
   stepRef.current = step
 
   /**
+   * Trava de uma classificação por montagem.
+   *
+   * O StrictMode roda este efeito duas vezes, e duas classificações geravam
+   * dois objetos `Desenho` — logo, duas animações de entrada, uma por cima da
+   * outra: o desenho aparecia, era jogado de volta à opacidade cheia pelo
+   * `clearProps` da limpeza e entrava de novo. Era isso que lia como
+   * "duplicado" e "já começa claro".
+   *
+   * A trava só fecha depois de uma classificação bem-sucedida, então as
+   * tentativas por quadro (abaixo) continuam funcionando.
+   */
+  const classificado = useRef(false)
+
+  /**
    * O SVG é injetado à mão, não por `dangerouslySetInnerHTML`: o React
    * recriaria esse conteúdo a cada render e a classificação passaria a
    * guardar nós fora do documento.
@@ -453,6 +467,7 @@ export default function Slide01Arquitetura({ action }: SlideProps) {
    * enquanto o SVG não foi renderizado.
    */
   useLayoutEffect(() => {
+    if (classificado.current) return
     const el = host.current
     if (!el) return
     if (!el.firstElementChild) el.innerHTML = fluxoNovo
@@ -462,8 +477,10 @@ export default function Slide01Arquitetura({ action }: SlideProps) {
     const tentar = () => {
       const svg = el.querySelector('svg') as SVGSVGElement | null
       const d = svg && classificar(svg)
-      if (d) setDesenho(d)
-      else if (tentativas++ < 60) raf = requestAnimationFrame(tentar)
+      if (d) {
+        classificado.current = true
+        setDesenho(d)
+      } else if (tentativas++ < 60) raf = requestAnimationFrame(tentar)
     }
     tentar()
     return () => cancelAnimationFrame(raf)

@@ -55,6 +55,10 @@ Isso exige classificar o SVG por geometria em tempo de execução, porque o expo
 - **blocos** = os rótulos roxos (`fill="#7C3AED"`) separam serviços, equipe e produtos: uma pastilha pertence ao último rótulo acima dela. É mais robusto que contar posições, que quebraria se um item fosse acrescentado ao cartão;
 - **título do projeto** = o path do cartão acima do primeiro rótulo.
 
+**Uma classificação por montagem** — `classificado` é uma trava de `useRef`. Sem ela o StrictMode classificava duas vezes, gerava dois objetos `Desenho` e o efeito de entrada (dep `[desenho]`) disparava uma vez para cada: o desenho aparecia, o `clearProps` da limpeza o jogava de volta à opacidade cheia e ele entrava de novo. Lia como animação duplicada começando clara. A trava só fecha depois de uma classificação bem-sucedida, então as tentativas por quadro continuam funcionando.
+
+Para medir isso não sirva contar opacidade por índice de `querySelectorAll`: a classificação reagrupa os elementos e o índice passa a apontar para outro nó, o que inventa "reinícios" que não existem. Conte a **população** de elementos com `style.opacity` inline (zerados / animando / cheios) — num passe único ela é monotônica.
+
 **Duas limpezas diferentes, e confundi-las quebra tudo** — o StrictMode roda a classificação duas vezes. `data-arq` marca grupos de elementos **do desenho** e é desembrulhado (os elementos voltam a ser filhos do `svg`); `data-arq-extra` marca o que foi **criado** ali (os fantasmas e os textos dos termos) e é removido inteiro. Desembrulhar um fantasma devolve os clones ao `svg`, e na passagem seguinte eles entram na conta como pastilhas: o número de peças deixa de bater com o de destinos e a classificação aborta em silêncio.
 
 **A câmera é o `viewBox`** — a partir do passo 2 ele fecha na área do cartão e dos termos, o que amplia o desenho em ~40% sem mexer em nada dentro dele. Para isso o SVG precisa de `w-full h-full` no CSS, **não** `max-w/max-h`: com a largura intrínseca do arquivo (1087) a caixa do elemento mantém a proporção antiga e limita o zoom a 10%.

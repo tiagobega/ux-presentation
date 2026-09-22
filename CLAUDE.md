@@ -42,7 +42,7 @@ Order is governed by `DIRETORIA_DECK` in `src/slides/diretoria/deck.ts`.
 | 2 | `Slide02CidadeX.tsx` | Cidade X | Composição por prompt: digitação, clique, montagem e a aplicação preenchida |
 | 3 | `Slide03ComoFazer.tsx` | Como fazer | As frentes separadas em interno e produto |
 | 4 | `Slide04Cronograma.tsx` | Cronograma | Cinco marcos numa linha do tempo, com data e descrição |
-| 5 | `Slide05EntregasParalelas.tsx` | Em paralelo | Cinco bloquinhos com o que o time entrega além do plano |
+| 5 | `Slide05EntregasParalelas.tsx` | Em paralelo | Matriz frente × item: seis frentes, doze itens, um status por item |
 
 **Critério editorial** — na tela entram títulos, termos, dados e status; a explicação longa é a fala. Por isso o `Frame` de `src/slides/diretoria/ui.tsx` **não tem rodapé de nota**, ao contrário do `Frame` do deck Ilum. As definições curtas do slide 1 são a exceção combinada: são vocabulário, e sem elas a diretoria não acompanha o resto.
 
@@ -86,7 +86,9 @@ O passo do zoom (`O projeto`) deixa a direita **vazia** de propósito: mostrar a
 
 O slide 3 usa esse mesmo vocabulário para separar **interno** de **produto**: sem a separação, design system e Lens apareciam com o mesmo peso, e a diretoria não tinha como saber o que dali vira oferta.
 
-**Data derivada nunca se apresenta como compromisso** — no cronograma só 15/10 e FEV/27 vieram do usuário; as outras três janelas são derivadas da ordem dos marcos entre esses dois âncoras, e o rodapé do slide diz isso na tela. No slide 5, só o Fleets tem data informada: as demais frentes dizem "a confirmar" em vez de exibir uma data inventada, e o rodapé carrega a data do levantamento (SET/26). Status envelhece entre a escrita e a reunião; datar o levantamento é o que permite mostrá-lo sem que vire promessa. Ao acrescentar marco ou frente, mantenha a regra: dado do usuário em destaque, derivado rotulado, desconhecido explícito.
+**Data derivada nunca se apresenta como compromisso** — no cronograma só 15/10 e FEV/27 vieram do usuário; as outras três janelas são derivadas da ordem dos marcos entre esses dois âncoras, e o rodapé do slide diz isso na tela. No slide 5, só dois dos doze itens têm data informada (25/09): os outros exibem só o status, nunca uma data inventada, e o rodapé carrega a data do levantamento (SET/26). Status envelhece entre a escrita e a reunião; datar o levantamento é o que permite mostrá-lo sem que vire promessa. Ao acrescentar marco ou frente, mantenha a regra: dado do usuário em destaque, derivado rotulado, desconhecido explícito.
+
+**A matriz do slide 5 lê pela cor, não pelo texto** — cada item carrega o seu próprio selo, e o `Situacao` do `ui.tsx` vira escala de proximidade da entrega: sólido = homologação, contorno = em andamento, apagado = planejamento ou bloqueado. É o que permite varrer as seis frentes sem ler uma palavra. A grade é `items-start`: as frentes têm de um a quatro itens, e com o esticão padrão do grid a linha inteira ganhava a altura do Informs, deixando o cartão do Comgás com 250px de vazio embaixo.
 
 **Regra de layout do deck** — nada entra empurrando o vizinho. O que aparece numa etapa posterior já está no DOM desde o primeiro quadro, só apagado.
 

@@ -38,7 +38,7 @@ Order is governed by `DIRETORIA_DECK` in `src/slides/diretoria/deck.ts`.
 
 | # | File | Label | Tema |
 |---|------|-------|------|
-| 1 | `Slide01Arquitetura.tsx` | Arquitetura | `fluxo-novo.svg` → o cartão do projeto → as peças se movem para plataforma / serviço / produto |
+| 1 | `Slide01Arquitetura.tsx` | Arquitetura | Tudo dentro do `fluxo-novo.svg`: o cartão do projeto desliza, a câmera fecha e as peças se movem para plataforma / serviço / produto |
 | 2 | `Slide02CidadeX.tsx` | Cidade X | Composição por prompt: digitação, clique, montagem e a aplicação preenchida |
 | 3 | `Slide03ComoFazer.tsx` | Como fazer | As oito frentes, em grade |
 | 4 | `Slide04Cronograma.tsx` | Cronograma | Cinco marcos numa linha do tempo |
@@ -46,14 +46,22 @@ Order is governed by `DIRETORIA_DECK` in `src/slides/diretoria/deck.ts`.
 
 **Critério editorial** — na tela entram títulos, termos, dados e status; a explicação longa é a fala. Por isso o `Frame` de `src/slides/diretoria/ui.tsx` **não tem rodapé de nota**, ao contrário do `Frame` do deck Ilum. As definições curtas do slide 1 são a exceção combinada: são vocabulário, e sem elas a diretoria não acompanha o resto.
 
-**Palco de tamanho fixo** — os slides 1 e 2 desenham num palco de dimensões fixas escalado por `ResizeObserver` (1240×560 e 1180×520). É o que torna o movimento das peças exato: origem e destino são coordenadas escritas no código, sem medir nada do DOM. As duas armadilhas já pagas:
+**O slide 1 é um desenho só, nunca uma réplica** — os três passos acontecem dentro do `fluxo-novo.svg`: o cartão do projeto que desliza é o do próprio desenho, e o fade fica só no que sai de foco. A versão anterior trocava o SVG por um cartão em HTML no passo 2 e o corte aparecia, dois desenhos parecidos cruzando em fade.
 
-- **`Lugar` guarda `x/y/w/h` e `caixa()` converte para `left/top/width/height`.** Espalhar `{x,y,w,h}` direto no `style` não posiciona nada — CSS ignora essas chaves — e todas as peças empilham no canto do palco.
-- **Origem e destino podem ter tamanhos diferentes**, então a peça anima `left`/`top`/`width` de um para o outro. Um FLIP por `transform` exigiria tamanhos iguais ou escalaria o texto.
+Isso exige classificar o SVG por geometria em tempo de execução, porque o export do Figma é plano (sem grupos, sem ids, texto virado path). As regras de `classificar()` sobrevivem a um reexport; só as coordenadas de destino dependem do layout:
 
-**Entrada de SVG: `fromTo`, nunca `from`** — o StrictMode roda os efeitos duas vezes em `npm run dev`: monta, limpa, monta. A limpeza mata o tween no meio e deixa `opacity` inline num valor parcial, e um `gsap.from` anima *até o valor atual do elemento* — que passou a ser esse parcial. O desenho do slide 1 congelava em 40% e a animação nunca terminava, só em dev. Escreva os dois extremos (`fromTo`), feche com `clearProps` e limpe as props no `return` do efeito. Vale para qualquer entrada de SVG nova, e o mesmo padrão `from` + `tl.kill()` ainda está em `src/slides/ilum/Slide01EstruturaProposta.tsx`.
+- **cartão do projeto** = o único `rect` com contorno mais alto que 300;
+- **pastilhas** = `rect` com `fill="#9C59F9"`, levando junto o contorno e o texto que caem dentro delas;
+- **blocos** = os rótulos roxos (`fill="#7C3AED"`) separam serviços, equipe e produtos: uma pastilha pertence ao último rótulo acima dela. É mais robusto que contar posições, que quebraria se um item fosse acrescentado ao cartão;
+- **título do projeto** = o path do cartão acima do primeiro rótulo.
 
-**O cartão do slide 1 é um recorte do `fluxo-novo.svg`** — os nomes das peças (Banco · Front-end · Back-end; Obras · Lens (BI) · Planejamento Recape · Query · Mapas) vêm de lá, não de esboço. Ao mexer, confira o SVG antes de inventar.
+**Duas limpezas diferentes, e confundi-las quebra tudo** — o StrictMode roda a classificação duas vezes. `data-arq` marca grupos de elementos **do desenho** e é desembrulhado (os elementos voltam a ser filhos do `svg`); `data-arq-extra` marca o que foi **criado** ali (os fantasmas e os textos dos termos) e é removido inteiro. Desembrulhar um fantasma devolve os clones ao `svg`, e na passagem seguinte eles entram na conta como pastilhas: o número de peças deixa de bater com o de destinos e a classificação aborta em silêncio.
+
+**A câmera é o `viewBox`** — a partir do passo 2 ele fecha na área do cartão e dos termos, o que amplia o desenho em ~40% sem mexer em nada dentro dele. Para isso o SVG precisa de `w-full h-full` no CSS, **não** `max-w/max-h`: com a largura intrínseca do arquivo (1087) a caixa do elemento mantém a proporção antiga e limita o zoom a 10%.
+
+**Peças movem por `x`/`y` do grupo, nunca por escala** — os destinos respeitam a largura original de cada pastilha (por isso os cinco produtos param em duas colunas, não numa fileira). Reescalar distorceria o texto, que no export é path.
+
+**Palco de tamanho fixo (slide 2)** — `Slide02CidadeX.tsx` desenha num palco de 1180×520 escalado por `ResizeObserver`. Origem e destino das peças são coordenadas escritas no código, sem medir nada do DOM. A armadilha já paga: `Lugar` guarda `x/y/w/h` e `caixa()` converte para `left/top/width/height` — espalhar `{x,y,w,h}` direto no `style` não posiciona nada, porque CSS ignora essas chaves, e todas as peças empilham no canto.
 
 **A cadeia do slide 2** — o clique simulado dispara a montagem sozinho (plataforma, depois os módulos voando). Um clique que não causa nada lê como animação quebrada, que foi o defeito da primeira versão. Sobra um único avanço manual, o que preenche a aplicação: o apresentador nunca aperta seta sem que algo mude na tela. A digitação conta por **tempo decorrido** em `requestAnimationFrame`, não um caractere por tique de `setInterval` — cada caractere provoca um render do palco inteiro, e com intervalo fixo o tique atrasava e a frase levava o dobro do previsto.
 

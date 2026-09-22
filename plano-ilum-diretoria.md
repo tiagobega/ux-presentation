@@ -13,7 +13,7 @@ O deck foi reduzido a cinco slides. As seções detalhadas mais abaixo **continu
 **Passos:** Infraestrutura · Vocabulário · De onde vem cada um
 
 1. *Infraestrutura*: o desenho inteiro, que é o `src/assets/fluxo-novo.svg` do deck Ilum. Gestão de frota e fontes de dados alimentam o Ilum, que troca com o Vision, salva no Banco Yoda e roteia para a plataforma do projeto.
-2. *Vocabulário*: o desenho recua e sobra o cartão do projeto, com os três termos à direita.
+2. *Vocabulário*: tudo que não é o cartão do projeto some, o cartão desliza para a esquerda e a câmera fecha nele; os três termos entram à direita. Nada é substituído por uma réplica: o cartão que se move é o do próprio desenho, e o fade fica só no que sai de foco.
 
    | Termo | Na tela |
    |---|---|
@@ -21,7 +21,7 @@ O deck foi reduzido a cinco slides. As seções detalhadas mais abaixo **continu
    | Serviço | código específico da plataforma, representado como módulo |
    | Produto | módulo acoplado a um host |
 
-3. *De onde vem cada um*: as peças do cartão se movem para a linha do termo a que pertencem. O título do projeto vai para **Plataforma**; os SERVIÇOS DEDICADOS (Banco, Front-end, Back-end) vão para **Serviço**; os PRODUTOS (Obras, Lens (BI), Planejamento Recape, Query, Mapas) vão para **Produto**. A equipe dedicada fica no cartão: não é um dos três termos.
+3. *De onde vem cada um*: as peças do cartão se movem para a linha do termo a que pertencem, deixando uma cópia apagada no lugar para o cartão não esvaziar. O título do projeto vai para **Plataforma**; os SERVIÇOS DEDICADOS (Banco, Front-end, Back-end) vão para **Serviço**; os PRODUTOS (Obras, Lens (BI), Planejamento Recape, Query, Mapas) vão para **Produto**. A equipe dedicada fica no cartão: não é um dos três termos.
 
 Os nomes das peças são os do `fluxo-novo.svg`, não os do esboço à mão: o cartão é um recorte daquele desenho, e divergir faria o terceiro passo parecer outra coisa.
 

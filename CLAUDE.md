@@ -16,7 +16,7 @@ React + Vite + TypeScript fullscreen slide presentation. The original static HTM
 
 **Slide flow** — `src/components/Presentation.tsx` holds the navigation state (`slide` index + `action` step). All slides are rendered side-by-side in one horizontal track ("esteira"); a Framer Motion `x` translate pans the "camera" to `-slide` viewport widths. A slide only mounts when it is first reached (`activated` set, after `ENTER_DELAY_MS`), so its entrance animation (motion/GSAP) fires as the camera lands on it; from then on it stays mounted. The active slide gets the current `action`; slides left behind freeze on the last step they showed (`actionMemory`). Keyboard (←→↑↓), swipe (touch), QR remote, and dot/button clicks all funnel through `prev()` / `next()` / `gotoSlide()`.
 
-**Decks** — a deck is `{ id, brand, title, slides, config }` (type in `src/slides/config.ts`), declared in `<deck>/deck.ts`. `src/slides/decks.ts` picks the active one: **Informs** by default, `?deck=fleets-demo` and `?deck=fleets` for the others. `Presentation.tsx` and `Nav.tsx` read `SLIDES` / `SLIDE_CONFIG` / `DECK` from there and know nothing about which deck is loaded. `config.ts` deliberately imports no deck — the slides import `SLIDE_PADDING` from it, so importing a deck back would close a cycle.
+**Decks** — a deck is `{ id, brand, title, slides, config }` (type in `src/slides/config.ts`), declared in `<deck>/deck.ts`. `src/slides/decks.ts` picks the active one: **Front-end** by default, `?deck=ilum`, `?deck=informs`, `?deck=fleets-demo` and `?deck=fleets` for the others. `Presentation.tsx` and `Nav.tsx` read `SLIDES` / `SLIDE_CONFIG` / `DECK` from there and know nothing about which deck is loaded. `config.ts` deliberately imports no deck — the slides import `SLIDE_PADDING` from it, so importing a deck back would close a cycle.
 
 **Adding a slide** — create `src/slides/<deck>/SlideNN.tsx`, import it in `<deck>/deck.ts`, append to `slides`, and add the matching entry (label + actions) to `config` at the same index (Nav labels and the dot nav derive from it). Each slide applies `SLIDE_PADDING` (from `../config`) on its own root for the standard padding; omit it for a full-bleed slide. `src/slides/kit.tsx` holds the vocabulary shared by every deck (`SlideShell`, `SlideHeader`, `Punch`, `Bar`, `Chip`, `Accent`, `FlowSteps`, `Reveal`, the `up()` motion helper and the easings) — prefer it over re-declaring the same boilerplate. `src/slides/fleets/kit.tsx` is just a re-export of it. The demo deck has its own `src/slides/fleets-demo/kit.tsx` with the extra `LiveBadge` and `DemoSlide`, and Informs has `src/slides/informs/ui.tsx` with the phone mockups.
 
@@ -28,7 +28,38 @@ React + Vite + TypeScript fullscreen slide presentation. The original static HTM
 
 ## Slide maps
 
-Four decks live in this repo. **Informs** (`src/slides/informs/`) is the active one; **Fleets · demo ao vivo** (`src/slides/fleets-demo/`) and the self-contained **Fleets** deck (`src/slides/fleets/`) are one URL param away; the **Branding & UX** deck (`src/slides/Slide00`–`Slide12`) stays as reference and renders nowhere until wrapped in a `deck.ts` and registered in `decks.ts`.
+Six decks live in this repo. **Front-end** (`src/slides/front/`) is the active one; **Ilum** (`src/slides/ilum/`), **Informs** (`src/slides/informs/`), **Fleets · demo ao vivo** (`src/slides/fleets-demo/`) and the self-contained **Fleets** deck (`src/slides/fleets/`) are one URL param away; the **Branding & UX** deck (`src/slides/Slide00`–`Slide12`) stays as reference and renders nowhere until wrapped in a `deck.ts` and registered in `decks.ts`.
+
+### Front-end — 7 slides (`src/slides/front/`)
+
+O recorte de front-end e da conversa com o back-end do planejamento de produto e tecnologia. Order is governed by `FRONT_DECK` in `src/slides/front/deck.ts`. Full script and speaker notes: [`front-roteiro.md`](front-roteiro.md).
+
+| # | File | Label | Título / tema |
+|---|------|-------|---------------|
+| 0 | `Slide00Vocabulario.tsx` | Três palavras | Pilha plataforma / produto / serviço, acendendo de baixo para cima |
+| 1 | `Slide01BaseComum.tsx` | O custo de hoje | "Hoje" e "com a base comum" lado a lado; os mesmos fundamentos três vezes vs. uma |
+| 2 | `Slide02Composicao.tsx` | Como se monta | Registry → shell → três serviços com tema de cliente |
+| 3 | `Slide03Integracao.tsx` | Front e back | Cinco conversas (sessão, dados, tempo real, offline, observabilidade) em três faixas |
+| 4 | `Slide04Contratos.tsx` | A fronteira | O que a plataforma garante vs. o que o produto decide |
+| 5 | `Slide05Entregaveis.tsx` | Entregáveis | Nove entregáveis acendendo por situação |
+| 6 | `Slide06Etapas.tsx` | Duas etapas | Fundação (até o fim de 2026) e Escala (jan — fev 2027) |
+
+`src/slides/front/ui.tsx` reexporta o `Frame` e o `delay` do deck Ilum — é a continuação daquela conversa, e duas molduras divergiriam com o tempo — e acrescenta o `Selo` de situação, o `Chip` e o `Rotulo`. As animações de entrada também são as do Ilum (`animate-ilum-*`).
+
+Dois slides são diagramas em SVG montados por dados (`Slide02` e `Slide03`): cada caixa e cada seta declara em que etapas acende, e a legenda embaixo usa `key={action}` para a animação de entrada rodar de novo a cada troca. As pontas de seta são elementos comuns, não `marker` — marcador ignora o `stroke-dashoffset` que desenha a linha, e as pontas apareceriam todas no primeiro quadro.
+
+**Regra de layout do deck** — nada entra empurrando o vizinho. O que aparece numa etapa posterior (a faixa da regra, o painel "com a base comum", os cartões ainda não acesos) já está no DOM desde o primeiro quadro, só apagado.
+
+### Ilum — 4 slides (`src/slides/ilum/`)
+
+Apresentação administrativa de arquitetura, sem capa. Order is governed by `ILUM_DECK` in `src/slides/ilum/deck.ts`. Full script and speaker notes: [`ilum-roteiro.md`](ilum-roteiro.md).
+
+| # | File | Label | Título / tema |
+|---|------|-------|---------------|
+| 0 | `Slide00ArquiteturaAtual.tsx` | Estrutura atual | Diagrama atual, os 5 problemas acumulando marcas e as consequências |
+| 1 | `Slide01EstruturaProposta.tsx` | Novo Fluxo | Fluxograma das camadas (`src/assets/fluxo-novo.svg`), com os ganhos por etapa |
+| 2 | `Slide02Planejamento.tsx` | Cronograma macro | Linha do tempo e as 5 fases |
+| 3 | `Slide03RiscosLimites.tsx` | Riscos e limites | Dificuldades, riscos, limites e responsabilidades |
 
 ### Informs — 21 slides (`src/slides/informs/`)
 

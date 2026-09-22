@@ -82,6 +82,10 @@ O passo do zoom (`O projeto`) deixa a direita **vazia** de propósito: mostrar a
 
 **Ressalva de vocabulário** — no `fluxo-novo.svg` as pastilhas Banco · Front-end · Back-end estão sob "SERVIÇOS DEDICADOS", mas o deck as apresenta como **stacks da plataforma**. O rótulo do SVG precisa ser atualizado no Figma; até lá, os dois divergem.
 
+**Dois remendos do desenho que o Figma ainda não tem** — `prepararDesenho()` roda uma vez, antes da classificação: o cartão "WFM" vira **Dados de terceiros**, o "156" sai (junto com a metade da seta combinada que apontava para ele), e entram **IRI, LUX e "…"**, tracejados, na coluna do Vision. O mesmo par de correções vive no slide 1 do deck Ilum (`src/slides/ilum/Slide01EstruturaProposta.tsx`) — enquanto o arquivo do Figma não for atualizado, os dois decks aplicam em tempo de execução, e mexer num pede conferir o outro.
+
+O que é criado ali leva **`data-arq-fixo`**, nunca `data-arq-extra`: o `extra` é apagado a cada classificação (é o que o StrictMode exige para os fantasmas) e levaria os cartões junto. `classificar()` tira os `fixo` de `filhos`, senão o número de peças deixaria de bater com o de destinos e a classificação abortaria em silêncio; devolve-os ao `fora`, que é quem apaga quando a câmera fecha, e a `folhas`, para acenderem com o resto na entrada.
+
 **Em SVG não há `z-index`** — quem pinta por último fica por cima. A estrutura é criada depois do cartão, então o cartão é reanexado ao fim (`svg.appendChild(cartao)`): sem isso o preenchimento da caixa da plataforma esconde as peças que pousam dentro dela, e só os produtos, que param fora, aparecem.
 
 O slide 3 usa esse mesmo vocabulário para separar **interno** de **produto**: sem a separação, design system e Lens apareciam com o mesmo peso, e a diretoria não tinha como saber o que dali vira oferta.

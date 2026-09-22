@@ -98,6 +98,84 @@ export const ACTIONS = ['Infraestrutura', 'O projeto', 'Plataforma', 'Serviço',
 
 const NS = 'http://www.w3.org/2000/svg'
 
+/**
+ * Ajustes do desenho que **não estão no export do Figma** e foram pedidos
+ * depois. O mesmo par de correções já vive no slide 1 do deck Ilum
+ * (`src/slides/ilum/Slide01EstruturaProposta.tsx`); enquanto o arquivo do
+ * Figma não for atualizado, os dois decks precisam aplicá-las em tempo de
+ * execução.
+ *
+ * Tudo que é criado aqui leva `data-arq-fixo`, e não `data-arq-extra`: o
+ * `extra` é apagado a cada classificação (é o que o StrictMode exige para os
+ * fantasmas), e isso levaria estes cartões junto. O `fixo` é injetado uma vez
+ * e fica.
+ */
+
+/** Vision fica em 585,57 com 132x41. Os três seguem a mesma coluna e passo. */
+const COLUNA_PROC = { x: 585, w: 132, h: 41 }
+const FUTUROS = [
+  { y: 110, nome: 'IRI', dy: 0 },
+  { y: 163, nome: 'LUX', dy: 0 },
+  // As reticências se apoiam na linha de base, então um texto centrado pela
+  // mesma conta das maiúsculas cai baixo demais na caixa.
+  { y: 216, nome: '…', dy: -4 },
+]
+
+/**
+ * Camadas de processamento que ainda não existem. Entram tracejadas, na
+ * coluna do Vision, porque a fala do slide 1 é que a esteira comporta mais
+ * processamento sem mudar de forma — e o "…" diz que a lista não acabou.
+ */
+function cardsFuturos(): string {
+  const cartao = ({ y, nome, dy }: (typeof FUTUROS)[number]) => `
+    <rect x="${COLUNA_PROC.x}" y="${y}" width="${COLUNA_PROC.w}" height="${COLUNA_PROC.h}" rx="6"
+      fill="none" stroke="#7C3AED" stroke-opacity="0.45" stroke-width="1.5" stroke-dasharray="4 4"/>
+    <text x="${COLUNA_PROC.x + COLUNA_PROC.w / 2}" y="${y + COLUNA_PROC.h / 2 + 5 + dy}" text-anchor="middle"
+      font-family="DM Sans, sans-serif" font-size="14" font-weight="600" fill="#5A3581">${nome}</text>`
+
+  return `<g data-arq-fixo="futuros">${FUTUROS.map(cartao).join('')}</g>`
+}
+
+/**
+ * O cartão "WFM" vira "Dados de terceiros" e o "156" sai.
+ *
+ * Os rótulos do export são glifos virados `path`, então a troca é por
+ * substituição de nó, não de texto. A seta que liga os dois cartões ao
+ * Projeto é **um `path` combinado** (o Figma desenhou as duas curvas juntas),
+ * com quatro subtraçados nesta ordem: ponta do 156, ponta do WFM, traço do
+ * 156, traço do WFM. Um `slice` a partir da ponta do WFM levaria o traço do
+ * 156 junto, porque ele vem no meio; por isso o recorte pega a ponta e o
+ * traço do WFM separadamente e descarta o resto.
+ */
+function renomearParaTerceiros(svg: SVGSVGElement) {
+  svg.querySelector('path[d^="M92.0462 542.818"]')?.remove()
+  svg.querySelectorAll('rect[x="21"][y="527"]').forEach((el) => el.remove())
+
+  const seta = svg.querySelector('path[d^="M755 345"]')
+  const d = seta?.getAttribute('d') ?? ''
+  const ponta = d.indexOf('M755 287')
+  const traco156 = d.indexOf('M179 548')
+  const tracoWfm = d.indexOf('M179 490')
+  if (seta && ponta > -1 && traco156 > -1 && tracoWfm > -1) {
+    seta.setAttribute('d', d.slice(ponta, traco156) + d.slice(tracoWfm))
+  }
+
+  svg.querySelector('path[d^="M85.147 496"]')?.remove()
+  svg
+    .querySelector('rect[x="21"][y="470"][stroke]')
+    ?.insertAdjacentHTML(
+      'afterend',
+      '<text x="99.5" y="495" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="12" font-weight="700" fill="black">Dados de terceiros</text>',
+    )
+}
+
+/** Idempotente: a marca `data-arq-fixo` é a trava. */
+function prepararDesenho(svg: SVGSVGElement) {
+  if (svg.querySelector('[data-arq-fixo]')) return
+  renomearParaTerceiros(svg)
+  svg.insertAdjacentHTML('beforeend', cardsFuturos())
+}
+
 interface Peca {
   /** Grupo que se move. */
   g: SVGGElement
@@ -284,7 +362,16 @@ function classificar(svg: SVGSVGElement): Desenho | null {
   })
   svg.querySelectorAll('[data-arq-extra]').forEach((e) => e.remove())
 
-  const filhos = [...svg.children] as SVGGraphicsElement[]
+  /**
+   * Os cartões futuros ficam **fora** da classificação: eles não são peças do
+   * export, e se entrassem em `filhos` o número de peças deixaria de bater
+   * com o de destinos. Voltam depois, direto no `fora`, que é o grupo que
+   * apaga quando a câmera fecha no cartão do projeto.
+   */
+  const fixos = [...svg.querySelectorAll('[data-arq-fixo]')] as SVGGraphicsElement[]
+  const filhos = ([...svg.children] as SVGGraphicsElement[]).filter(
+    (el) => !el.hasAttribute('data-arq-fixo'),
+  )
   if (filhos.length === 0) return null
 
   let caixas: Caixa[]
@@ -401,7 +488,7 @@ function classificar(svg: SVGSVGElement): Desenho | null {
    * O `fora` vira um grupo, e ele fica no começo da lista para continuar
    * pintando por baixo de tudo (em SVG quem pinta por último fica por cima).
    */
-  const foraG = agrupar(svg, fora, 'fora')
+  const foraG = agrupar(svg, [...fora, ...fixos], 'fora')
   svg.insertBefore(foraG, svg.firstChild)
 
   const blocos = criarEstrutura(svg)
@@ -421,7 +508,7 @@ function classificar(svg: SVGSVGElement): Desenho | null {
     cartaoDy: CARTAO_DESTINO.y - areaCartao.y,
     pecas,
     blocos,
-    folhas: filhos,
+    folhas: [...filhos, ...fixos],
   }
 }
 
@@ -490,6 +577,7 @@ export default function Slide01Arquitetura({ action }: SlideProps) {
     let tentativas = 0
     const tentar = () => {
       const svg = el.querySelector('svg') as SVGSVGElement | null
+      if (svg) prepararDesenho(svg)
       const d = svg && classificar(svg)
       if (d) {
         classificado.current = true

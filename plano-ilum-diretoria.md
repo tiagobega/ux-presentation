@@ -15,11 +15,13 @@ O deck foi reduzido a cinco slides. As seções detalhadas mais abaixo **continu
 1. *Infraestrutura*: o desenho inteiro, que é o `src/assets/fluxo-novo.svg` do deck Ilum. Gestão de frota e fontes de dados alimentam o Ilum, que troca com o Vision, salva no Banco Yoda e roteia para a plataforma do projeto.
 2. *Vocabulário*: tudo que não é o cartão do projeto some, o cartão desliza para a esquerda e a câmera fecha nele; os três termos entram à direita. Nada é substituído por uma réplica: o cartão que se move é o do próprio desenho, e o fade fica só no que sai de foco.
 
-   | Termo | Na tela |
-   |---|---|
-   | Plataforma | base principal |
-   | Serviço | código específico da plataforma, representado como módulo |
-   | Produto | módulo acoplado a um host |
+   | Termo | Na tela | Critério de enquadramento |
+   |---|---|---|
+   | Plataforma | base principal | É a aplicação do cliente |
+   | Serviço | código específico da plataforma, representado como módulo | Vale só para esta plataforma |
+   | Produto | módulo acoplado a um host | Vale para mais de uma plataforma |
+
+   Uma seta liga o cartão a cada bloco. O critério é o que a diretoria leva da reunião: a definição diz o que a coisa é, o critério diz como reconhecer. Sem ele os três termos leem como uma lista solta ao lado do cartão, e não como o enquadramento do que está dentro dele.
 
 3. *De onde vem cada um*: as peças do cartão se movem para a linha do termo a que pertencem, deixando uma cópia apagada no lugar para o cartão não esvaziar. O título do projeto vai para **Plataforma**; os SERVIÇOS DEDICADOS (Banco, Front-end, Back-end) vão para **Serviço**; os PRODUTOS (Obras, Lens (BI), Planejamento Recape, Query, Mapas) vão para **Produto**. A equipe dedicada fica no cartão: não é um dos três termos.
 
@@ -39,39 +41,48 @@ Continua valendo: é uma simulação da experiência desejada, não demonstraç�
 ### Slide 3 — Como vamos fazer isso acontecer? [título+grade]
 **Passos:** As frentes
 
-Oito frentes, em grade de duas colunas, numa etapa só: Design system · Padrões de front-end (arquitetura de projeto) · Registry (biblioteca de componentes) · Microfront-ends (produtos) · BI (Lens) · Query (IA assistente da aplicação inteira, não mais só do mapa) · Comunicação back e front (padronizada) · Qualidade (ferramentas de identificação de bugs e testes).
+As frentes separadas em dois blocos, usando o vocabulário do slide 1.
+
+| Bloco | Frentes |
+|---|---|
+| **Interno · como construímos** | Design system · Padrões de front-end (arquitetura de projeto) · Registry (biblioteca de componentes) · Microfront-ends (o encaixe dos produtos) · Comunicação back e front (padronizada) · Qualidade (identificação de bugs e testes) |
+| **Produto · o que o cliente usa** | Lens (BI) · Query (IA assistente da aplicação inteira, não mais só do mapa) |
+
+Sem a separação, design system e Lens apareciam com o mesmo peso, e a diretoria não tinha como saber o que dali vira oferta.
 
 O parêntese diz o que a frente é, não por que ela importa — a justificativa é a fala.
 
 ### Slide 4 — Cronograma [linha-do-tempo]
 **Passos:** Os marcos
 
-| Marco | Situação |
-|---|---|
-| Levantamento | OK |
-| Criação da base | Em execução |
-| POC · Uberlândia | 15/10 |
-| Adaptação de novos produtos | A seguir |
-| Adaptação de plataformas | a partir de FEV/27 |
+| Marco | Data | Descrição |
+|---|---|---|
+| Levantamento | SET/26 | Rotinas, dependências e riscos mapeados |
+| Criação da base | SET → OUT/26 | Padrões de dados, de integração e de desenvolvimento |
+| POC · Uberlândia | **15/10/26** | A base validada numa plataforma real |
+| Adaptação de novos produtos | OUT/26 → JAN/27 | Produtos migrados para a base comum |
+| Adaptação de plataformas | **a partir de FEV/27** | As plataformas dos projetos adotam a base |
 
-Só os marcos que têm data mostram data. “Adaptação de novos produtos” não tem, e inventar uma transformaria uma sequência em compromisso.
+**Duas datas são compromisso, três são janela.** 15/10 e FEV/27 vieram do usuário; as outras três são derivadas da ordem dos marcos entre esses dois âncoras. O rodapé do slide diz isso na tela — uma janela derivada apresentada como data vira compromisso na cabeça de quem ouve.
 
 ### Slide 5 — Entregas em paralelo [título+grade]
 **Passos:** As entregas
 
 Cinco bloquinhos com o que o time entrega **além** do que o plano do ILUM prevê.
 
-| Bloco | Na tela |
-|---|---|
-| Fleets | Auxiliar de agendamento e instalação |
-| Obras · Planejamento | Produto construído com os gerentes de projeto |
-| Informs | Formulários em campo, do template ao envio |
-| ERP | Ferramenta de solicitação de reembolso |
-| Comgas | Aplicação de RFID |
+| Bloco | O que é | Situação | Data |
+|---|---|---|---|
+| Fleets | Auxiliar de agendamento e instalação | Guia de instalação | SET/26 |
+| Obras · Planejamento | Produto construído com os gerentes de projeto | Obras entregue · Planejamento em homologação (POA) | — |
+| Informs | Formulários em campo, do template ao envio | PWA entregue · painel em evolução | — |
+| ERP | Ferramenta de solicitação de reembolso | A confirmar | — |
+| Comgas | Aplicação de RFID | Reestruturação em andamento | — |
+
+Só o Fleets tem data informada. As demais frentes dizem "a confirmar" em vez de exibir uma data inventada, e o rodapé carrega a data do levantamento.
 
 Fecha o deck depois do cronograma de propósito: primeiro a diretoria vê o plano, depois vê que ele não é o único compromisso em curso.
 
-Os descritores dizem **o que a coisa é**, não em que pé ela está. Status de portfólio envelhece entre a escrita e a reunião, e a tela não tem como mostrar que envelheceu; o que cada produto é, não muda. Se a fala precisar de situação, ela está na seção "Slide 7 — O portfólio em andamento", mais abaixo, com a data em que foi levantada.
+Cada bloquinho traz o que a coisa é **e** em que pé ela está. Status envelhece entre a escrita e a reunião, então o rodapé carrega a data do levantamento: é o que permite apresentar situação sem que ela vire promessa. A situação de cada frente vem da seção "Slide 7 — O portfólio em andamento", mais abaixo.
 
 **Fala.** “Vale dizer que nada disso para o resto. Em paralelo ao plano, o time entrega o auxiliar de agendamento e instalação do Fleets, o produto de obra e planejamento com os gerentes de projeto, o Informs, a ferramenta de solicitação de reembolso no ERP e a aplicação de RFID da Comgas.”
 

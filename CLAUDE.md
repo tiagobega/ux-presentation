@@ -40,8 +40,8 @@ Order is governed by `DIRETORIA_DECK` in `src/slides/diretoria/deck.ts`.
 |---|------|-------|------|
 | 1 | `Slide01Arquitetura.tsx` | Arquitetura | Tudo dentro do `fluxo-novo.svg`: o cartão do projeto desliza, a câmera fecha e as peças se movem para plataforma / serviço / produto |
 | 2 | `Slide02CidadeX.tsx` | Cidade X | Composição por prompt: digitação, clique, montagem e a aplicação preenchida |
-| 3 | `Slide03ComoFazer.tsx` | Como fazer | As oito frentes, em grade |
-| 4 | `Slide04Cronograma.tsx` | Cronograma | Cinco marcos numa linha do tempo |
+| 3 | `Slide03ComoFazer.tsx` | Como fazer | As frentes separadas em interno e produto |
+| 4 | `Slide04Cronograma.tsx` | Cronograma | Cinco marcos numa linha do tempo, com data e descrição |
 | 5 | `Slide05EntregasParalelas.tsx` | Em paralelo | Cinco bloquinhos com o que o time entrega além do plano |
 
 **Critério editorial** — na tela entram títulos, termos, dados e status; a explicação longa é a fala. Por isso o `Frame` de `src/slides/diretoria/ui.tsx` **não tem rodapé de nota**, ao contrário do `Frame` do deck Ilum. As definições curtas do slide 1 são a exceção combinada: são vocabulário, e sem elas a diretoria não acompanha o resto.
@@ -65,7 +65,9 @@ Isso exige classificar o SVG por geometria em tempo de execução, porque o expo
 
 **A cadeia do slide 2** — o clique simulado dispara a montagem sozinho (plataforma, depois os módulos voando). Um clique que não causa nada lê como animação quebrada, que foi o defeito da primeira versão. Sobra um único avanço manual, o que preenche a aplicação: o apresentador nunca aperta seta sem que algo mude na tela. A digitação conta por **tempo decorrido** em `requestAnimationFrame`, não um caractere por tique de `setInterval` — cada caractere provoca um render do palco inteiro, e com intervalo fixo o tique atrasava e a frase levava o dobro do previsto.
 
-**Descritor, não status** — no slide 5 cada bloquinho diz o que a coisa é, não em que pé ela está. Status de portfólio envelhece entre a escrita e a reunião, e a tela não tem como mostrar que envelheceu. A situação de cada frente, com a data do levantamento, vive na seção "Slide 7 — O portfólio em andamento" do plano.
+**O vocabulário do slide 1 atravessa o deck** — cada termo carrega um **critério de enquadramento** ("vale só para esta plataforma" / "vale para mais de uma"), não só a definição, e uma seta liga o cartão a cada bloco. O slide 3 usa esse mesmo vocabulário para separar **interno** de **produto**: sem a separação, design system e Lens apareciam com o mesmo peso, e a diretoria não tinha como saber o que dali vira oferta.
+
+**Data derivada nunca se apresenta como compromisso** — no cronograma só 15/10 e FEV/27 vieram do usuário; as outras três janelas são derivadas da ordem dos marcos entre esses dois âncoras, e o rodapé do slide diz isso na tela. No slide 5, só o Fleets tem data informada: as demais frentes dizem "a confirmar" em vez de exibir uma data inventada, e o rodapé carrega a data do levantamento (SET/26). Status envelhece entre a escrita e a reunião; datar o levantamento é o que permite mostrá-lo sem que vire promessa. Ao acrescentar marco ou frente, mantenha a regra: dado do usuário em destaque, derivado rotulado, desconhecido explícito.
 
 **Regra de layout do deck** — nada entra empurrando o vizinho. O que aparece numa etapa posterior já está no DOM desde o primeiro quadro, só apagado.
 

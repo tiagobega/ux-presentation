@@ -53,7 +53,7 @@ const CARTAO_DESTINO = { x: 30, y: 110 }
  * vez de trocar o conteúdo, aproximar o que já está lá.
  */
 const CAMERA_CHEIA = '0 0 1087 646'
-const CAMERA_RECORTE = '10 95 990 465'
+const CAMERA_RECORTE = '10 100 990 470'
 
 /** Coluna dos termos, à direita do cartão. */
 const TERMO_X = 390
@@ -61,8 +61,16 @@ const TERMO_X = 390
 interface BlocoTermo {
   termo: string
   descricao: string
+  /**
+   * O teste que decide o enquadramento. É o que a diretoria leva da reunião:
+   * a definição diz o que a coisa é, o critério diz como reconhecer.
+   */
+  criterio: string
   nomeY: number
   descY: number
+  criterioY: number
+  /** Altura da seta que liga o cartão a este bloco. */
+  setaY: number
   /** Onde as peças deste termo param. Uma posição por peça do bloco. */
   destinos: { x: number; y: number }[]
 }
@@ -76,33 +84,42 @@ const TERMOS: BlocoTermo[] = [
   {
     termo: 'Plataforma',
     descricao: '(base principal)',
-    nomeY: 165,
-    descY: 190,
-    destinos: [{ x: TERMO_X, y: 202 }],
+    criterio: 'É a aplicação do cliente',
+    nomeY: 155,
+    descY: 178,
+    criterioY: 198,
+    setaY: 175,
+    destinos: [{ x: TERMO_X, y: 210 }],
   },
   {
     termo: 'Serviço',
     descricao: '(código específico da plataforma, representado como módulo)',
-    nomeY: 285,
-    descY: 310,
+    criterio: 'Vale só para esta plataforma',
+    nomeY: 278,
+    descY: 301,
+    criterioY: 321,
+    setaY: 298,
     // As larguras (50 · 79 · 72) vêm do desenho; os vãos são de 16.
     destinos: [
-      { x: TERMO_X, y: 322 },
-      { x: TERMO_X + 66, y: 322 },
-      { x: TERMO_X + 161, y: 322 },
+      { x: TERMO_X, y: 333 },
+      { x: TERMO_X + 66, y: 333 },
+      { x: TERMO_X + 161, y: 333 },
     ],
   },
   {
     termo: 'Produto',
     descricao: '(módulo acoplado a um host)',
-    nomeY: 405,
-    descY: 430,
+    criterio: 'Vale para mais de uma plataforma',
+    nomeY: 401,
+    descY: 424,
+    criterioY: 444,
+    setaY: 421,
     destinos: [
-      { x: TERMO_X, y: 442 },
-      { x: TERMO_X + 300, y: 442 },
-      { x: TERMO_X, y: 476 },
-      { x: TERMO_X + 300, y: 476 },
-      { x: TERMO_X, y: 510 },
+      { x: TERMO_X, y: 456 },
+      { x: TERMO_X + 300, y: 456 },
+      { x: TERMO_X, y: 490 },
+      { x: TERMO_X + 300, y: 490 },
+      { x: TERMO_X, y: 524 },
     ],
   },
 ]
@@ -290,8 +307,25 @@ function classificar(svg: SVGSVGElement): Desenho | null {
     const g = document.createElementNS(NS, 'g')
     g.setAttribute('data-arq-extra', 'termo')
     g.style.opacity = '0'
+
+    /**
+     * A seta do cartão para o bloco. É ela que diz "isto daqui se enquadra
+     * assim": sem o traço, os três termos leem como uma lista solta ao lado
+     * do cartão, e não como o enquadramento do que está dentro dele.
+     */
+    const seta = document.createElementNS(NS, 'path')
+    seta.setAttribute(
+      'd',
+      `M350 ${t.setaY} L368 ${t.setaY} M362 ${t.setaY - 5} L368 ${t.setaY} L362 ${t.setaY + 5}`,
+    )
+    seta.setAttribute('fill', 'none')
+    seta.setAttribute('stroke', '#8e73ad')
+    seta.setAttribute('stroke-width', '2')
+    g.appendChild(seta)
+
     g.appendChild(texto(t.termo, TERMO_X, t.nomeY, 30, '700', '#3d2b52'))
     g.appendChild(texto(t.descricao, TERMO_X, t.descY, 14, '400', '#64566f'))
+    g.appendChild(texto(t.criterio, TERMO_X, t.criterioY, 15, '600', '#7c3aed'))
     svg.appendChild(g)
     return g
   })

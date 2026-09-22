@@ -9,27 +9,26 @@
 
 O deck foi reduzido a cinco slides. As seções detalhadas mais abaixo **continuam valendo como reserva de fala, ressalvas e notas de preparação**, mas não são mais a estrutura do deck: o que está no ar é o que esta seção descreve.
 
-### Slide 1 — Arquitetura [diagrama + vocabulário]
-**Passos:** Infraestrutura · Vocabulário · De onde vem cada um
+### Slide 1 — Arquitetura de Projetos [diagrama + vocabulário]
+**Passos:** Infraestrutura · O projeto · Plataforma · Serviço · Produto
 
 1. *Infraestrutura*: o desenho inteiro, que é o `src/assets/fluxo-novo.svg` do deck Ilum. Gestão de frota e fontes de dados alimentam o Ilum, que troca com o Vision, salva no Banco Yoda e roteia para a plataforma do projeto.
-2. *Vocabulário*: tudo que não é o cartão do projeto some, o cartão desliza para a esquerda e a câmera fecha nele; à direita entra o **enquadramento**, vazio. Nada é substituído por uma réplica: o cartão que se move é o do próprio desenho, e o fade fica só no que sai de foco.
-3. *De onde vem cada um*: as peças do cartão pousam no enquadramento, deixando uma cópia apagada no lugar para o cartão não esvaziar.
+2. *O projeto*: tudo que não é o cartão do projeto some, o cartão desliza para a esquerda e a câmera fecha nele. **A direita fica vazia** — este passo é só o projeto, sem nada competindo com ele.
+3. *Plataforma*: entra a caixa da plataforma, e o nome do projeto e as stacks pousam dentro dela.
+4. *Serviço*: entra o bloco do serviço, **dentro** da caixa da plataforma.
+5. *Produto*: entra a camada dos produtos, **fora** da caixa e ligada por uma seta que sobe, e as caixinhas dos produtos pousam nela.
 
-O enquadramento é um desenho, não três rótulos empilhados — a relação já está na forma:
-
-| Termo | Como aparece | Na tela |
+| Conceito | Como aparece | Na tela |
 |---|---|---|
-| **Plataforma** | Caixa fechada e sólida | core · estrutura prévia, onde tudo se apoia |
-| **Serviço** | *Dentro* da caixa | criados para esta plataforma |
-| **Encaixe** | Faixa tracejada na borda | encaixe · microfront-ends |
-| **Produto** | *Fora* da caixa, cada um com a própria borda | fora da plataforma · valem para mais de uma plataforma · regras próprias, escopadas |
+| **Plataforma** | Caixa sólida, com as stacks dentro | O coração da aplicação. As stacks já entram aqui, criadas pelo ILUM. |
+| **Serviço** | Bloco *dentro* da caixa | Funcionalidades específicas construídas dentro desta plataforma, para este projeto. |
+| **Produto** | Camada *fora*, com seta subindo | Funcionalidades já escopadas que entram como módulo na plataforma. |
 
-Dentro/fora é a informação, e ela não depende de ninguém ler o rótulo. Com três linhas de texto, "serviço" e "produto" tinham o mesmo peso visual e a diferença ficava por conta da frase.
+Nada é substituído por uma réplica: o cartão que se move é o do próprio desenho, o fade fica só no que sai de foco, e as peças que pousam nos conceitos são as pastilhas reais, deixando uma cópia apagada no lugar para o cartão não esvaziar.
 
-Os nomes das peças são os do `fluxo-novo.svg`, não os do esboço à mão: o cartão é um recorte daquele desenho, e divergir faria o terceiro passo parecer outra coisa.
+Dentro/fora é a informação, e ela não depende de ninguém ler o rótulo. Com três rótulos empilhados, "serviço" e "produto" tinham o mesmo peso visual e a diferença ficava por conta da frase.
 
-**Fala.** “Esta é a arquitetura que já está em execução. Olhando só para o projeto, dentro dele estão as três coisas que preciso que a gente chame pelo mesmo nome: a plataforma é a base principal; o serviço é o código específico daquela plataforma, representado como módulo; o produto é o módulo acoplado a um host. Não são definições novas — é o que já está no desenho.”
+**Ressalva de vocabulário.** No `fluxo-novo.svg` as pastilhas Banco · Front-end · Back-end estão sob o rótulo "SERVIÇOS DEDICADOS", mas aqui elas entram como **stacks da plataforma**. O deck usa a definição nova; o rótulo do SVG precisa ser atualizado no Figma para os dois deixarem de divergir.
 
 ### Slide 2 — Cidade X [mockup]
 **Passos:** Composição · Aplicação

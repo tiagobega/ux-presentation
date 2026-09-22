@@ -53,45 +53,48 @@ const CARTAO_DESTINO = { x: 30, y: 110 }
  * vez de trocar o conteúdo, aproximar o que já está lá.
  */
 const CAMERA_CHEIA = '0 0 1087 646'
-const CAMERA_RECORTE = '10 100 1010 445'
+const CAMERA_RECORTE = '10 100 1010 470'
 
 /**
- * O enquadramento, como forma.
+ * O enquadramento, montado um conceito por vez.
  *
- * Em vez de três rótulos empilhados, os termos viram **um desenho que já diz
- * a relação**:
+ * A câmera fecha no cartão do projeto e **a direita fica vazia**: o passo do
+ * zoom é só o projeto, sem nada competindo com ele. Daí em diante entra um
+ * conceito por etapa, cada um com a sua frase, e as peças do cartão pousam
+ * onde pertencem.
  *
- * - a **plataforma** é uma caixa fechada e sólida — o core, estrutura prévia;
- * - os **serviços** ficam *dentro* dela, porque existem só para ela;
- * - o **encaixe** é a borda por onde se acopla o que vem de fora;
- * - os **produtos** ficam *fora*, cada um com a própria borda — o escopo das
- *   suas regras — e uma plataforma fantasma ao lado mostra que o mesmo
- *   produto encaixa em outra.
+ * A relação está na forma, não no rótulo:
  *
- * Dentro/fora é a informação, e ela não depende de ninguém ler o rótulo.
- * Com três linhas de texto, "serviço" e "produto" tinham o mesmo peso visual
- * e a diferença ficava por conta da frase.
+ * - a **plataforma** é a caixa sólida, o coração da aplicação, e as stacks
+ *   (banco, front, back) entram dentro dela;
+ * - o **serviço** é um bloco *dentro* da plataforma, porque é construído
+ *   nela e para aquele projeto;
+ * - o **produto** é outra camada, *fora*, e sobe como módulo — cada caixinha
+ *   com a própria borda, que é o escopo das suas regras.
  */
 const COLUNA_X = 390
 const COLUNA_W = 620
 
-/** Onde cada peça do cartão para. Título, três serviços, cinco produtos. */
-const DESTINOS: { x: number; y: number }[] = [
-  { x: 406, y: 172 },
-  // As larguras dos serviços (50 · 79 · 72) vêm do desenho; os vãos são 16.
-  { x: 406, y: 234 },
-  { x: 472, y: 234 },
-  { x: 567, y: 234 },
+/**
+ * Onde cada peça do cartão para, e em que etapa ela vai. Título e stacks
+ * entram com a plataforma; as caixinhas dos produtos só na última camada.
+ */
+const DESTINOS: { x: number; y: number; fase: number }[] = [
+  { x: 406, y: 192, fase: 2 },
+  // As larguras das stacks (50 · 79 · 72) vêm do desenho; os vãos são 16.
+  { x: 406, y: 238, fase: 2 },
+  { x: 472, y: 238, fase: 2 },
+  { x: 567, y: 238, fase: 2 },
   // Produtos em duas colunas: a pastilha tem 284 de largura no desenho e não
   // é reescalada, então cinco lado a lado não caberiam.
-  { x: 406, y: 376 },
-  { x: 702, y: 376 },
-  { x: 406, y: 410 },
-  { x: 702, y: 410 },
-  { x: 406, y: 444 },
+  { x: 406, y: 454, fase: 4 },
+  { x: 702, y: 454, fase: 4 },
+  { x: 406, y: 488, fase: 4 },
+  { x: 702, y: 488, fase: 4 },
+  { x: 406, y: 522, fase: 4 },
 ]
 
-export const ACTIONS = ['Infraestrutura', 'Vocabulário', 'De onde vem cada um']
+export const ACTIONS = ['Infraestrutura', 'O projeto', 'Plataforma', 'Serviço', 'Produto']
 
 const NS = 'http://www.w3.org/2000/svg'
 
@@ -102,6 +105,8 @@ interface Peca {
   fantasma: SVGGElement
   dx: number
   dy: number
+  /** Etapa a partir da qual a peça está no destino. */
+  fase: number
 }
 
 interface Desenho {
@@ -113,8 +118,8 @@ interface Desenho {
   cartaoDx: number
   cartaoDy: number
   pecas: Peca[]
-  /** A caixa da plataforma, o encaixe e a área dos produtos. */
-  estrutura: SVGGElement
+  /** Um grupo por conceito: cada um entra na sua etapa. */
+  blocos: { plataforma: SVGGElement; servico: SVGGElement; produto: SVGGElement }
   /** Elementos folha, para a animação de entrada. */
   folhas: SVGGraphicsElement[]
 }
@@ -169,66 +174,87 @@ function retangulo(
   return r
 }
 
-/**
- * Desenha o enquadramento vazio: a caixa da plataforma com o espaço dos
- * serviços dentro, a faixa de encaixe na borda e a área dos produtos fora,
- * com a plataforma fantasma que mostra o reuso. As peças do cartão caem aqui
- * na etapa seguinte.
- */
-function criarEstrutura(svg: SVGSVGElement): SVGGElement {
+/** Um bloco da estrutura. Nasce apagado e acende na sua etapa. */
+function bloco(svg: SVGSVGElement, marca: string): SVGGElement {
   const g = document.createElementNS(NS, 'g')
-  g.setAttribute('data-arq-extra', 'estrutura')
+  g.setAttribute('data-arq-extra', marca)
   g.style.opacity = '0'
-
-  // ── A plataforma: caixa fechada e sólida. Os serviços vivem dentro. ──
-  g.appendChild(retangulo(COLUNA_X, 115, COLUNA_W, 165, '#f3ebff', '#7c3aed', 2.5))
-  g.appendChild(texto('Plataforma', 406, 143, 24, '700', '#3d2b52'))
-  g.appendChild(texto('core · estrutura prévia, onde tudo se apoia', 406, 163, 13, '400', '#64566f'))
-
-  const divisoria = document.createElementNS(NS, 'line')
-  divisoria.setAttribute('x1', '406')
-  divisoria.setAttribute('y1', '200')
-  divisoria.setAttribute('x2', String(COLUNA_X + COLUNA_W - 16))
-  divisoria.setAttribute('y2', '200')
-  divisoria.setAttribute('stroke', '#c3aadc')
-  g.appendChild(divisoria)
-
-  g.appendChild(rotulo('SERVIÇOS', 406, 222, '#5a3581'))
-  g.appendChild(texto('criados para esta plataforma', 484, 222, 13, '400', '#64566f'))
-
-  // ── O encaixe: a borda por onde entra o que vem de fora. ──
-  g.appendChild(retangulo(COLUNA_X, 292, COLUNA_W, 24, 'none', '#a58cc4', 1.5, '6 5'))
-  const encaixe = texto('ENCAIXE · MICROFRONT-ENDS', COLUNA_X + COLUNA_W / 2, 309, 11, '700', '#77618e')
-  encaixe.setAttribute('letter-spacing', '1.2')
-  encaixe.setAttribute('text-anchor', 'middle')
-  g.appendChild(encaixe)
-
-  // Pinos curtos dos dois lados da faixa: é o acoplamento, não uma camada.
-  ;[500, 700, 900].forEach((x) => {
-    ;[
-      [280, 292],
-      [316, 330],
-    ].forEach(([y1, y2]) => {
-      const pino = document.createElementNS(NS, 'line')
-      pino.setAttribute('x1', String(x))
-      pino.setAttribute('y1', String(y1))
-      pino.setAttribute('x2', String(x))
-      pino.setAttribute('y2', String(y2))
-      pino.setAttribute('stroke', '#a58cc4')
-      pino.setAttribute('stroke-width', '1.5')
-      g.appendChild(pino)
-    })
-  })
-
-  // ── Os produtos: fora da caixa, cada um com a própria borda. ──
-  g.appendChild(rotulo('PRODUTOS', 406, 348, '#5a3581'))
-  g.appendChild(texto('fora da plataforma', 490, 348, 13, '400', '#64566f'))
-  g.appendChild(
-    texto('valem para mais de uma plataforma · regras próprias, escopadas', 406, 366, 13, '600', '#7c3aed'),
-  )
-
   svg.appendChild(g)
   return g
+}
+
+/**
+ * Desenha os três conceitos, cada um no seu grupo.
+ *
+ * O serviço é um bloco **dentro** da caixa da plataforma, e o produto é uma
+ * camada **fora** dela, ligada por uma seta que sobe: é assim que "construído
+ * dentro" e "entra como módulo" ficam ditos pelo desenho, sem depender de
+ * ninguém ler a frase.
+ */
+function criarEstrutura(svg: SVGSVGElement): Desenho['blocos'] {
+  // ── Plataforma: a caixa sólida, com as stacks dentro. ──
+  const plataforma = bloco(svg, 'plataforma')
+  plataforma.appendChild(retangulo(COLUNA_X, 115, COLUNA_W, 250, '#f3ebff', '#7c3aed', 2.5))
+  plataforma.appendChild(texto('Plataforma', 406, 150, 26, '700', '#3d2b52'))
+  plataforma.appendChild(
+    texto('O coração da aplicação. As stacks já entram aqui, criadas pelo ILUM.', 406, 174, 14, '400', '#64566f'),
+  )
+  plataforma.appendChild(rotulo('STACKS', 406, 226, '#5a3581'))
+
+  // ── Serviço: um bloco dentro da plataforma. ──
+  const servico = bloco(svg, 'servico')
+  const divisoria = document.createElementNS(NS, 'line')
+  divisoria.setAttribute('x1', '406')
+  divisoria.setAttribute('y1', '282')
+  divisoria.setAttribute('x2', String(COLUNA_X + COLUNA_W - 16))
+  divisoria.setAttribute('y2', '282')
+  divisoria.setAttribute('stroke', '#c3aadc')
+  servico.appendChild(divisoria)
+  servico.appendChild(retangulo(406, 294, 588, 62, '#ffffffc0', '#a58cc4', 1.5))
+  servico.appendChild(texto('Serviço', 422, 320, 19, '700', '#3d2b52'))
+  servico.appendChild(
+    texto(
+      'Funcionalidades específicas construídas dentro desta plataforma, para este projeto.',
+      422,
+      342,
+      13,
+      '400',
+      '#64566f',
+    ),
+  )
+
+  // ── Produto: outra camada, fora, subindo como módulo. ──
+  const produto = bloco(svg, 'produto')
+  // Aponta para cima: o produto sobe e encaixa na plataforma.
+  const seta = document.createElementNS(NS, 'path')
+  seta.setAttribute('d', 'M700 402 L700 370')
+  seta.setAttribute('fill', 'none')
+  seta.setAttribute('stroke', '#8e73ad')
+  seta.setAttribute('stroke-width', '2')
+  seta.setAttribute('stroke-dasharray', '6 4')
+  produto.appendChild(seta)
+
+  const ponta = document.createElementNS(NS, 'path')
+  ponta.setAttribute('d', 'M692 378 L700 369 L708 378')
+  ponta.setAttribute('fill', 'none')
+  ponta.setAttribute('stroke', '#8e73ad')
+  ponta.setAttribute('stroke-width', '2')
+  produto.appendChild(ponta)
+
+  produto.appendChild(texto('entra como módulo', 716, 391, 12, '600', '#77618e'))
+  produto.appendChild(texto('Produto', 406, 424, 26, '700', '#3d2b52'))
+  produto.appendChild(
+    texto(
+      'Funcionalidades já escopadas que entram como módulo na plataforma.',
+      406,
+      446,
+      14,
+      '400',
+      '#64566f',
+    ),
+  )
+
+  return { plataforma, servico, produto }
 }
 
 function classificar(svg: SVGSVGElement): Desenho | null {
@@ -357,13 +383,14 @@ function classificar(svg: SVGSVGElement): Desenho | null {
     return {
       g,
       fantasma,
+      fase: destino.fase,
       // O grupo vive dentro do cartão, que já está deslocado: o delta desconta isso.
       dx: destino.x - (orig.x + CARTAO_DESTINO.x - areaCartao.x),
       dy: destino.y - (orig.y + CARTAO_DESTINO.y - areaCartao.y),
     }
   })
 
-  const estrutura = criarEstrutura(svg)
+  const blocos = criarEstrutura(svg)
   /**
    * O cartão volta para o fim da lista: em SVG não há `z-index`, quem pinta
    * por último fica por cima. A estrutura é criada depois do cartão e o
@@ -379,7 +406,7 @@ function classificar(svg: SVGSVGElement): Desenho | null {
     cartaoDx: CARTAO_DESTINO.x - areaCartao.x,
     cartaoDy: CARTAO_DESTINO.y - areaCartao.y,
     pecas,
-    estrutura,
+    blocos,
     folhas: filhos,
   }
 }
@@ -395,15 +422,17 @@ function aplicarFase(d: Desenho, fase: number, instantaneo: boolean) {
       : gsap.to(alvo, { ...vars, duration: duracao, ease: 'power2.inOut', overwrite: 'auto' })
 
   const recorte = fase >= 1
-  const voou = fase >= 2
 
   mexer(d.svg, { attr: { viewBox: recorte ? CAMERA_RECORTE : CAMERA_CHEIA } })
   mexer(d.fora, { opacity: recorte ? 0 : 1 }, 0.45)
   mexer(d.cartao, { x: recorte ? d.cartaoDx : 0, y: recorte ? d.cartaoDy : 0 })
-  mexer(d.estrutura, { opacity: recorte ? 1 : 0 }, 0.45)
+  mexer(d.blocos.plataforma, { opacity: fase >= 2 ? 1 : 0 }, 0.45)
+  mexer(d.blocos.servico, { opacity: fase >= 3 ? 1 : 0 }, 0.45)
+  mexer(d.blocos.produto, { opacity: fase >= 4 ? 1 : 0 }, 0.45)
   d.pecas.forEach((p) => {
-    mexer(p.g, { x: voou ? p.dx : 0, y: voou ? p.dy : 0 })
-    mexer(p.fantasma, { opacity: voou ? 0.25 : 0 }, 0.45)
+    const chegou = fase >= p.fase
+    mexer(p.g, { x: chegou ? p.dx : 0, y: chegou ? p.dy : 0 })
+    mexer(p.fantasma, { opacity: chegou ? 0.25 : 0 }, 0.45)
   })
 }
 

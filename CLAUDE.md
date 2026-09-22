@@ -38,7 +38,7 @@ Order is governed by `DIRETORIA_DECK` in `src/slides/diretoria/deck.ts`.
 
 | # | File | Label | Tema |
 |---|------|-------|------|
-| 1 | `Slide01Arquitetura.tsx` | Arquitetura | Tudo dentro do `fluxo-novo.svg`: o cartão do projeto desliza, a câmera fecha e as peças se movem para plataforma / serviço / produto |
+| 1 | `Slide01Arquitetura.tsx` | Arquitetura | Tudo dentro do `fluxo-novo.svg`: o cartão desliza, a câmera fecha e um conceito entra por etapa (plataforma → serviço → produto) |
 | 2 | `Slide02CidadeX.tsx` | Cidade X | Composição por prompt: digitação, clique, montagem e a aplicação preenchida |
 | 3 | `Slide03ComoFazer.tsx` | Como fazer | As frentes separadas em interno e produto |
 | 4 | `Slide04Cronograma.tsx` | Cronograma | Cinco marcos numa linha do tempo, com data e descrição |
@@ -65,9 +65,11 @@ Isso exige classificar o SVG por geometria em tempo de execução, porque o expo
 
 **A cadeia do slide 2** — o clique simulado dispara a montagem sozinho (plataforma, depois os módulos voando). Um clique que não causa nada lê como animação quebrada, que foi o defeito da primeira versão. Sobra um único avanço manual, o que preenche a aplicação: o apresentador nunca aperta seta sem que algo mude na tela. A digitação conta por **tempo decorrido** em `requestAnimationFrame`, não um caractere por tique de `setInterval` — cada caractere provoca um render do palco inteiro, e com intervalo fixo o tique atrasava e a frase levava o dobro do previsto.
 
-**O enquadramento é uma forma, não três rótulos** — no slide 1 os termos viram um desenho em que a relação já está dita: a **plataforma** é uma caixa fechada e sólida (o core, estrutura prévia), os **serviços** ficam *dentro* dela porque existem só para ela, o **encaixe** é a borda por onde se acopla o que vem de fora, e os **produtos** ficam *fora*, cada um com a própria borda — o escopo das suas regras. Dentro/fora é a informação, e não depende de ninguém ler o rótulo; com três linhas de texto, "serviço" e "produto" tinham o mesmo peso visual e a diferença ficava por conta da frase.
+**O enquadramento é uma forma, e entra um conceito por vez** — no slide 1 a relação está no desenho: a **plataforma** é a caixa sólida com as stacks dentro, o **serviço** é um bloco *dentro* dela, e o **produto** é outra camada *fora*, ligada por uma seta que sobe. Dentro/fora é a informação, e não depende de ninguém ler o rótulo; com três rótulos empilhados, "serviço" e "produto" tinham o mesmo peso visual e a diferença ficava por conta da frase.
 
-A estrutura entra vazia no passo 2 (o vocabulário como forma) e as peças do cartão pousam nela no passo 3.
+O passo do zoom (`O projeto`) deixa a direita **vazia** de propósito: mostrar a estrutura inteira ali dava um quadro cheio de caixas sem conteúdo, e a fala não tinha onde começar. Cada conceito entra depois com a sua frase, e as peças do cartão pousam nele — `DESTINOS` guarda a etapa de cada peça junto da coordenada.
+
+**Ressalva de vocabulário** — no `fluxo-novo.svg` as pastilhas Banco · Front-end · Back-end estão sob "SERVIÇOS DEDICADOS", mas o deck as apresenta como **stacks da plataforma**. O rótulo do SVG precisa ser atualizado no Figma; até lá, os dois divergem.
 
 **Em SVG não há `z-index`** — quem pinta por último fica por cima. A estrutura é criada depois do cartão, então o cartão é reanexado ao fim (`svg.appendChild(cartao)`): sem isso o preenchimento da caixa da plataforma esconde as peças que pousam dentro dela, e só os produtos, que param fora, aparecem.
 

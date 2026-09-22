@@ -1,8 +1,6 @@
 import type { Deck } from '../config'
 import Slide01Compromisso, { ACTIONS as A01 } from './Slide01Compromisso'
-import Slide02Vocabulario, { ACTIONS as A02 } from './Slide02Vocabulario'
-import Slide03Arquitetura, { ACTIONS as A03 } from './Slide03Arquitetura'
-import Slide04BaseCompartilhada, { ACTIONS as A04 } from './Slide04BaseCompartilhada'
+import Slide02Arquitetura, { ACTIONS as A02 } from './Slide02Arquitetura'
 import Slide05Apex, { ACTIONS as A05 } from './Slide05Apex'
 import Slide06Demandas, { ACTIONS as A06 } from './Slide06Demandas'
 import Slide07Portfolio, { ACTIONS as A07 } from './Slide07Portfolio'
@@ -17,12 +15,13 @@ import Slide15CidadeX, { ACTIONS as A15 } from './Slide15CidadeX'
 import SlideAnexoQuery, { ACTIONS as ANEXO } from './SlideAnexoQuery'
 
 /**
- * Deck ILUM · diretoria — 15 slides principais e um anexo, sem capa.
+ * Deck ILUM · diretoria — 13 slides principais e um anexo, sem capa.
  *
  * A fonte é `plano-ilum-diretoria.md`: a fala, a montagem e as notas de
  * preparação de cada slide estão lá, e os números dos arquivos seguem os
  * números do plano (`Slide01` é o slide 1 do plano), para não haver conversão
- * mental ao comparar os dois.
+ * mental ao comparar os dois. Daí o salto de 02 para 05: o slide 2 absorveu
+ * os antigos 3 e 4, e renumerar o resto só produziria divergência com o plano.
  *
  * Os steps de cada slide vêm do próprio slide (`ACTIONS`), que copia os
  * "Passos" do plano — a nav e o slide não saem de sincronia quando uma etapa
@@ -34,9 +33,7 @@ export const DIRETORIA_DECK: Deck = {
   title: 'ILUM · Plano de execução',
   slides: [
     Slide01Compromisso,
-    Slide02Vocabulario,
-    Slide03Arquitetura,
-    Slide04BaseCompartilhada,
+    Slide02Arquitetura,
     Slide05Apex,
     Slide06Demandas,
     Slide07Portfolio,
@@ -52,9 +49,7 @@ export const DIRETORIA_DECK: Deck = {
   ],
   config: [
     { label: 'O compromisso', actions: A01 },
-    { label: 'Vocabulário', actions: A02 },
-    { label: 'Arquitetura', actions: A03 },
-    { label: 'Base compartilhada', actions: A04 },
+    { label: 'Arquitetura', actions: A02 },
     { label: 'APEX', actions: A05 },
     { label: 'Demandas', actions: A06 },
     { label: 'Portfólio', actions: A07 },

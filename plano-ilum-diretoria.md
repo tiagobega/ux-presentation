@@ -2,7 +2,7 @@
 
 > **Plateia:** diretoria da Intelicity.
 > **Objetivo:** informar — formalizar a direção de front-end, os marcos e a incorporação de produtos no ILUM.
-> **Tempo:** sem restrição · 15 slides principais e um anexo.
+> **Tempo:** sem restrição · 13 slides principais e um anexo.
 > **Formato:** somente slides.
 
 ## Critérios editoriais
@@ -37,37 +37,17 @@ Duas etapas na horizontal, com destaque para a data da POC. Sem frase de fechame
 
 ---
 
-### Slide 2 — Plataforma, produto e serviço [arquétipo: pergunta-em-camadas]
-**Passos:** Plataforma · Produto · Serviço específico
+### Slide 2 — Arquitetura [arquétipo: diagrama-svg]
+**Passos:** A estrutura · Plataforma · Produto · Serviço específico · Design system · Registry · Microfront-ends
 
-**Na tela**
-
-**Plataforma, produto e serviço**
-
-- Plataforma
-- Produto
-- Serviço específico
-
-**Montagem**
-
-Três camadas, reveladas de baixo para cima: plataforma, produto e serviço específico. Apenas os nomes; as definições ficam na fala.
-
-**Fala**
-
-“A plataforma é a aplicação principal: organiza navegação, acesso e configuração. O produto é uma capacidade que queremos aproveitar em mais de uma plataforma, como Obras ou a administração do Informs. O serviço específico atende uma necessidade particular daquele cliente. Um componente visual, como uma tabela ou um botão, pertence à base compartilhada; não precisa virar um produto.”
-
-**Nota de preparação**
-
-Obras já foi entregue; sua integração à nova composição ainda não está comprovada. Administração do Informs está em evolução, conforme relato do usuário.
-
----
-
-### Slide 3 — A arquitetura em uma imagem [arquétipo: diagrama-svg]
-**Passos:** A estrutura
+> Este slide absorve os antigos slides 2, 3 e 4 (vocabulário, arquitetura e base compartilhada). A numeração dos slides seguintes foi preservada, então há um salto de 2 para 5: renumerar o restante só faria o plano divergir do que já está discutido.
 
 **Na tela**
 
 **Arquitetura**
+
+Base compartilhada
+Design system · Microfront-ends · Registry
 
 Plataforma
 Navegação · Acesso · Configuração
@@ -78,38 +58,62 @@ APIs → Dados
 
 Query _(visão de integração)_
 
-**Montagem**
+Uma definição por etapa, na faixa de baixo:
 
-Simplificar o desenho fornecido em três faixas. Query fica ao lado, conectado aos módulos por linhas discretas. MCP aparece apenas no anexo. O desenho não deve sugerir que cada módulo necessariamente possui banco próprio, nem que o front acessa diretamente o banco. Não incluir protocolos, frameworks ou organograma.
-
-**Fala**
-
-“A plataforma reúne os produtos e define as regras de convivência. Cada produto mantém sua função de negócio e conversa com os dados por integrações acordadas com o back-end. O Query aparece como a visão de assistência transversal. Sua presença no desenho não representa compromisso de implementação completa nesta etapa.”
-
----
-
-### Slide 4 — O que permite reaproveitar [arquétipo: título+grade]
-**Passos:** As peças compartilhadas
-
-**Na tela**
-
-**Base compartilhada**
-
-- Design system
-- Registry
-- Microfront-ends
+| Termo | Definição na tela |
+|---|---|
+| Plataforma | A aplicação que reúne e configura os módulos: navegação, acesso e configuração. |
+| Produto | Capacidade que queremos aproveitar em mais de uma plataforma. |
+| Serviço específico | A extensão que atende uma necessidade particular daquele cliente. |
+| Design system | A experiência comum: componentes e padrões visuais usados por todos. |
+| Registry | A distribuição: onde componentes e blocos padronizados são publicados para quem constrói as aplicações. |
+| Microfront-ends | O encaixe: produtos com autonomia justificada evoluem separados e são incorporados à plataforma. |
 
 **Montagem**
 
-Três colunas com os nomes. Sem descrições abaixo dos termos.
+Três faixas na coluna central, a base compartilhada numa coluna à esquerda e o Query ao lado. A primeira etapa monta o desenho; as seis seguintes acendem um termo por vez e trocam a definição na faixa de baixo. Uma definição por vez é a exceção assumida ao critério editorial: o vocabulário precisa de uma linha, e só uma fica na tela de cada vez. A faixa ocupa o seu espaço desde o primeiro quadro.
+
+Onde cada peça da base compartilhada entra é o argumento do slide, e está na geometria: **o design system liga na plataforma, o registry liga na faixa dos módulos e o microfront-end liga no conector entre as duas** — ele é o encaixe, não uma camada. As ligações da base são pontilhadas, porque sustentam o desenho e não são o fluxo.
+
+Produtos e Serviços específicos são duas células de uma faixa só, e o realce de cada célula arredonda apenas os cantos externos. O desenho não deve sugerir que cada módulo possui banco próprio, nem que o front acessa diretamente o banco: a faixa desce para APIs, e é a API que alcança os dados. MCP aparece apenas no anexo. Não incluir protocolos, frameworks ou organograma.
 
 **Fala**
 
-“O design system define a experiência comum. O registry organiza a distribuição de componentes e blocos padronizados para quem constrói as aplicações. Os microfront-ends permitem que produtos com autonomia justificada evoluam separadamente e sejam incorporados à plataforma. Vamos escolher a forma adequada para cada capacidade; uma tela isolada não vira automaticamente um produto independente.”
+**A estrutura**
+
+“Esta é a arquitetura. Em cima, a plataforma. No meio, o que ela compõe. Embaixo, as integrações que sustentam tudo. E à esquerda, o que é compartilhado por todos.”
+
+**Plataforma**
+
+“A plataforma é a aplicação principal: organiza navegação, acesso e configuração.”
+
+**Produto**
+
+“O produto é uma capacidade que queremos aproveitar em mais de uma plataforma, como Obras ou a administração do Informs.”
+
+**Serviço específico**
+
+“O serviço específico atende uma necessidade particular daquele cliente. Um componente visual, como uma tabela ou um botão, pertence à base compartilhada; não precisa virar um produto.”
+
+**Design system**
+
+“O design system define a experiência comum. Ele sustenta a plataforma e também a interface de cada módulo, e é por isso que aparece ligado à plataforma.”
+
+**Registry**
+
+“O registry organiza a distribuição de componentes e blocos padronizados para quem constrói as aplicações. É dele que vem o que a faixa dos módulos compõe.”
+
+**Microfront-ends**
+
+“Os microfront-ends são o encaixe entre a plataforma e os módulos: permitem que produtos com autonomia justificada evoluam separadamente e sejam incorporados à plataforma. Vamos escolher a forma adequada para cada capacidade; uma tela isolada não vira automaticamente um produto independente.”
 
 **Nota de preparação**
 
+Vocabulário conforme o registro mais recente do Linear: serviço específico é extensão para uma plataforma ou cliente, não a aplicação inteira entregue ao cliente. Validação terminológica pendente.
+
 A decisão de distribuição ainda está prevista na TIA-32. Evitar a explicação antiga de que todo produto é publicado no registry e carregado por ele: o backlog diferencia registry, pacotes compartilhados e produtos independentes. A configuração da plataforma determina a composição.
+
+Obras já foi entregue; sua integração à nova composição ainda não está comprovada. Administração do Informs está em evolução, conforme relato do usuário. A presença do Query no desenho não representa compromisso de implementação completa nesta etapa.
 
 ---
 

@@ -30,18 +30,16 @@ React + Vite + TypeScript fullscreen slide presentation. The original static HTM
 
 Seven decks live in this repo. **ILUM · diretoria** (`src/slides/diretoria/`) is the active one; **Front-end** (`src/slides/front/`, rascunho anterior do mesmo assunto), **Ilum** (`src/slides/ilum/`), **Informs** (`src/slides/informs/`), **Fleets · demo ao vivo** (`src/slides/fleets-demo/`) and the self-contained **Fleets** deck (`src/slides/fleets/`) are one URL param away; the **Branding & UX** deck (`src/slides/Slide00`–`Slide12`) stays as reference and renders nowhere until wrapped in a `deck.ts` and registered in `decks.ts`.
 
-### ILUM · diretoria — 15 slides e um anexo (`src/slides/diretoria/`)
+### ILUM · diretoria — 13 slides e um anexo (`src/slides/diretoria/`)
 
 A apresentação para a diretoria. **A fonte é [`plano-ilum-diretoria.md`](plano-ilum-diretoria.md)**: fala, montagem e notas de preparação de cada slide estão lá, e [`briefing-ilum-diretoria.md`](briefing-ilum-diretoria.md) guarda a plateia, o objetivo e as pendências. Não há roteiro separado para este deck — o plano é o roteiro, e duplicá-lo garantiria divergência.
 
-Order is governed by `DIRETORIA_DECK` in `src/slides/diretoria/deck.ts`. **Os números dos arquivos seguem os números do plano** (`Slide01` é o slide 1 do plano), e não a posição na esteira: é a única exceção do repositório à convenção `Slide00`–, e existe para não haver conversão mental ao comparar deck e plano.
+Order is governed by `DIRETORIA_DECK` in `src/slides/diretoria/deck.ts`. **Os números dos arquivos seguem os números do plano** (`Slide01` é o slide 1 do plano), e não a posição na esteira: é a única exceção do repositório à convenção `Slide00`–, e existe para não haver conversão mental ao comparar deck e plano. Daí o salto de `Slide02` para `Slide05`: o slide 2 absorveu os antigos 3 e 4, e renumerar o resto só faria deck e plano divergirem.
 
 | # | File | Label | Arquétipo · tema |
 |---|------|-------|------------------|
 | 1 | `Slide01Compromisso.tsx` | O compromisso | pergunta-em-camadas · POC 15/10 e os seis meses seguintes |
-| 2 | `Slide02Vocabulario.tsx` | Vocabulário | pergunta-em-camadas · plataforma, produto, serviço específico |
-| 3 | `Slide03Arquitetura.tsx` | Arquitetura | diagrama-svg · três faixas, com o Query ao lado |
-| 4 | `Slide04BaseCompartilhada.tsx` | Base compartilhada | título+grade · design system, registry, microfront-ends |
+| 2 | `Slide02Arquitetura.tsx` | Arquitetura | diagrama-svg · três faixas, base compartilhada e Query; uma definição por etapa |
 | 5 | `Slide05Apex.tsx` | APEX | comparação · quatro etapas, faixa do APEX até a homologação |
 | 6 | `Slide06Demandas.tsx` | Demandas | matriz · onde cada tipo de demanda é absorvido |
 | 7 | `Slide07Portfolio.tsx` | Portfólio | tabela · status e entregas por frente |
@@ -55,7 +53,9 @@ Order is governed by `DIRETORIA_DECK` in `src/slides/diretoria/deck.ts`. **Os n�
 | 15 | `Slide15CidadeX.tsx` | Cidade X | mockup · composição por prompt, quatro etapas |
 | 16 | `SlideAnexoQuery.tsx` | Anexo · Query | diagrama-svg · Query ↔ Integração ↔ Módulos, MCP ilustrativo |
 
-**Critério editorial (vale para todo slide novo deste deck)** — na tela entram apenas títulos, termos, dados e status. Sem punchline, sem subtítulo explicativo e sem descrição dentro do cartão: a explicação é a fala do apresentador. Por isso o `Frame` de `src/slides/diretoria/ui.tsx` **não tem rodapé de nota**, ao contrário do `Frame` do deck Ilum.
+**Critério editorial (vale para todo slide novo deste deck)** — na tela entram apenas títulos, termos, dados e status. Sem punchline, sem subtítulo explicativo e sem descrição dentro do cartão: a explicação é a fala do apresentador. Por isso o `Frame` de `src/slides/diretoria/ui.tsx` **não tem rodapé de nota**, ao contrário do `Frame` do deck Ilum. A única exceção é a faixa de definição do slide 2, e ela mostra **uma definição por vez**: o vocabulário precisa de uma linha de explicação, e uma por vez mantém a tela com uma ideia só.
+
+**Onde entra a base compartilhada** — o slide 2 responde isso pela geometria, e é o argumento dele: o design system liga na plataforma, o registry liga na faixa dos módulos e o microfront-end liga no conector entre as duas, porque é o encaixe e não uma camada. As ligações da base são pontilhadas — sustentam o desenho, não são o fluxo.
 
 **Arquétipos** — cada slide do plano declara o seu, e eles moram em `ui.tsx` (`Grade`, `Matriz`, `Numerados`, mais `Cartao` / `Termo` / `Rotulo` / `estadoDe`). É o que mantém o deck legível: o mesmo tipo de conteúdo tem sempre a mesma forma, e a única variação forte é o destaque da etapa corrente. Ao acrescentar um slide, use o arquétipo que o plano indica em vez de inventar um layout.
 

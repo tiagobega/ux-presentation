@@ -23,14 +23,14 @@ export function Frame({
 }) {
   return (
     <section className='flex flex-1 min-h-0 flex-col overflow-auto font-ilum text-[#251a34] px-[42px] pt-7 pb-4 max-[900px]:p-5'>
-      <h1 className='text-[clamp(25px,3vw,46px)] font-[750] tracking-[-1.4px] leading-[1.15] mb-6'>
+      <h1 className='text-[clamp(28px,3.4vw,52px)] font-[750] tracking-[-1.4px] leading-[1.15] mb-6'>
         {title}
       </h1>
       <div className='flex flex-1 min-h-0 flex-col justify-center gap-5 max-[900px]:min-h-auto'>
         {children}
       </div>
       {note && (
-        <footer className='text-[11px] text-[#706379] border-t border-t-[#d9cfe2] pt-[9px] mt-4 max-[900px]:shrink-0'>
+        <footer className='text-[13px] text-[#706379] border-t border-t-[#d9cfe2] pt-[9px] mt-4 max-[900px]:shrink-0'>
           {note}
         </footer>
       )}

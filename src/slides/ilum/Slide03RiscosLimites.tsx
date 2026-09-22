@@ -65,11 +65,11 @@ export default function Slide03RiscosLimites({ action }: SlideProps) {
               action === b.titulo ? 'bg-[#eee5fa] border-[#7c3aed]' : 'border-t-[#a580cc]'
             }`}
           >
-            <h2 className='text-[clamp(17px,1.55vw,24px)] font-[650] leading-[1.2] mb-3'>
+            <h2 className='text-[clamp(19px,1.8vw,28px)] font-[650] leading-[1.2] mb-3'>
               {b.titulo}
             </h2>
             {b.itens.map((item) => (
-              <p key={item} className='border-t border-t-[#dacfe6] py-3.5 text-[17px] leading-[1.5]'>
+              <p key={item} className='border-t border-t-[#dacfe6] py-3.5 text-[19px] leading-[1.5]'>
                 {item}
               </p>
             ))}
@@ -78,19 +78,19 @@ export default function Slide03RiscosLimites({ action }: SlideProps) {
       </div>
 
       <div className='bg-[#ffffff90] border border-[#c8b4dc] rounded-lg p-[22px]'>
-        <h2 className='text-[clamp(17px,1.55vw,24px)] font-[650] leading-[1.2] mb-3'>
+        <h2 className='text-[clamp(19px,1.8vw,28px)] font-[650] leading-[1.2] mb-3'>
           Responsabilidades que a estrutura precisa explicitar
         </h2>
-        <div className='flex gap-[18px] flex-wrap text-[#6d3d9a] text-[15px] mb-4'>
+        <div className='flex gap-[18px] flex-wrap text-[#6d3d9a] text-[17px] mb-4'>
           {RESPONSABILIDADES.map((r) => (
             <span key={r}>{r}</span>
           ))}
         </div>
-        <p className='text-[15px] leading-[1.5] my-2'>
+        <p className='text-[17px] leading-[1.5] my-2'>
           Atribuição de pessoas, liderança e entrada de demandas: definição no organograma
           conduzido por Angelo.
         </p>
-        <p className='text-[15px] leading-[1.5] my-2'>
+        <p className='text-[17px] leading-[1.5] my-2'>
           As fronteiras permitem que cada equipe trabalhe em seu projeto com padrões e interfaces
           comuns.
         </p>

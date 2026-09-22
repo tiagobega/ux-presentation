@@ -488,7 +488,7 @@ export default function Slide01Arquitetura({ action }: SlideProps) {
         className='shrink-0 text-[clamp(25px,3vw,46px)] font-[750] tracking-[-1.4px] leading-[1.15] mb-4 animate-ilum-rise motion-reduce:animate-none'
         style={delay(0.1)}
       >
-        Arquitetura
+        Arquitetura de Projetos
       </h1>
 
       <div

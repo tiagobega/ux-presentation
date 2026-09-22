@@ -371,7 +371,7 @@ export default function Slide00ArquiteturaAtual({ action }: SlideProps) {
         </svg>
 
         <aside className='border-l-[3px] border-l-[#7c3aed] pl-[23px]' aria-live='polite'>
-          <span className='block text-[12px] [line-height:normal] [font-family:monospace] text-[#7c3aed] mb-[18px]'>
+          <span className='block text-[14px] [line-height:normal] [font-family:monospace] text-[#7c3aed] mb-[18px]'>
             {step === 0
               ? 'O CONJUNTO'
               : fecho
@@ -381,10 +381,10 @@ export default function Slide00ArquiteturaAtual({ action }: SlideProps) {
 
           {step === 0 ? (
             <div className='animate-ilum-in motion-reduce:animate-none'>
-              <h2 className='text-[clamp(17px,1.55vw,24px)] font-[650] leading-[1.2] mb-3'>
+              <h2 className='text-[clamp(19px,1.8vw,28px)] font-[650] leading-[1.2] mb-3'>
                 Ambientes e integrações
               </h2>
-              <p className='text-[clamp(13px,1.22vw,19px)] leading-[1.5] text-[#64566f]'>
+              <p className='text-[clamp(15px,1.4vw,22px)] leading-[1.5] text-[#64566f]'>
                 Aplicações, bancos e serviços distribuídos. O desenho reúne os caminhos relatados;
                 não é um inventário exaustivo.
               </p>
@@ -408,13 +408,13 @@ export default function Slide00ArquiteturaAtual({ action }: SlideProps) {
                   <div>
                     <b
                       className={`block font-[650] leading-[1.25] text-[#312140] ${
-                        fecho ? 'text-[clamp(11px,.85vw,13px)]' : 'text-[clamp(12px,1vw,15px)]'
+                        fecho ? 'text-[clamp(13px,1vw,15px)]' : 'text-[clamp(14px,1.15vw,17px)]'
                       }`}
                     >
                       {p.title}
                     </b>
                     {i === atual && (
-                      <p className='text-[clamp(12px,.95vw,15px)] leading-[1.4] mt-1.5 text-[#64566f]'>
+                      <p className='text-[clamp(14px,1.1vw,17px)] leading-[1.4] mt-1.5 text-[#64566f]'>
                         {p.text}
                       </p>
                     )}
@@ -426,7 +426,7 @@ export default function Slide00ArquiteturaAtual({ action }: SlideProps) {
 
           {fecho && (
             <div className='mt-5 border-t border-t-[#d6cae1] pt-3.5 animate-ilum-note motion-reduce:animate-none'>
-              <b className='block text-[11px] tracking-[0.1em] uppercase text-[#7c3aed] mb-2.5'>
+              <b className='block text-[13px] tracking-[0.1em] uppercase text-[#7c3aed] mb-2.5'>
                 Consequências
               </b>
               <ul className='list-none m-0 p-0 flex flex-col gap-[7px]'>
@@ -434,7 +434,7 @@ export default function Slide00ArquiteturaAtual({ action }: SlideProps) {
                   <li
                     key={c}
                     style={delay(0.12 + i * 0.09)}
-                    className="relative pl-3.5 text-[clamp(12px,.95vw,15px)] leading-[1.35] text-[#3d2c4d] animate-ilum-in motion-reduce:animate-none before:content-[''] before:absolute before:left-0 before:top-[0.5em] before:w-[5px] before:h-[5px] before:rounded-full before:bg-[#7c3aed]"
+                    className="relative pl-3.5 text-[clamp(14px,1.1vw,17px)] leading-[1.35] text-[#3d2c4d] animate-ilum-in motion-reduce:animate-none before:content-[''] before:absolute before:left-0 before:top-[0.5em] before:w-[5px] before:h-[5px] before:rounded-full before:bg-[#7c3aed]"
                   >
                     {c}
                   </li>

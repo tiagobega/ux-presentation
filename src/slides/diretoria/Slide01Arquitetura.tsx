@@ -120,8 +120,6 @@ interface Desenho {
   pecas: Peca[]
   /** Um grupo por conceito: cada um entra na sua etapa. */
   blocos: { plataforma: SVGGElement; servico: SVGGElement; produto: SVGGElement }
-  /** Elementos folha, para a animação de entrada. */
-  folhas: SVGGraphicsElement[]
 }
 
 /** Move `els` para dentro de um `<g>` novo, preservando a ordem. */
@@ -407,7 +405,6 @@ function classificar(svg: SVGSVGElement): Desenho | null {
     cartaoDy: CARTAO_DESTINO.y - areaCartao.y,
     pecas,
     blocos,
-    folhas: filhos,
   }
 }
 
@@ -486,44 +483,35 @@ export default function Slide01Arquitetura({ action }: SlideProps) {
     return () => cancelAnimationFrame(raf)
   }, [])
 
-  // Entrada: roda uma vez, assim que o desenho fica classificado.
+  /**
+   * Entrada: uma varredura do recipiente, e **nada dentro do SVG**.
+   *
+   * Antes a entrada animava a opacidade dos 118 elementos, um a um. Isso
+   * disputava com `aplicarFase`, que anima a opacidade dos mesmos elementos
+   * com `overwrite: "auto"` — cada um matava os tweens do outro no meio, e o
+   * desenho piscava e parecia reiniciar. Duas animações escrevendo a mesma
+   * propriedade nos mesmos nós nunca vai ser estável.
+   *
+   * Agora quem anima é o `clip-path` da div que hospeda o SVG: **um tween, um
+   * elemento, fora do desenho**. A varredura continua, `aplicarFase` fica
+   * dona exclusiva da opacidade, e não há estado parcial possível dentro do
+   * SVG.
+   */
   useLayoutEffect(() => {
     if (!desenho) return
     aplicarFase(desenho, stepRef.current, true)
 
-    /**
-     * **Só opacidade, e varrendo da esquerda para a direita.**
-     *
-     * A entrada tinha um `y: 8` por elemento. Como um cartão do desenho é
-     * feito de vários elementos soltos (o preenchimento, o contorno, cada
-     * texto), e o `stagger` dá a cada um o seu instante, o preenchimento
-     * ficava 8px abaixo do contorno enquanto a animação corria: cada caixa
-     * aparecia com a borda duplicada. Sem deslocamento o problema some, e o
-     * `stagger` por posição transforma a entrada numa varredura, que lê como
-     * intenção em vez de ordem aleatória do export.
-     *
-     * `fromTo`, não `from`: um `from` anima *até o valor atual do elemento*,
-     * e se um tween anterior morreu no meio esse valor é um parcial — o
-     * desenho congelava em 40%.
-     */
-    const ordenadas = [...desenho.folhas].sort((a, b) => {
-      try {
-        return a.getBBox().x - b.getBBox().x
-      } catch {
-        return 0
-      }
-    })
+    const el = host.current
+    if (!el) return
 
     const tl = gsap.fromTo(
-      ordenadas,
-      { opacity: 0 },
+      el,
+      { clipPath: 'inset(0 100% 0 0)' },
       {
-        opacity: 1,
-        duration: 0.5,
-        stagger: 0.005,
-        ease: 'power1.out',
-        clearProps: 'opacity',
-        onComplete: () => aplicarFase(desenho, stepRef.current, true),
+        clipPath: 'inset(0 0% 0 0)',
+        duration: 1.1,
+        ease: 'power2.inOut',
+        clearProps: 'clipPath',
       },
     )
 
@@ -536,12 +524,19 @@ export default function Slide01Arquitetura({ action }: SlideProps) {
     return () => {
       window.clearTimeout(guarda)
       tl.kill()
-      gsap.set(desenho.folhas, { clearProps: 'opacity' })
+      gsap.set(el, { clearProps: 'clipPath' })
     }
   }, [desenho])
 
+  /**
+   * A primeira aplicação é instantânea: na montagem não há transição a fazer,
+   * e animar aqui só criaria tweens concorrentes com a entrada.
+   */
+  const jaAplicou = useRef(false)
   useEffect(() => {
-    if (desenho) aplicarFase(desenho, step, false)
+    if (!desenho) return
+    aplicarFase(desenho, step, !jaAplicou.current)
+    jaAplicou.current = true
   }, [desenho, step])
 
   return (

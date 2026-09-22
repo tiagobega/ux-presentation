@@ -1,30 +1,58 @@
 import type { SlideProps } from '../config'
-import { Cartao, Frame, Selo, Termo, delay, type Situacao } from './ui'
+import { Cartao, Frame, Rotulo, Selo, Termo, delay, type Situacao } from './ui'
 
 /**
  * Slide 4 — Cronograma.
  *
- * Cinco marcos numa linha que varre da esquerda para a direita. As bolinhas
- * vivem na **mesma grade dos cartões**, com o mesmo `gap`: é isso que garante
- * o alinhamento, já que com os cartões numa grade o centro de cada um não cai
- * em 10%, 30%, 50%… por causa dos vãos.
+ * Cinco marcos numa linha que varre da esquerda para a direita, cada um com
+ * data e uma linha do que é. As bolinhas vivem na **mesma grade dos cartões**,
+ * com o mesmo `gap`: é isso que garante o alinhamento, já que com os cartões
+ * numa grade o centro de cada um não cai em 10%, 30%, 50%… por causa dos vãos.
  *
- * Só os marcos que têm data mostram data. "Adaptação de novos produtos" não
- * tem, e inventar uma seria transformar uma sequência em compromisso.
+ * **Duas datas são compromisso, três são janela.** 15/10 e FEV/27 vieram do
+ * usuário; as outras três são derivadas da ordem dos marcos entre esses dois
+ * âncoras. O rodapé diz isso na tela, porque uma janela derivada apresentada
+ * como data vira compromisso na cabeça de quem ouve.
  */
 
 interface Marco {
   nome: string
+  data: string
+  descricao: string
   situacao: Situacao
-  selo: string
 }
 
 const MARCOS: Marco[] = [
-  { nome: 'Levantamento', situacao: 'feito', selo: 'OK' },
-  { nome: 'Criação da base', situacao: 'agora', selo: 'Em execução' },
-  { nome: 'POC · Uberlândia', situacao: 'agora', selo: '15/10' },
-  { nome: 'Adaptação de novos produtos', situacao: 'aSeguir', selo: 'A seguir' },
-  { nome: 'Adaptação de plataformas', situacao: 'aSeguir', selo: 'a partir de FEV/27' },
+  {
+    nome: 'Levantamento',
+    data: 'SET/26',
+    descricao: 'Rotinas, dependências e riscos mapeados',
+    situacao: 'feito',
+  },
+  {
+    nome: 'Criação da base',
+    data: 'SET → OUT/26',
+    descricao: 'Padrões de dados, de integração e de desenvolvimento',
+    situacao: 'agora',
+  },
+  {
+    nome: 'POC · Uberlândia',
+    data: '15/10/26',
+    descricao: 'A base validada numa plataforma real',
+    situacao: 'agora',
+  },
+  {
+    nome: 'Adaptação de novos produtos',
+    data: 'OUT/26 → JAN/27',
+    descricao: 'Produtos migrados para a base comum',
+    situacao: 'aSeguir',
+  },
+  {
+    nome: 'Adaptação de plataformas',
+    data: 'a partir de FEV/27',
+    descricao: 'As plataformas dos projetos adotam a base',
+    situacao: 'aSeguir',
+  },
 ]
 
 /** A bolinha do que já passou e do que está correndo é cheia; a futura, oca. */
@@ -43,7 +71,7 @@ export default function Slide04Cronograma({ action: _ }: SlideProps) {
 
   return (
     <Frame title='Cronograma'>
-      <div className='flex flex-col gap-6'>
+      <div className='flex flex-col gap-5'>
         <div className='relative max-[900px]:hidden'>
           <div
             className='absolute left-0 right-[9px] top-[7px] h-[2px] bg-[#c3aadc] origin-left animate-ilum-sweep motion-reduce:animate-none'
@@ -75,15 +103,22 @@ export default function Slide04Cronograma({ action: _ }: SlideProps) {
             <Cartao
               key={m.nome}
               estado={m.situacao === 'aSeguir' ? 'aceso' : 'atual'}
-              className='px-6 py-7 animate-ilum-rise motion-reduce:animate-none'
+              className='px-5 py-6 animate-ilum-rise motion-reduce:animate-none'
               style={delay(0.62 + i * 0.09)}
             >
-              <Termo>{m.nome}</Termo>
+              <Selo situacao={m.situacao}>{m.data}</Selo>
               <span className='block mt-3'>
-                <Selo situacao={m.situacao}>{m.selo}</Selo>
+                <Termo>{m.nome}</Termo>
               </span>
+              <p className='text-[clamp(11px,0.95vw,14px)] leading-[1.4] mt-2.5 text-[#64566f]'>
+                {m.descricao}
+              </p>
             </Cartao>
           ))}
+        </div>
+
+        <div className='text-center'>
+          <Rotulo>15/10 E FEV/27 CONFIRMADAS · AS DEMAIS SÃO JANELAS DERIVADAS</Rotulo>
         </div>
       </div>
     </Frame>

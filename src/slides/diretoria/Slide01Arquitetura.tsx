@@ -234,7 +234,7 @@ function criarEstrutura(svg: SVGSVGElement): Desenho['blocos'] {
   const produto = bloco(svg, 'produto')
   // Aponta para cima: o produto sobe e encaixa na plataforma.
   const seta = document.createElementNS(NS, 'path')
-  seta.setAttribute('d', 'M700 402 L700 370')
+  seta.setAttribute('d', 'M700 402 L700 380')
   seta.setAttribute('fill', 'none')
   seta.setAttribute('stroke', '#8e73ad')
   seta.setAttribute('stroke-width', '2')
@@ -242,7 +242,7 @@ function criarEstrutura(svg: SVGSVGElement): Desenho['blocos'] {
   produto.appendChild(seta)
 
   const ponta = document.createElementNS(NS, 'path')
-  ponta.setAttribute('d', 'M692 378 L700 369 L708 378')
+  ponta.setAttribute('d', 'M692 388 L700 379 L708 388')
   ponta.setAttribute('fill', 'none')
   ponta.setAttribute('stroke', '#8e73ad')
   ponta.setAttribute('stroke-width', '2')

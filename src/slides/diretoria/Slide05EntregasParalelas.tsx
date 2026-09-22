@@ -163,10 +163,6 @@ export default function Slide05EntregasParalelas({ action: _ }: SlideProps) {
           </Cartao>
         ))}
       </div>
-
-      <div className='text-center'>
-        <Rotulo>SITUAÇÃO LEVANTADA EM SET/26 · SÓ DOIS ITENS TÊM DATA INFORMADA</Rotulo>
-      </div>
     </Frame>
   )
 }

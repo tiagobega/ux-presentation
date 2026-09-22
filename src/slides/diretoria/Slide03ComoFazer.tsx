@@ -1,5 +1,5 @@
-import type { SlideProps } from '../config'
-import { Cartao, Frame, Rotulo, Termo, delay } from './ui'
+import type { SlideProps } from "../config";
+import { Cartao, Frame, Rotulo, Termo, delay } from "./ui";
 
 /**
  * Slide 3 — Como vamos fazer isso acontecer?
@@ -15,27 +15,44 @@ import { Cartao, Frame, Rotulo, Termo, delay } from './ui'
  */
 
 interface Frente {
-  termo: string
-  detalhe?: string
+  termo: string;
+  detalhe?: string;
 }
 
 /** Base de construção: sustenta os produtos e não é entregue ao cliente. */
 const INTERNO: Frente[] = [
-  { termo: 'Design system' },
-  { termo: 'Padrões de front-end', detalhe: 'arquitetura de projeto' },
-  { termo: 'Registry', detalhe: 'biblioteca de componentes' },
-  { termo: 'Microfront-ends', detalhe: 'o encaixe dos produtos' },
-  { termo: 'Comunicação back e front', detalhe: 'padronizada' },
-  { termo: 'Qualidade', detalhe: 'identificação de bugs e testes' },
-]
+  {
+    termo: "Design system",
+    detalhe: "componentes, tokens, tudo que representa a nossa identidade.",
+  },
+  { termo: "Padrões de front-end", detalhe: "arquitetura de projeto." },
+  { termo: "Registry", detalhe: "Biblioteca de componentes documentada." },
+  {
+    termo: "Microfront-ends",
+    detalhe:
+      "Produtos carregados a partir em runtime utlizando store compartilhada.",
+  },
+  {
+    termo: "Comunicação back e front.",
+    detalhe:
+      "Padrão que utiliza Open-API e mapeia parâmetros da API para serem utilizados nos escopos dos produtos.",
+  },
+  {
+    termo: "Observabilidade e Testes (E2E)",
+    detalhe: "Utilização de ferramentas para prevenção e correção de bugs.",
+  },
+];
 
 /** Chega na mão do cliente: é o que a base existe para viabilizar. */
 const PRODUTO: Frente[] = [
-  { termo: 'Lens', detalhe: 'BI' },
-  { termo: 'Query', detalhe: 'IA assistente da aplicação inteira, não mais só do mapa' },
-]
+  { termo: "Lens", detalhe: "BI" },
+  {
+    termo: "Query",
+    detalhe: "IA assistente da aplicação inteira, não mais só do mapa",
+  },
+];
 
-export const ACTIONS = ['As frentes']
+export const ACTIONS = ["As frentes"];
 
 function Bloco({
   rotulo,
@@ -44,35 +61,37 @@ function Bloco({
   atraso,
   destaque,
 }: {
-  rotulo: string
-  itens: Frente[]
-  colunas: number
-  atraso: number
-  destaque?: boolean
+  rotulo: string;
+  itens: Frente[];
+  colunas: number;
+  atraso: number;
+  destaque?: boolean;
 }) {
   return (
     <section
       className={`rounded-xl border p-6 animate-ilum-rise motion-reduce:animate-none ${
-        destaque ? 'border-[#7c3aed] bg-[#f3ebff]' : 'border-[#c3aadc] bg-[#ffffff70]'
+        destaque
+          ? "border-[#7c3aed] bg-[#f3ebff]"
+          : "border-[#c3aadc] bg-[#ffffff70]"
       }`}
       style={delay(atraso)}
     >
-      <div className='mb-4'>
+      <div className="mb-4">
         <Rotulo>{rotulo}</Rotulo>
       </div>
       <div
-        className='grid gap-3 max-[900px]:grid-cols-1'
+        className="grid gap-3 max-[900px]:grid-cols-1"
         style={{ gridTemplateColumns: `repeat(${colunas}, minmax(0, 1fr))` }}
       >
         {itens.map((f) => (
           <Cartao
             key={f.termo}
-            estado='aceso'
-            className='px-5 py-4 flex items-baseline gap-2.5 flex-wrap'
+            estado="aceso"
+            className="px-5 py-4 flex flex-col items-baseline gap-2.5"
           >
             <Termo>{f.termo}</Termo>
             {f.detalhe && (
-              <span className='text-[clamp(11px,0.95vw,15px)] leading-[1.35] text-[#64566f]'>
+              <span className="text-[clamp(11px,0.95vw,15px)] leading-[1.35] text-[#64566f]">
                 ({f.detalhe})
               </span>
             )}
@@ -80,18 +99,23 @@ function Bloco({
         ))}
       </div>
     </section>
-  )
+  );
 }
 
 export default function Slide03ComoFazer({ action: _ }: SlideProps) {
-  void _
+  void _;
 
   return (
-    <Frame title='Como vamos fazer isso acontecer?'>
-      <div className='grid grid-cols-[minmax(0,2fr)_minmax(0,1fr)] gap-5 items-start max-[900px]:grid-cols-1'>
-        <Bloco rotulo='INTERNO · COMO CONSTRUÍMOS' itens={INTERNO} colunas={2} atraso={0.1} />
+    <Frame title="Como vamos fazer isso acontecer?">
+      <div className="grid grid-cols-[minmax(0,2fr)_minmax(0,1fr)] gap-5 items-start max-[900px]:grid-cols-1">
         <Bloco
-          rotulo='PRODUTO · O QUE O CLIENTE USA'
+          rotulo="INTERNO · COMO CONSTRUÍMOS"
+          itens={INTERNO}
+          colunas={2}
+          atraso={0.1}
+        />
+        <Bloco
+          rotulo="PRODUTO · O QUE O CLIENTE USA"
           itens={PRODUTO}
           colunas={1}
           atraso={0.24}
@@ -99,5 +123,5 @@ export default function Slide03ComoFazer({ action: _ }: SlideProps) {
         />
       </div>
     </Frame>
-  )
+  );
 }

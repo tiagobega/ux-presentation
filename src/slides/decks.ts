@@ -1,19 +1,21 @@
 import type { Deck } from './config'
 import { FLEETS_DECK } from './fleets/deck'
 import { FLEETS_DEMO_DECK } from './fleets-demo/deck'
+import { DIRETORIA_DECK } from './diretoria/deck'
 import { FRONT_DECK } from './front/deck'
 import { INFORMS_DECK } from './informs/deck'
 import { ILUM_DECK } from './ilum/deck'
 
 /**
- * Decks disponíveis. O ativo é o Front-end; `?deck=ilum` volta ao deck de
- * arquitetura, `?deck=informs` abre o Informs, `?deck=fleets-demo` a
- * apresentação de demo ao vivo do Fleets e `?deck=fleets` o deck Fleets
- * autocontido, sem precisar editar código. O deck de Branding & UX
- * (`src/slides/Slide00`–`12`) segue no repositório apenas como referência
- * e não está listado aqui.
+ * Decks disponíveis. O ativo é o ILUM · diretoria; `?deck=front` abre o
+ * rascunho anterior de front-end, `?deck=ilum` o deck de arquitetura,
+ * `?deck=informs` o Informs, `?deck=fleets-demo` a apresentação de demo ao
+ * vivo do Fleets e `?deck=fleets` o deck Fleets autocontido, sem precisar
+ * editar código. O deck de Branding & UX (`src/slides/Slide00`–`12`) segue
+ * no repositório apenas como referência e não está listado aqui.
  */
 export const DECKS: Record<string, Deck> = {
+  diretoria: DIRETORIA_DECK,
   fleets: FLEETS_DECK,
   'fleets-demo': FLEETS_DEMO_DECK,
   front: FRONT_DECK,
@@ -21,7 +23,7 @@ export const DECKS: Record<string, Deck> = {
   ilum: ILUM_DECK,
 }
 
-const DECK_PADRAO = FRONT_DECK
+const DECK_PADRAO = DIRETORIA_DECK
 
 function resolveDeck(): Deck {
   if (typeof window === 'undefined') return DECK_PADRAO

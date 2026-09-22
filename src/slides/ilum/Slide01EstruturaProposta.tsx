@@ -22,6 +22,58 @@ import { Frame } from './ui'
  * `ordemDoCartao` precisa de atenção.
  */
 
+/**
+ * Dois cards futuros na camada de processamento, abaixo do Vision — ainda não
+ * fazem parte do fluxo, por isso não têm seta e ficam de fora do desenho do
+ * Figma: são injetados à parte, marcados com `data-ilum-static` para o
+ * classificador ignorar (ver `classificar`).
+ */
+const CARDS_FUTUROS = `
+  <g data-ilum-static="true" class="animate-ilum-fade motion-reduce:animate-none" style="animation-delay:1.05s">
+    <rect x="585" y="518" width="132" height="46" rx="6" fill="none" stroke="#7C3AED" stroke-opacity="0.45" stroke-width="1.5" stroke-dasharray="4 4"/>
+    <text x="651" y="538" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="14" font-weight="600" fill="#5A3581">IRI</text>
+    <text x="651" y="554" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="10" fill="#77618E">A implementar</text>
+
+    <rect x="585" y="580" width="132" height="46" rx="6" fill="none" stroke="#7C3AED" stroke-opacity="0.45" stroke-width="1.5" stroke-dasharray="4 4"/>
+    <text x="651" y="600" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="14" font-weight="600" fill="#5A3581">LUX</text>
+    <text x="651" y="616" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="10" fill="#77618E">A implementar</text>
+  </g>
+`
+
+/**
+ * O card "WFM" vira "Dados de terceiros" e o "156" some — pedido do
+ * apresentador, não faz parte do export do Figma. Os rótulos originais são
+ * glifos virados `path` (ver comentário do arquivo), por isso a troca é por
+ * substituição de nó, não de texto; a seta que liga os dois cards ao Projeto
+ * é um único `path` combinado (o Figma desenhou as duas curvas juntas), então
+ * a remoção corta o \`d\` para manter só a metade que aponta para o WFM.
+ */
+function renomearParaTerceiros(svg: SVGSVGElement) {
+  svg.querySelector('path[d^="M92.0462 542.818"]')?.remove()
+  svg.querySelectorAll('rect[x="21"][y="527"]').forEach((el) => el.remove())
+
+  // O `d` combinado tem 4 subtraçados nesta ordem: ponta do 156, ponta do
+  // WFM, traço do 156, traço do WFM. Um `slice` a partir da ponta do WFM
+  // levava o traço do 156 junto (ele vem entre os dois); por isso o recorte
+  // pega a ponta e o traço do WFM separadamente e descarta o resto.
+  const seta = svg.querySelector('path[d^="M755 345"]')
+  const d = seta?.getAttribute('d') ?? ''
+  const ponta = d.indexOf('M755 287')
+  const traco156 = d.indexOf('M179 548')
+  const tracoWfm = d.indexOf('M179 490')
+  if (seta && ponta > -1 && traco156 > -1 && tracoWfm > -1) {
+    seta.setAttribute('d', d.slice(ponta, traco156) + d.slice(tracoWfm))
+  }
+
+  svg.querySelector('path[d^="M85.147 496"]')?.remove()
+  svg
+    .querySelector('rect[x="21"][y="470"][stroke]')
+    ?.insertAdjacentHTML(
+      'afterend',
+      '<text x="99.5" y="495" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="12" font-weight="700" fill="black">Dados de terceiros</text>',
+    )
+}
+
 type CardId = 'fleets' | 'fontes' | 'ilum' | 'vision' | 'yoda' | 'projeto'
 
 /** Ordem no fluxo. Também decide a qual etapa um conector pertence. */
@@ -110,7 +162,8 @@ interface Cartao {
   id: CardId
   /**
    * `rect`s de contorno — é neles que o realce acontece. São vários quando a
-   * camada tem mais de um cartão (Hardwares, WFM e 156 são todos `fontes`).
+   * camada tem mais de um cartão (Hardwares e Dados de terceiros são ambos
+   * `fontes`).
    */
   contornos: SVGGraphicsElement[]
   /** Tudo que vive dentro do cartão, contornos incluídos. */
@@ -247,7 +300,11 @@ function classificar(svg: SVGSVGElement): Desenho | null {
   svg.querySelectorAll('[data-ilum-seta]').forEach((e) => e.remove())
   svg.querySelector('defs[data-ilum-defs]')?.remove()
 
-  const filhos = [...svg.children] as SVGGraphicsElement[]
+  // Os cards futuros (IRI, LUX) são injetados à parte e marcados com este
+  // atributo — sem isso entrariam como "elemento solto" e ganhariam seta.
+  const filhos = [...svg.children].filter(
+    (el) => el.getAttribute('data-ilum-static') !== 'true',
+  ) as SVGGraphicsElement[]
   if (filhos.length === 0) return null
 
   let caixas: Caixa[]
@@ -398,7 +455,14 @@ export default function Slide01EstruturaProposta({ action }: SlideProps) {
   useLayoutEffect(() => {
     const host = hostRef.current
     if (!host) return
-    if (!host.firstElementChild) host.innerHTML = fluxoNovo
+    if (!host.firstElementChild) {
+      host.innerHTML = fluxoNovo
+      const svg = host.querySelector('svg')
+      if (svg) {
+        renomearParaTerceiros(svg)
+        svg.insertAdjacentHTML('beforeend', CARDS_FUTUROS)
+      }
+    }
 
     let raf = 0
     let tentativas = 0
@@ -477,7 +541,7 @@ export default function Slide01EstruturaProposta({ action }: SlideProps) {
         <aside className='border-l-[3px] border-l-[#7c3aed] pl-[23px]' aria-live='polite'>
           {step > 0 && (
             <>
-              <span className='block text-[12px] [line-height:normal] [font-family:monospace] text-[#7c3aed] mb-[18px]'>
+              <span className='block text-[14px] [line-height:normal] [font-family:monospace] text-[#7c3aed] mb-[18px]'>
                 {`CAMADA ${String(step).padStart(2, '0')} / 0${ETAPAS.length - 1}`}
               </span>
 
@@ -500,29 +564,29 @@ export default function Slide01EstruturaProposta({ action }: SlideProps) {
                         {String(i + 1).padStart(2, '0')}
                       </span>
                       <div>
-                        <b className='block font-[650] leading-[1.25] text-[#312140] text-[clamp(12px,1vw,15px)]'>
+                        <b className='block font-[650] leading-[1.25] text-[#312140] text-[clamp(14px,1.15vw,17px)]'>
                           {e.key}
                         </b>
                         {atual && (
                           <>
                             {e.ganho && (
-                              <span className='inline-block rounded-[999px] bg-[#7c3aed] text-white text-[10px] font-semibold tracking-[0.04em] px-2.5 py-1 mt-2'>
+                              <span className='inline-block rounded-[999px] bg-[#7c3aed] text-white text-[12px] font-semibold tracking-[0.04em] px-2.5 py-1 mt-2'>
                                 {e.ganho}
                               </span>
                             )}
-                            <p className='text-[clamp(12px,.95vw,15px)] leading-[1.4] mt-2 text-[#64566f]'>
+                            <p className='text-[clamp(14px,1.1vw,17px)] leading-[1.4] mt-2 text-[#64566f]'>
                               {e.texto}
                             </p>
                             {e.padroes && (
                               <div className='mt-2.5 rounded-lg border border-[#c3aadc] bg-[#ffffffb0] p-3'>
-                                <b className='block text-[10px] tracking-[0.1em] uppercase text-[#7c3aed] mb-2'>
+                                <b className='block text-[12px] tracking-[0.1em] uppercase text-[#7c3aed] mb-2'>
                                   Padrões compartilhados
                                 </b>
                                 <div className='flex flex-wrap gap-1.5'>
                                   {PADROES.map((p) => (
                                     <span
                                       key={p}
-                                      className='rounded-[5px] bg-[#e7dbf7] text-[#5a3581] text-[11px] font-semibold px-2 py-1'
+                                      className='rounded-[5px] bg-[#e7dbf7] text-[#5a3581] text-[13px] font-semibold px-2 py-1'
                                     >
                                       {p}
                                     </span>

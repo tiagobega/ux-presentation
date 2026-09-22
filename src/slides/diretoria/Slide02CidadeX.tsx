@@ -295,18 +295,6 @@ export default function Slide15CidadeX({ action }: SlideProps) {
                 <span className='text-[15px] font-[700] text-[#3d2b52]'>Cidade X</span>
               </div>
               <div className='absolute left-[510px] top-[48px] w-[220px] h-[422px] border-r border-r-[#efe9f5]' />
-              <span
-                className='absolute left-[510px] top-[482px] text-[11px] tracking-[1.3px] text-[#77618e] animate-ilum-in motion-reduce:animate-none'
-                style={delay(0.3)}
-              >
-                PLATAFORMA
-              </span>
-              <span
-                className='absolute left-[1180px] top-[482px] -translate-x-full whitespace-nowrap text-[11px] tracking-[1.3px] text-[#9a89a9] animate-ilum-in motion-reduce:animate-none'
-                style={delay(0.42)}
-              >
-                ILUM · APIs E DADOS
-              </span>
             </>
           )}
 

@@ -20,6 +20,8 @@ interface Fase {
   nome: string
   situacao: Situacao
   descricao: string
+  /** Selo à parte, separado da descrição — só a POC tem data marcada. */
+  data?: string
   /** Pulsa para puxar o olho — a POC é o marco que a fala defende. */
   destaque?: boolean
 }
@@ -39,6 +41,7 @@ const FASES: Fase[] = [
     nome: 'POC',
     situacao: 'aSeguir',
     descricao: 'A base validada em uma plataforma real: Uberlândia.',
+    data: '15/10',
     destaque: true,
   },
   {
@@ -131,13 +134,20 @@ export default function Slide02Planejamento({ action: _ }: SlideProps) {
                   : delay(entrada)
               }
             >
-              <h2 className='text-[clamp(17px,1.55vw,24px)] font-[650] leading-[1.2]'>{f.nome}</h2>
-              <span
-                className={`inline-block rounded-[999px] text-[11px] font-semibold tracking-[0.04em] px-2.5 py-1 mt-2.5 ${SELO[f.situacao].classe}`}
-              >
-                {SELO[f.situacao].texto}
-              </span>
-              <p className='text-[clamp(12px,1vw,15px)] leading-[1.45] mt-2.5 text-[#64566f]'>
+              <h2 className='text-[clamp(19px,1.8vw,28px)] font-[650] leading-[1.2]'>{f.nome}</h2>
+              <div className='flex flex-wrap gap-1.5 mt-2.5'>
+                <span
+                  className={`inline-block rounded-[999px] text-[13px] font-semibold tracking-[0.04em] px-2.5 py-1 ${SELO[f.situacao].classe}`}
+                >
+                  {SELO[f.situacao].texto}
+                </span>
+                {f.data && (
+                  <span className='inline-block rounded-[999px] border border-[#7c3aed] text-[#7c3aed] text-[13px] font-semibold tracking-[0.04em] px-2.5 py-1'>
+                    {f.data}
+                  </span>
+                )}
+              </div>
+              <p className='text-[clamp(14px,1.15vw,17px)] leading-[1.45] mt-2.5 text-[#64566f]'>
                 {f.descricao}
               </p>
             </article>
@@ -146,14 +156,14 @@ export default function Slide02Planejamento({ action: _ }: SlideProps) {
         </div>
 
         <p
-          className='rounded-lg bg-[#e7dbf7] text-[#5a3581] text-center text-[clamp(13px,1.1vw,16px)] py-4 px-4 animate-ilum-in motion-reduce:animate-none'
+          className='rounded-lg bg-[#e7dbf7] text-[#5a3581] text-center text-[clamp(15px,1.3vw,19px)] py-4 px-4 animate-ilum-in motion-reduce:animate-none'
           style={delay(1.05)}
         >
           Produtos e contratos continuam sendo atendidos durante a implementação.
         </p>
 
         <p
-          className='text-center text-[clamp(12px,1vw,15px)] text-[#64566f] animate-ilum-in motion-reduce:animate-none'
+          className='text-center text-[clamp(14px,1.15vw,17px)] text-[#64566f] animate-ilum-in motion-reduce:animate-none'
           style={delay(1.2)}
         >
           <span className='font-semibold text-[#5a3581]'>Coordenação:</span> {COORDENACAO.join(' · ')}

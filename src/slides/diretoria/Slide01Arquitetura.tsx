@@ -111,14 +111,20 @@ const NS = 'http://www.w3.org/2000/svg'
  * e fica.
  */
 
-/** Vision fica em 585,57 com 132x41. Os três seguem a mesma coluna e passo. */
+/**
+ * Vision fica em 585,57 com 132x41, e é o único no alto da coluna. Os três
+ * futuros ficam no pé dela, com a base alinhada em 642 — a mesma linha em que
+ * termina o cartão do projeto, do outro lado do desenho. O vão entre o Vision
+ * e eles é a informação: o que está em produção está no fluxo, lá em cima; o
+ * que ainda não existe espera embaixo.
+ */
 const COLUNA_PROC = { x: 585, w: 132, h: 41 }
 const FUTUROS = [
-  { y: 110, nome: 'IRI', dy: 0 },
-  { y: 163, nome: 'LUX', dy: 0 },
+  { y: 495, nome: 'IRI', dy: 0 },
+  { y: 548, nome: 'LUX', dy: 0 },
   // As reticências se apoiam na linha de base, então um texto centrado pela
   // mesma conta das maiúsculas cai baixo demais na caixa.
-  { y: 216, nome: '…', dy: -4 },
+  { y: 601, nome: '…', dy: -4 },
 ]
 
 /**

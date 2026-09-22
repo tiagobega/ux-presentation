@@ -492,21 +492,37 @@ export default function Slide01Arquitetura({ action }: SlideProps) {
     aplicarFase(desenho, stepRef.current, true)
 
     /**
-     * `fromTo`, não `from`, e com `clearProps` no fim. O StrictMode roda o
-     * efeito duas vezes: a limpeza mata o tween no meio e deixa `opacity`
-     * inline num valor parcial, e um `from` animaria *até* esse parcial — o
+     * **Só opacidade, e varrendo da esquerda para a direita.**
+     *
+     * A entrada tinha um `y: 8` por elemento. Como um cartão do desenho é
+     * feito de vários elementos soltos (o preenchimento, o contorno, cada
+     * texto), e o `stagger` dá a cada um o seu instante, o preenchimento
+     * ficava 8px abaixo do contorno enquanto a animação corria: cada caixa
+     * aparecia com a borda duplicada. Sem deslocamento o problema some, e o
+     * `stagger` por posição transforma a entrada numa varredura, que lê como
+     * intenção em vez de ordem aleatória do export.
+     *
+     * `fromTo`, não `from`: um `from` anima *até o valor atual do elemento*,
+     * e se um tween anterior morreu no meio esse valor é um parcial — o
      * desenho congelava em 40%.
      */
+    const ordenadas = [...desenho.folhas].sort((a, b) => {
+      try {
+        return a.getBBox().x - b.getBBox().x
+      } catch {
+        return 0
+      }
+    })
+
     const tl = gsap.fromTo(
-      desenho.folhas,
-      { opacity: 0, y: 8 },
+      ordenadas,
+      { opacity: 0 },
       {
         opacity: 1,
-        y: 0,
-        duration: 0.4,
-        stagger: 0.008,
-        ease: 'power2.out',
-        clearProps: 'opacity,transform',
+        duration: 0.5,
+        stagger: 0.005,
+        ease: 'power1.out',
+        clearProps: 'opacity',
         onComplete: () => aplicarFase(desenho, stepRef.current, true),
       },
     )
@@ -520,7 +536,7 @@ export default function Slide01Arquitetura({ action }: SlideProps) {
     return () => {
       window.clearTimeout(guarda)
       tl.kill()
-      gsap.set(desenho.folhas, { clearProps: 'opacity,transform' })
+      gsap.set(desenho.folhas, { clearProps: 'opacity' })
     }
   }, [desenho])
 

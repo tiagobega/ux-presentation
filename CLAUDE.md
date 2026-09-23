@@ -85,6 +85,8 @@ As features **não têm caixa própria**: uma caixa dentro da caixa dava três b
 
 A coluna da direita é dimensionada pela pastilha, que tem 284 fixos e não pode ser reescalada; a da esquerda fica com 270, e é por isso que **as duas descrições são escritas em linhas explícitas** — `<text>` em SVG não reflui, e cada frase inteira pediria mais de 420. Ao mexer numa delas, meça: o teto é a divisória em 688.
 
+**A caixa da plataforma tem duas alturas** — no passo em que ela se apresenta vale só o que tem dentro (`PLATAFORMA_BAIXA`, 124: título, descrição e stacks); quando as features entram, `aplicarFase` anima o `height` até `PLATAFORMA_ALTA` (263). Uma moldura já do tamanho final no passo 2 seria uma promessa de conteúdo que ainda não chegou, e o quadro abria com metade do espaço vazio. Ela cresce **para baixo, sobre área já reservada**, então não empurra o cartão do produto — a regra de layout do deck continua valendo.
+
 **O produto também tem card, e de propósito diferente do da plataforma** — contorno fino e fundo claro, não a caixa sólida roxa. Duas caixas idênticas leriam como duas coisas do mesmo tipo, que é o contrário do que o slide diz: uma é o coração, a outra é o que encaixa nele.
 
 O passo do zoom (`O projeto`) deixa a direita **vazia** de propósito: mostrar a estrutura inteira ali dava um quadro cheio de caixas sem conteúdo, e a fala não tinha onde começar. Cada conceito entra depois com a sua frase, e as peças do cartão pousam nele — `DESTINOS` guarda a etapa de cada peça junto da coordenada.

@@ -97,6 +97,19 @@ const COLUNA_X = 390
 const COLUNA_W = 620
 
 /**
+ * A caixa da plataforma tem duas alturas.
+ *
+ * No passo em que ela se apresenta, a caixa vale só o que tem dentro: título,
+ * descrição e stacks. Uma moldura já do tamanho final ali seria uma promessa
+ * de conteúdo que ainda não chegou, e o quadro abriria com metade do espaço
+ * vazio. Quando as features entram, a caixa cresce para caber a segunda
+ * linha — e cresce para baixo, sobre área que já estava reservada, então não
+ * empurra o cartão do produto.
+ */
+const PLATAFORMA_BAIXA = 124
+const PLATAFORMA_ALTA = 263
+
+/**
  * Onde cada peça do cartão para, e em que etapa ela vai. As stacks entram com
  * a plataforma, o time com as features, e as caixinhas dos produtos só na
  * última camada.
@@ -245,6 +258,8 @@ interface Desenho {
   pecas: Peca[]
   /** Um grupo por conceito: cada um entra na sua etapa. */
   blocos: { plataforma: SVGGElement; features: SVGGElement; produto: SVGGElement }
+  /** O `rect` da plataforma: cresce quando as features entram. */
+  caixaPlataforma: SVGRectElement
   /** As folhas do desenho original, uma a uma: é o que a entrada anima. */
   folhas: SVGGraphicsElement[]
 }
@@ -285,8 +300,8 @@ function retangulo(
   contorno: string,
   espessura: number,
   tracejado?: string,
-) {
-  const r = document.createElementNS(NS, 'rect')
+): SVGRectElement {
+  const r = document.createElementNS(NS, 'rect') as SVGRectElement
   r.setAttribute('x', String(x))
   r.setAttribute('y', String(y))
   r.setAttribute('width', String(w))
@@ -321,7 +336,7 @@ function bloco(svg: SVGSVGElement, marca: string): SVGGElement {
  * plataforma; o que separa os dois agora é uma divisória fina, que é
  * hierarquia sem ser moldura.
  */
-function criarEstrutura(svg: SVGSVGElement): Desenho['blocos'] {
+function criarEstrutura(svg: SVGSVGElement): { blocos: Desenho['blocos']; caixa: SVGRectElement } {
   const dir = COLUNA_X + COLUNA_W - 16
   /**
    * Onde as duas linhas da plataforma se partem. A coluna da direita é
@@ -349,7 +364,9 @@ function criarEstrutura(svg: SVGSVGElement): Desenho['blocos'] {
   // que a coisa é, à direita do que ela é feita. Uma régua só, e as quatro
   // células se leem sem rótulo de coluna.
   const plataforma = bloco(svg, 'plataforma')
-  plataforma.appendChild(retangulo(COLUNA_X, 115, COLUNA_W, 263, '#f3ebff', '#7c3aed', 2.5))
+  // Nasce baixa: `aplicarFase` é quem decide a altura de cada etapa.
+  const caixa = retangulo(COLUNA_X, 115, COLUNA_W, PLATAFORMA_BAIXA, '#f3ebff', '#7c3aed', 2.5)
+  plataforma.appendChild(caixa)
   plataforma.appendChild(texto('Plataforma', 406, 150, 26, '700', '#3d2b52'))
   plataforma.appendChild(linha(406, 166, dir, 166))
   plataforma.appendChild(texto('O coração da aplicação. As stacks já', 406, 190, 13, '400', '#64566f'))
@@ -409,7 +426,7 @@ function criarEstrutura(svg: SVGSVGElement): Desenho['blocos'] {
   // os outros quatro.
   produto.appendChild(rotulo('TIMES PRÓPRIOS POR PRODUTO', 406, 498, '#5a3581'))
 
-  return { plataforma, features, produto }
+  return { blocos: { plataforma, features, produto }, caixa }
 }
 
 function classificar(svg: SVGSVGElement): Desenho | null {
@@ -559,7 +576,7 @@ function classificar(svg: SVGSVGElement): Desenho | null {
   const foraG = agrupar(svg, [...fora, ...fixos], 'fora')
   svg.insertBefore(foraG, svg.firstChild)
 
-  const blocos = criarEstrutura(svg)
+  const { blocos, caixa: caixaPlataforma } = criarEstrutura(svg)
   /**
    * O cartão volta para o fim da lista: em SVG não há `z-index`, quem pinta
    * por último fica por cima. A estrutura é criada depois do cartão e o
@@ -576,6 +593,7 @@ function classificar(svg: SVGSVGElement): Desenho | null {
     cartaoDy: CARTAO_DESTINO.y - areaCartao.y,
     pecas,
     blocos,
+    caixaPlataforma,
     folhas: [...filhos, ...fixos],
   }
 }
@@ -596,6 +614,11 @@ function aplicarFase(d: Desenho, fase: number, instantaneo: boolean) {
   mexer(d.fora, { opacity: recorte ? 0 : 1 }, 0.45)
   mexer(d.cartao, { x: recorte ? d.cartaoDx : 0, y: recorte ? d.cartaoDy : 0 })
   mexer(d.blocos.plataforma, { opacity: fase >= 2 ? 1 : 0 }, 0.45)
+  mexer(
+    d.caixaPlataforma,
+    { attr: { height: fase >= 3 ? PLATAFORMA_ALTA : PLATAFORMA_BAIXA } },
+    0.55,
+  )
   mexer(d.blocos.features, { opacity: fase >= 3 ? 1 : 0 }, 0.45)
   mexer(d.blocos.produto, { opacity: fase >= 4 ? 1 : 0 }, 0.45)
   d.pecas.forEach((p) => {

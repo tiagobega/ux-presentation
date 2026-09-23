@@ -52,8 +52,7 @@ Isso exige classificar o SVG por geometria em tempo de execução, porque o expo
 
 - **cartão do projeto** = o único `rect` com contorno mais alto que 300;
 - **pastilhas** = `rect` com `fill="#9C59F9"`, levando junto o contorno e o texto que caem dentro delas — e **só o que cabe dentro delas** (`cabeEm`). Olhar só o centro não basta: o centro do cartão do projeto (911, 432) cai dentro da terceira pastilha da equipe, e a peça "Bio" saía voando com o cartão inteiro embarcado. O furo só apareceu quando o bloco da equipe passou a voar, porque nenhuma pastilha dos outros blocos passa pela altura do centro do cartão;
-- **blocos** = os rótulos roxos (`fill="#7C3AED"`) separam serviços, equipe e produtos: uma pastilha pertence ao último rótulo acima dela. É mais robusto que contar posições, que quebraria se um item fosse acrescentado ao cartão;
-- **título do projeto** = o path do cartão acima do primeiro rótulo.
+- **blocos** = os rótulos roxos (`fill="#7C3AED"`) separam serviços, equipe e produtos: uma pastilha pertence ao último rótulo acima dela. É mais robusto que contar posições, que quebraria se um item fosse acrescentado ao cartão. Os três blocos voam; **o título do projeto não** — repetido dentro da plataforma, ele só ocupava a linha mais cara do quadro para dizer o que o cartão apagado à esquerda já diz.
 
 **Uma classificação por montagem** — `classificado` é uma trava de `useRef`. Sem ela o StrictMode classificava duas vezes, gerava dois objetos `Desenho` e o efeito de entrada (dep `[desenho]`) disparava uma vez para cada: o desenho aparecia, o `clearProps` da limpeza o jogava de volta à opacidade cheia e ele entrava de novo. Lia como animação duplicada começando clara. A trava só fecha depois de uma classificação bem-sucedida, então as tentativas por quadro continuam funcionando.
 
@@ -80,7 +79,9 @@ O detector que fecha esses casos conta **inversões de direção de opacidade po
 
 As features **não têm caixa própria**: uma caixa dentro da caixa dava três bordas empilhadas na mesma região, e a de dentro competia com a da plataforma. O que separa os dois é uma divisória fina — hierarquia sem moldura.
 
-**A segregação do time é a informação que fecha o quadro** — *dentro* da plataforma há três nomes (Eduardo, Curci, Bio), que entram na etapa das features porque é por elas que respondem; *fora* há um time por produto. Por isso os rótulos são um par ("TIME DA PLATAFORMA" / "TIMES PRÓPRIOS POR PRODUTO"), e o segundo é genérico de propósito: são cinco produtos na tela, e nomear o time de um mentiria sobre os outros quatro. O cartão do projeto agora esvazia por inteiro — os três blocos voam —, e é isso que faz a estrutura da direita ler como o mesmo projeto, remontado.
+**A segregação do time é a informação que fecha o quadro** — *dentro* da plataforma há três nomes (Eduardo, Curci, Bio), que entram na etapa das features porque é por elas que respondem; *fora* há um time por produto. Por isso os rótulos são um par ("TIME DA PLATAFORMA" / "TIMES PRÓPRIOS POR PRODUTO"), e o segundo é genérico de propósito: são cinco produtos na tela, e nomear o time de um mentiria sobre os outros quatro.
+
+Features e time ficam **lado a lado**, partidos por uma divisória vertical em `MEIO`, e não empilhados: assim a divisória diz "isto é feito por aquilo" numa olhada. A coluna da direita é dimensionada pela pastilha, que tem 284 fixos e não pode ser reescalada; a da esquerda fica com 270, e por isso a descrição das features é escrita em **duas linhas explícitas** — `<text>` em SVG não reflui, e a frase inteira pediria 420.
 
 O passo do zoom (`O projeto`) deixa a direita **vazia** de propósito: mostrar a estrutura inteira ali dava um quadro cheio de caixas sem conteúdo, e a fala não tinha onde começar. Cada conceito entra depois com a sua frase, e as peças do cartão pousam nele — `DESTINOS` guarda a etapa de cada peça junto da coordenada.
 

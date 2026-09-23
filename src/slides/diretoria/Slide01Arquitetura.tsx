@@ -67,7 +67,7 @@ const CARTAO_DESTINO = { x: 30, y: 110 }
  * vez de trocar o conteúdo, aproximar o que já está lá.
  */
 const CAMERA_CHEIA = '0 0 1087 646'
-const CAMERA_RECORTE = '10 100 1010 530'
+const CAMERA_RECORTE = '10 100 1010 526'
 
 /**
  * O enquadramento, montado um conceito por vez.
@@ -106,24 +106,26 @@ const COLUNA_W = 620
  * esquerda já diz.
  */
 const DESTINOS: { x: number; y: number; fase: number }[] = [
-  // As larguras das stacks (50 · 79 · 72) vêm do desenho; os vãos são 16.
-  { x: 406, y: 216, fase: 2 },
-  { x: 472, y: 216, fase: 2 },
-  { x: 567, y: 216, fase: 2 },
-  // O time fica na **coluna da direita da mesma linha** das features, não
-  // embaixo delas: lado a lado, a divisória diz "isto é feito por aquilo"
-  // numa olhada. É ele que responde pelas features, por isso entra na mesma
-  // etapa.
-  { x: 702, y: 296, fase: 3 },
-  { x: 702, y: 326, fase: 3 },
-  { x: 702, y: 356, fase: 3 },
+  // As stacks vão para a **coluna da direita**, ao lado da descrição da
+  // plataforma. Empilhar descrição e stacks custava 35px de altura para dizer
+  // duas coisas que cabem lado a lado.
+  // As larguras (50 · 79 · 72) vêm do desenho; os vãos são 16.
+  { x: 702, y: 198, fase: 2 },
+  { x: 768, y: 198, fase: 2 },
+  { x: 863, y: 198, fase: 2 },
+  // O time fica na coluna da direita da linha das features, não embaixo
+  // delas: lado a lado, a divisória diz "isto é feito por aquilo" numa
+  // olhada. É ele que responde pelas features, por isso entra na mesma etapa.
+  { x: 702, y: 274, fase: 3 },
+  { x: 702, y: 304, fase: 3 },
+  { x: 702, y: 334, fase: 3 },
   // Produtos em duas colunas: a pastilha tem 284 de largura no desenho e não
   // é reescalada, então cinco lado a lado não caberiam.
-  { x: 406, y: 524, fase: 4 },
-  { x: 702, y: 524, fase: 4 },
-  { x: 406, y: 556, fase: 4 },
-  { x: 702, y: 556, fase: 4 },
-  { x: 406, y: 588, fase: 4 },
+  { x: 406, y: 506, fase: 4 },
+  { x: 702, y: 506, fase: 4 },
+  { x: 406, y: 538, fase: 4 },
+  { x: 702, y: 538, fase: 4 },
+  { x: 406, y: 570, fase: 4 },
 ]
 
 export const ACTIONS = ['Infraestrutura', 'O projeto', 'Plataforma', 'Features', 'Produto']
@@ -321,7 +323,13 @@ function bloco(svg: SVGSVGElement, marca: string): SVGGElement {
  */
 function criarEstrutura(svg: SVGSVGElement): Desenho['blocos'] {
   const dir = COLUNA_X + COLUNA_W - 16
-  /** Onde a linha de baixo se parte. A coluna da direita cabe a pastilha de 284. */
+  /**
+   * Onde as duas linhas da plataforma se partem. A coluna da direita é
+   * dimensionada pela pastilha, que tem 284 fixos e não pode ser reescalada
+   * (o texto dela é path no export); sobra 270 para a esquerda, e é por isso
+   * que as duas descrições vão em linhas escritas à mão — `<text>` em SVG não
+   * reflui.
+   */
   const MEIO = 688
 
   /** Divisória fina: separa sem criar uma segunda moldura. */
@@ -335,36 +343,40 @@ function criarEstrutura(svg: SVGSVGElement): Desenho['blocos'] {
     return l
   }
 
-  // ── Plataforma: a caixa sólida, com as stacks dentro. ──
-  const plataforma = bloco(svg, 'plataforma')
-  plataforma.appendChild(retangulo(COLUNA_X, 115, COLUNA_W, 285, '#f3ebff', '#7c3aed', 2.5))
-  plataforma.appendChild(texto('Plataforma', 406, 150, 26, '700', '#3d2b52'))
-  plataforma.appendChild(
-    texto('O coração da aplicação. As stacks já entram aqui, criadas pelo ILUM.', 406, 172, 14, '400', '#64566f'),
-  )
-  plataforma.appendChild(rotulo('STACKS', 406, 206, '#5a3581'))
-
-  // ── Features e time: a linha de baixo, partida em duas colunas. ──
+  // ── Plataforma: a caixa sólida, em duas linhas de duas colunas. ──
   //
-  // Lado a lado, e não empilhados: a divisória vertical liga as features ao
-  // time que responde por elas sem precisar de uma frase dizendo isso.
+  // A divisória vertical atravessa as duas linhas de uma vez: à esquerda o
+  // que a coisa é, à direita do que ela é feita. Uma régua só, e as quatro
+  // células se leem sem rótulo de coluna.
+  const plataforma = bloco(svg, 'plataforma')
+  plataforma.appendChild(retangulo(COLUNA_X, 115, COLUNA_W, 263, '#f3ebff', '#7c3aed', 2.5))
+  plataforma.appendChild(texto('Plataforma', 406, 150, 26, '700', '#3d2b52'))
+  plataforma.appendChild(linha(406, 166, dir, 166))
+  plataforma.appendChild(texto('O coração da aplicação. As stacks já', 406, 190, 13, '400', '#64566f'))
+  plataforma.appendChild(texto('entram aqui, criadas pelo ILUM.', 406, 208, 13, '400', '#64566f'))
+  plataforma.appendChild(rotulo('STACKS', 702, 188, '#5a3581'))
+
+  // ── Features e time: a linha de baixo, na mesma grade. ──
   const features = bloco(svg, 'features')
-  features.appendChild(linha(406, 264, dir, 264))
-  features.appendChild(linha(MEIO, 278, MEIO, 386))
+  features.appendChild(linha(406, 240, dir, 240))
+  features.appendChild(linha(MEIO, 166, MEIO, 364))
 
-  features.appendChild(texto('Features da plataforma', 406, 296, 19, '700', '#3d2b52'))
-  // A frase quebra em duas porque `<text>` em SVG não reflui: a coluna da
-  // esquerda tem 270 e a linha inteira pediria 420.
-  features.appendChild(texto('Escopos específicos criados e construídos', 406, 320, 13, '400', '#64566f'))
-  features.appendChild(texto('diretamente na plataforma.', 406, 338, 13, '400', '#64566f'))
+  features.appendChild(texto('Features da plataforma', 406, 272, 19, '700', '#3d2b52'))
+  features.appendChild(texto('Escopos específicos criados e construídos', 406, 296, 13, '400', '#64566f'))
+  features.appendChild(texto('diretamente na plataforma.', 406, 314, 13, '400', '#64566f'))
 
-  features.appendChild(rotulo('TIME DA PLATAFORMA', 702, 288, '#5a3581'))
+  features.appendChild(rotulo('TIME DA PLATAFORMA', 702, 264, '#5a3581'))
 
   // ── Produto: outra camada, fora, subindo como módulo. ──
+  //
+  // Card próprio, e de propósito **diferente** do da plataforma: contorno
+  // fino e fundo claro, não a caixa sólida roxa. Duas caixas idênticas
+  // leriam como duas coisas do mesmo tipo, que é justamente o contrário do
+  // que o slide diz — uma é o coração, a outra é o que encaixa nele.
   const produto = bloco(svg, 'produto')
   // Aponta para cima: o produto sobe e encaixa na plataforma.
   const seta = document.createElementNS(NS, 'path')
-  seta.setAttribute('d', 'M700 446 L700 412')
+  seta.setAttribute('d', 'M700 418 L700 390')
   seta.setAttribute('fill', 'none')
   seta.setAttribute('stroke', '#8e73ad')
   seta.setAttribute('stroke-width', '2')
@@ -372,19 +384,21 @@ function criarEstrutura(svg: SVGSVGElement): Desenho['blocos'] {
   produto.appendChild(seta)
 
   const ponta = document.createElementNS(NS, 'path')
-  ponta.setAttribute('d', 'M692 420 L700 411 L708 420')
+  ponta.setAttribute('d', 'M692 398 L700 389 L708 398')
   ponta.setAttribute('fill', 'none')
   ponta.setAttribute('stroke', '#8e73ad')
   ponta.setAttribute('stroke-width', '2')
   produto.appendChild(ponta)
 
-  produto.appendChild(texto('entra como módulo', 716, 433, 12, '600', '#77618e'))
-  produto.appendChild(texto('Produto', 406, 472, 26, '700', '#3d2b52'))
+  produto.appendChild(texto('entra como módulo', 716, 409, 12, '600', '#77618e'))
+
+  produto.appendChild(retangulo(COLUNA_X, 424, COLUNA_W, 190, '#ffffffb0', '#a58cc4', 2))
+  produto.appendChild(texto('Produto', 406, 458, 26, '700', '#3d2b52'))
   produto.appendChild(
     texto(
       'Funcionalidades já escopadas que entram como módulo na plataforma.',
       406,
-      492,
+      478,
       14,
       '400',
       '#64566f',
@@ -393,7 +407,7 @@ function criarEstrutura(svg: SVGSVGElement): Desenho['blocos'] {
   // A outra metade da segregação. Genérico de propósito: são cinco produtos
   // na tela e cada um tem o seu time, então nomear um deles mentiria sobre
   // os outros quatro.
-  produto.appendChild(rotulo('TIMES PRÓPRIOS POR PRODUTO', 406, 514, '#5a3581'))
+  produto.appendChild(rotulo('TIMES PRÓPRIOS POR PRODUTO', 406, 498, '#5a3581'))
 
   return { plataforma, features, produto }
 }

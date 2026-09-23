@@ -81,7 +81,11 @@ As features **não têm caixa própria**: uma caixa dentro da caixa dava três b
 
 **A segregação do time é a informação que fecha o quadro** — *dentro* da plataforma há três nomes (Eduardo, Curci, Bio), que entram na etapa das features porque é por elas que respondem; *fora* há um time por produto. Por isso os rótulos são um par ("TIME DA PLATAFORMA" / "TIMES PRÓPRIOS POR PRODUTO"), e o segundo é genérico de propósito: são cinco produtos na tela, e nomear o time de um mentiria sobre os outros quatro.
 
-Features e time ficam **lado a lado**, partidos por uma divisória vertical em `MEIO`, e não empilhados: assim a divisória diz "isto é feito por aquilo" numa olhada. A coluna da direita é dimensionada pela pastilha, que tem 284 fixos e não pode ser reescalada; a da esquerda fica com 270, e por isso a descrição das features é escrita em **duas linhas explícitas** — `<text>` em SVG não reflui, e a frase inteira pediria 420.
+**A plataforma é uma grade 2×2 com uma régua só** — a divisória vertical em `MEIO` atravessa as duas linhas de uma vez: à esquerda o que a coisa é (descrição, depois as features), à direita do que ela é feita (as stacks, depois o time). Com uma régua as quatro células se leem sem rótulo de coluna, e a divisória diz "isto é feito por aquilo" sem precisar da frase. Empilhar descrição e stacks custava 35px de altura para dizer duas coisas que cabem lado a lado.
+
+A coluna da direita é dimensionada pela pastilha, que tem 284 fixos e não pode ser reescalada; a da esquerda fica com 270, e é por isso que **as duas descrições são escritas em linhas explícitas** — `<text>` em SVG não reflui, e cada frase inteira pediria mais de 420. Ao mexer numa delas, meça: o teto é a divisória em 688.
+
+**O produto também tem card, e de propósito diferente do da plataforma** — contorno fino e fundo claro, não a caixa sólida roxa. Duas caixas idênticas leriam como duas coisas do mesmo tipo, que é o contrário do que o slide diz: uma é o coração, a outra é o que encaixa nele.
 
 O passo do zoom (`O projeto`) deixa a direita **vazia** de propósito: mostrar a estrutura inteira ali dava um quadro cheio de caixas sem conteúdo, e a fala não tinha onde começar. Cada conceito entra depois com a sua frase, e as peças do cartão pousam nele — `DESTINOS` guarda a etapa de cada peça junto da coordenada.
 

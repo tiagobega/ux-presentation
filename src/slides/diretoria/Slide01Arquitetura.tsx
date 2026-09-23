@@ -38,6 +38,20 @@ const centroDentro = (a: Caixa, b: Caixa) => {
   return cx >= b.x && cx <= b.x + b.w && cy >= b.y && cy <= b.y + b.h
 }
 
+/**
+ * `a` é pequeno o bastante para morar dentro de `b`.
+ *
+ * Sem isso, "estar dentro" só olhava o centro — e o centro do cartão do
+ * projeto (911, 432) cai dentro da terceira pastilha da equipe, então a peça
+ * "Bio" levava o cartão inteiro junto quando voava. O bloco da equipe não
+ * voava antes, e por isso o furo nunca tinha aparecido: nenhuma pastilha dos
+ * outros blocos passa pela altura do centro do cartão.
+ *
+ * A folga de 4 é o contorno: no export a pastilha tem um `rect` de
+ * preenchimento e outro de traço, e o de traço é ligeiramente maior.
+ */
+const cabeEm = (a: Caixa, b: Caixa) => a.w <= b.w + 4 && a.h <= b.h + 4
+
 /** Roxo dos rótulos de seção no export do Figma. */
 const ROTULO = '#7C3AED'
 /** Roxo do preenchimento das pastilhas. */
@@ -53,7 +67,7 @@ const CARTAO_DESTINO = { x: 30, y: 110 }
  * vez de trocar o conteúdo, aproximar o que já está lá.
  */
 const CAMERA_CHEIA = '0 0 1087 646'
-const CAMERA_RECORTE = '10 100 1010 470'
+const CAMERA_RECORTE = '10 100 1010 545'
 
 /**
  * O enquadramento, montado um conceito por vez.
@@ -67,10 +81,17 @@ const CAMERA_RECORTE = '10 100 1010 470'
  *
  * - a **plataforma** é a caixa sólida, o coração da aplicação, e as stacks
  *   (banco, front, back) entram dentro dela;
- * - o **serviço** é um bloco *dentro* da plataforma, porque é construído
- *   nela e para aquele projeto;
+ * - as **features da plataforma** ficam dentro da mesma caixa, porque são
+ *   construídas nela e para aquele projeto — e o time que cuida delas entra
+ *   ali junto, que é o que diz de quem é a responsabilidade;
  * - o **produto** é outra camada, *fora*, e sobe como módulo — cada caixinha
- *   com a própria borda, que é o escopo das suas regras.
+ *   com a própria borda, que é o escopo das suas regras, e o time de cada um
+ *   é outro.
+ *
+ * A segregação do time é a informação que fecha o quadro: **dentro** da
+ * plataforma há três nomes, **fora** há um time por produto. Por isso os
+ * dois rótulos são um par ("TIME DA PLATAFORMA" / "TIMES PRÓPRIOS POR
+ * PRODUTO") e não duas frases soltas.
  */
 const COLUNA_X = 390
 const COLUNA_W = 620
@@ -82,19 +103,24 @@ const COLUNA_W = 620
 const DESTINOS: { x: number; y: number; fase: number }[] = [
   { x: 406, y: 192, fase: 2 },
   // As larguras das stacks (50 · 79 · 72) vêm do desenho; os vãos são 16.
-  { x: 406, y: 238, fase: 2 },
-  { x: 472, y: 238, fase: 2 },
-  { x: 567, y: 238, fase: 2 },
+  { x: 406, y: 232, fase: 2 },
+  { x: 472, y: 232, fase: 2 },
+  { x: 567, y: 232, fase: 2 },
+  // O time da plataforma entra com as features, não com a plataforma: é ele
+  // que responde por elas, e separar as duas etapas perderia essa ligação.
+  { x: 406, y: 356, fase: 3 },
+  { x: 702, y: 356, fase: 3 },
+  { x: 406, y: 388, fase: 3 },
   // Produtos em duas colunas: a pastilha tem 284 de largura no desenho e não
   // é reescalada, então cinco lado a lado não caberiam.
-  { x: 406, y: 454, fase: 4 },
-  { x: 702, y: 454, fase: 4 },
-  { x: 406, y: 488, fase: 4 },
-  { x: 702, y: 488, fase: 4 },
-  { x: 406, y: 522, fase: 4 },
+  { x: 406, y: 542, fase: 4 },
+  { x: 702, y: 542, fase: 4 },
+  { x: 406, y: 574, fase: 4 },
+  { x: 702, y: 574, fase: 4 },
+  { x: 406, y: 606, fase: 4 },
 ]
 
-export const ACTIONS = ['Infraestrutura', 'O projeto', 'Plataforma', 'Serviço', 'Produto']
+export const ACTIONS = ['Infraestrutura', 'O projeto', 'Plataforma', 'Features', 'Produto']
 
 const NS = 'http://www.w3.org/2000/svg'
 
@@ -210,7 +236,7 @@ interface Desenho {
   cartaoDy: number
   pecas: Peca[]
   /** Um grupo por conceito: cada um entra na sua etapa. */
-  blocos: { plataforma: SVGGElement; servico: SVGGElement; produto: SVGGElement }
+  blocos: { plataforma: SVGGElement; features: SVGGElement; produto: SVGGElement }
   /** As folhas do desenho original, uma a uma: é o que a entrada anima. */
   folhas: SVGGraphicsElement[]
 }
@@ -277,48 +303,62 @@ function bloco(svg: SVGSVGElement, marca: string): SVGGElement {
 /**
  * Desenha os três conceitos, cada um no seu grupo.
  *
- * O serviço é um bloco **dentro** da caixa da plataforma, e o produto é uma
+ * As features ficam **dentro** da caixa da plataforma e o produto é uma
  * camada **fora** dela, ligada por uma seta que sobe: é assim que "construído
  * dentro" e "entra como módulo" ficam ditos pelo desenho, sem depender de
  * ninguém ler a frase.
+ *
+ * As features **não têm caixa própria**. Uma caixa dentro da caixa dava três
+ * bordas empilhadas na mesma região e a de dentro competia com a da
+ * plataforma; o que separa os dois agora é uma divisória fina, que é
+ * hierarquia sem ser moldura.
  */
 function criarEstrutura(svg: SVGSVGElement): Desenho['blocos'] {
+  const dir = COLUNA_X + COLUNA_W - 16
+
+  /** Divisória fina: separa sem criar uma segunda moldura. */
+  const divisoria = (y: number) => {
+    const l = document.createElementNS(NS, 'line')
+    l.setAttribute('x1', '406')
+    l.setAttribute('y1', String(y))
+    l.setAttribute('x2', String(dir))
+    l.setAttribute('y2', String(y))
+    l.setAttribute('stroke', '#c3aadc')
+    return l
+  }
+
   // ── Plataforma: a caixa sólida, com as stacks dentro. ──
   const plataforma = bloco(svg, 'plataforma')
-  plataforma.appendChild(retangulo(COLUNA_X, 115, COLUNA_W, 250, '#f3ebff', '#7c3aed', 2.5))
+  plataforma.appendChild(retangulo(COLUNA_X, 115, COLUNA_W, 315, '#f3ebff', '#7c3aed', 2.5))
   plataforma.appendChild(texto('Plataforma', 406, 150, 26, '700', '#3d2b52'))
   plataforma.appendChild(
-    texto('O coração da aplicação. As stacks já entram aqui, criadas pelo ILUM.', 406, 174, 14, '400', '#64566f'),
+    texto('O coração da aplicação. As stacks já entram aqui, criadas pelo ILUM.', 406, 172, 14, '400', '#64566f'),
   )
-  plataforma.appendChild(rotulo('STACKS', 406, 226, '#5a3581'))
+  plataforma.appendChild(rotulo('STACKS', 406, 222, '#5a3581'))
 
-  // ── Serviço: um bloco dentro da plataforma. ──
-  const servico = bloco(svg, 'servico')
-  const divisoria = document.createElementNS(NS, 'line')
-  divisoria.setAttribute('x1', '406')
-  divisoria.setAttribute('y1', '282')
-  divisoria.setAttribute('x2', String(COLUNA_X + COLUNA_W - 16))
-  divisoria.setAttribute('y2', '282')
-  divisoria.setAttribute('stroke', '#c3aadc')
-  servico.appendChild(divisoria)
-  servico.appendChild(retangulo(406, 294, 588, 62, '#ffffffc0', '#a58cc4', 1.5))
-  servico.appendChild(texto('Serviço', 422, 320, 19, '700', '#3d2b52'))
-  servico.appendChild(
+  // ── Features: dentro da mesma caixa, com o time que responde por elas. ──
+  const features = bloco(svg, 'features')
+  features.appendChild(divisoria(272))
+  features.appendChild(texto('Features da plataforma', 406, 298, 19, '700', '#3d2b52'))
+  features.appendChild(
     texto(
-      'Funcionalidades específicas construídas dentro desta plataforma, para este projeto.',
-      422,
-      342,
+      'Escopos específicos criados e construídos diretamente na plataforma.',
+      406,
+      318,
       13,
       '400',
       '#64566f',
     ),
   )
+  // O time entra aqui, e não com a plataforma: quem está dentro cuida das
+  // features. É a metade de dentro da segregação que o slide precisa dizer.
+  features.appendChild(rotulo('TIME DA PLATAFORMA', 406, 346, '#5a3581'))
 
   // ── Produto: outra camada, fora, subindo como módulo. ──
   const produto = bloco(svg, 'produto')
   // Aponta para cima: o produto sobe e encaixa na plataforma.
   const seta = document.createElementNS(NS, 'path')
-  seta.setAttribute('d', 'M700 402 L700 380')
+  seta.setAttribute('d', 'M700 476 L700 442')
   seta.setAttribute('fill', 'none')
   seta.setAttribute('stroke', '#8e73ad')
   seta.setAttribute('stroke-width', '2')
@@ -326,26 +366,30 @@ function criarEstrutura(svg: SVGSVGElement): Desenho['blocos'] {
   produto.appendChild(seta)
 
   const ponta = document.createElementNS(NS, 'path')
-  ponta.setAttribute('d', 'M692 388 L700 379 L708 388')
+  ponta.setAttribute('d', 'M692 450 L700 441 L708 450')
   ponta.setAttribute('fill', 'none')
   ponta.setAttribute('stroke', '#8e73ad')
   ponta.setAttribute('stroke-width', '2')
   produto.appendChild(ponta)
 
-  produto.appendChild(texto('entra como módulo', 716, 391, 12, '600', '#77618e'))
-  produto.appendChild(texto('Produto', 406, 424, 26, '700', '#3d2b52'))
+  produto.appendChild(texto('entra como módulo', 716, 463, 12, '600', '#77618e'))
+  produto.appendChild(texto('Produto', 406, 490, 26, '700', '#3d2b52'))
   produto.appendChild(
     texto(
       'Funcionalidades já escopadas que entram como módulo na plataforma.',
       406,
-      446,
+      510,
       14,
       '400',
       '#64566f',
     ),
   )
+  // A outra metade da segregação. Genérico de propósito: são cinco produtos
+  // na tela e cada um tem o seu time, então nomear um deles mentiria sobre
+  // os outros quatro.
+  produto.appendChild(rotulo('TIMES PRÓPRIOS POR PRODUTO', 406, 532, '#5a3581'))
 
-  return { plataforma, servico, produto }
+  return { plataforma, features, produto }
 }
 
 function classificar(svg: SVGSVGElement): Desenho | null {
@@ -433,14 +477,21 @@ function classificar(svg: SVGSVGElement): Desenho | null {
   )
   if (iTitulo === undefined) return null
 
-  /** Índices de cada peça que se move: título, bloco 0 (serviços) e bloco 2 (produtos). */
+  /**
+   * Índices de cada peça que se move: o título e os três blocos do cartão —
+   * 0 (stacks), 1 (equipe) e 2 (produtos). O cartão esvazia por inteiro, e é
+   * isso que faz a estrutura da direita ler como o mesmo projeto, remontado.
+   */
   const grupos: number[][] = [[iTitulo]]
-  ;[0, 2].forEach((bloco) => {
+  ;[0, 1, 2].forEach((bloco) => {
     pastilhas
       .filter((i) => blocoDe(i) === bloco)
       .forEach((i) => {
-        // A pastilha leva junto o contorno e o texto que vivem dentro dela.
-        const membros = dentro.filter((j) => j === i || centroDentro(caixas[j], caixas[i]))
+        // A pastilha leva junto o contorno e o texto que vivem dentro dela —
+        // e só o que de fato cabe nela (ver `cabeEm`).
+        const membros = dentro.filter(
+          (j) => j === i || (centroDentro(caixas[j], caixas[i]) && cabeEm(caixas[j], caixas[i])),
+        )
         grupos.push(membros)
       })
   })
@@ -534,7 +585,7 @@ function aplicarFase(d: Desenho, fase: number, instantaneo: boolean) {
   mexer(d.fora, { opacity: recorte ? 0 : 1 }, 0.45)
   mexer(d.cartao, { x: recorte ? d.cartaoDx : 0, y: recorte ? d.cartaoDy : 0 })
   mexer(d.blocos.plataforma, { opacity: fase >= 2 ? 1 : 0 }, 0.45)
-  mexer(d.blocos.servico, { opacity: fase >= 3 ? 1 : 0 }, 0.45)
+  mexer(d.blocos.features, { opacity: fase >= 3 ? 1 : 0 }, 0.45)
   mexer(d.blocos.produto, { opacity: fase >= 4 ? 1 : 0 }, 0.45)
   d.pecas.forEach((p) => {
     const chegou = fase >= p.fase

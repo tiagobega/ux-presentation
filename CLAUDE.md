@@ -38,7 +38,7 @@ Order is governed by `DIRETORIA_DECK` in `src/slides/diretoria/deck.ts`.
 
 | # | File | Label | Tema |
 |---|------|-------|------|
-| 1 | `Slide01Arquitetura.tsx` | Arquitetura | Tudo dentro do `fluxo-novo.svg`: o cartão desliza, a câmera fecha e um conceito entra por etapa (plataforma → serviço → produto) |
+| 1 | `Slide01Arquitetura.tsx` | Arquitetura | Tudo dentro do `fluxo-novo.svg`: o cartão desliza, a câmera fecha e um conceito entra por etapa (plataforma → features → produto) |
 | 2 | `Slide02CidadeX.tsx` | Cidade X | Composição por prompt: digitação, clique, montagem e a aplicação preenchida |
 | 3 | `Slide03ComoFazer.tsx` | Como fazer | As frentes separadas em interno e produto |
 | 4 | `Slide04Cronograma.tsx` | Cronograma | Cinco marcos numa linha do tempo, com data e descrição |
@@ -51,7 +51,7 @@ Order is governed by `DIRETORIA_DECK` in `src/slides/diretoria/deck.ts`.
 Isso exige classificar o SVG por geometria em tempo de execução, porque o export do Figma é plano (sem grupos, sem ids, texto virado path). As regras de `classificar()` sobrevivem a um reexport; só as coordenadas de destino dependem do layout:
 
 - **cartão do projeto** = o único `rect` com contorno mais alto que 300;
-- **pastilhas** = `rect` com `fill="#9C59F9"`, levando junto o contorno e o texto que caem dentro delas;
+- **pastilhas** = `rect` com `fill="#9C59F9"`, levando junto o contorno e o texto que caem dentro delas — e **só o que cabe dentro delas** (`cabeEm`). Olhar só o centro não basta: o centro do cartão do projeto (911, 432) cai dentro da terceira pastilha da equipe, e a peça "Bio" saía voando com o cartão inteiro embarcado. O furo só apareceu quando o bloco da equipe passou a voar, porque nenhuma pastilha dos outros blocos passa pela altura do centro do cartão;
 - **blocos** = os rótulos roxos (`fill="#7C3AED"`) separam serviços, equipe e produtos: uma pastilha pertence ao último rótulo acima dela. É mais robusto que contar posições, que quebraria se um item fosse acrescentado ao cartão;
 - **título do projeto** = o path do cartão acima do primeiro rótulo.
 
@@ -76,7 +76,11 @@ O detector que fecha esses casos conta **inversões de direção de opacidade po
 
 **A cadeia do slide 2** — o clique simulado dispara a montagem sozinho (plataforma, depois os módulos voando). Um clique que não causa nada lê como animação quebrada, que foi o defeito da primeira versão. Sobra um único avanço manual, o que preenche a aplicação: o apresentador nunca aperta seta sem que algo mude na tela. A digitação conta por **tempo decorrido** em `requestAnimationFrame`, não um caractere por tique de `setInterval` — cada caractere provoca um render do palco inteiro, e com intervalo fixo o tique atrasava e a frase levava o dobro do previsto.
 
-**O enquadramento é uma forma, e entra um conceito por vez** — no slide 1 a relação está no desenho: a **plataforma** é a caixa sólida com as stacks dentro, o **serviço** é um bloco *dentro* dela, e o **produto** é outra camada *fora*, ligada por uma seta que sobe. Dentro/fora é a informação, e não depende de ninguém ler o rótulo; com três rótulos empilhados, "serviço" e "produto" tinham o mesmo peso visual e a diferença ficava por conta da frase.
+**O enquadramento é uma forma, e entra um conceito por vez** — no slide 1 a relação está no desenho: a **plataforma** é a caixa sólida com as stacks dentro, as **features da plataforma** ficam *dentro* dela, e o **produto** é outra camada *fora*, ligada por uma seta que sobe. Dentro/fora é a informação, e não depende de ninguém ler o rótulo; com três rótulos empilhados, os dois de baixo tinham o mesmo peso visual e a diferença ficava por conta da frase.
+
+As features **não têm caixa própria**: uma caixa dentro da caixa dava três bordas empilhadas na mesma região, e a de dentro competia com a da plataforma. O que separa os dois é uma divisória fina — hierarquia sem moldura.
+
+**A segregação do time é a informação que fecha o quadro** — *dentro* da plataforma há três nomes (Eduardo, Curci, Bio), que entram na etapa das features porque é por elas que respondem; *fora* há um time por produto. Por isso os rótulos são um par ("TIME DA PLATAFORMA" / "TIMES PRÓPRIOS POR PRODUTO"), e o segundo é genérico de propósito: são cinco produtos na tela, e nomear o time de um mentiria sobre os outros quatro. O cartão do projeto agora esvazia por inteiro — os três blocos voam —, e é isso que faz a estrutura da direita ler como o mesmo projeto, remontado.
 
 O passo do zoom (`O projeto`) deixa a direita **vazia** de propósito: mostrar a estrutura inteira ali dava um quadro cheio de caixas sem conteúdo, e a fala não tinha onde começar. Cada conceito entra depois com a sua frase, e as peças do cartão pousam nele — `DESTINOS` guarda a etapa de cada peça junto da coordenada.
 

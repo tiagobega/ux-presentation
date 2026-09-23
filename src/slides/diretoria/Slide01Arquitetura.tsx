@@ -397,7 +397,6 @@ function criarEstrutura(svg: SVGSVGElement): { blocos: Desenho['blocos']; caixa:
   seta.setAttribute('fill', 'none')
   seta.setAttribute('stroke', '#8e73ad')
   seta.setAttribute('stroke-width', '2')
-  seta.setAttribute('stroke-dasharray', '6 4')
   produto.appendChild(seta)
 
   const ponta = document.createElementNS(NS, 'path')

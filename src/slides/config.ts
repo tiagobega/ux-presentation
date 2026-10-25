@@ -14,6 +14,12 @@ export interface SlideProps {
 export interface SlideEntry {
   label: string
   actions: readonly string[]
+  /**
+   * Entra por corte, sem o pan horizontal da câmera, e monta na hora. Para
+   * passagens em que o último quadro do slide anterior é o primeiro deste
+   * (o mergulho no Builder do deck Ilum · demo): o pan desmancharia a emenda.
+   */
+  corte?: boolean
 }
 
 /**

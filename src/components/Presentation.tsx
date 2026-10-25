@@ -13,12 +13,30 @@ const PAN_SEC = 0.85; // duração do pan da câmera
 // Atraso da montagem do slide: ele só monta (e anima) quando o pan está terminando.
 const ENTER_DELAY_MS = 700;
 
+/**
+ * Ponto de partida pela URL: `?at=3.2` abre o slide 3 no passo 2 (contando de
+ * 1). Serve para ensaiar um trecho e para voltar ao ponto certo se a página
+ * recarregar no meio da apresentação. Sem o parâmetro, começa do início.
+ */
+function inicio(): { slide: number; action: string } {
+  const pedido = typeof window === "undefined" ? null : new URLSearchParams(window.location.search).get("at");
+  const [s, a] = (pedido ?? "").split(".").map((n) => Number(n) - 1);
+  const slide = Number.isInteger(s) && SLIDE_CONFIG[s] ? s : 0;
+  const actions = SLIDE_CONFIG[slide].actions;
+  return { slide, action: actions[Number.isInteger(a) && actions[a] ? a : 0] };
+}
+
+const INICIO = inicio();
+
 export default function Presentation() {
-  const [slide, setSlide] = useState(0);
-  const [action, setAction] = useState<string>(SLIDE_CONFIG[0].actions[0]);
+  const [slide, setSlide] = useState(INICIO.slide);
+  const [action, setAction] = useState<string>(INICIO.action);
   // Slides já visitados ficam montados (estado completo, sem reset ao sair).
-  const [activated, setActivated] = useState<Set<number>>(() => new Set([0]));
+  const [activated, setActivated] = useState<Set<number>>(() => new Set([INICIO.slide]));
   const [showQR, setShowQR] = useState(false);
+  // A passagem corrente é um corte (sem pan)? Vale para entrar num slide com
+  // `corte` e para voltar dele ao anterior: a emenda é a mesma nos dois sentidos.
+  const [corte, setCorte] = useState(false);
   const total = SLIDES.length;
 
   const slideRef = useRef(slide);
@@ -28,7 +46,7 @@ export default function Presentation() {
 
   // Último step visto de cada slide — usado para congelar slides inativos no estado completo.
   const actionMemory = useRef<Record<number, string>>({
-    0: SLIDE_CONFIG[0].actions[0],
+    [INICIO.slide]: INICIO.action,
   });
   useEffect(() => {
     actionMemory.current[slide] = action;
@@ -50,9 +68,13 @@ export default function Presentation() {
     if (idx < actions.length - 1) {
       setAction(actions[idx + 1]);
     } else if (s < total - 1) {
+      const porCorte = !!SLIDE_CONFIG[s + 1].corte;
+      setCorte(porCorte);
       setSlide(s + 1);
       setAction(SLIDE_CONFIG[s + 1].actions[0]);
-      activate(s + 1);
+      // No corte o slide monta no mesmo quadro: sem pan, não há o que esperar.
+      if (porCorte) setActivated((prev) => (prev.has(s + 1) ? prev : new Set(prev).add(s + 1)));
+      else activate(s + 1);
     }
   }, [total, activate]);
 
@@ -65,6 +87,7 @@ export default function Presentation() {
       setAction(actions[idx - 1]);
     } else if (s > 0) {
       const prevActions = SLIDE_CONFIG[s - 1].actions;
+      setCorte(!!SLIDE_CONFIG[s].corte);
       setSlide(s - 1);
       setAction(prevActions[prevActions.length - 1]);
       activate(s - 1);
@@ -73,6 +96,7 @@ export default function Presentation() {
 
   const gotoSlide = useCallback(
     (i: number) => {
+      setCorte(false);
       setSlide(i);
       setAction(SLIDE_CONFIG[i].actions[0]);
       activate(i);
@@ -85,12 +109,14 @@ export default function Presentation() {
       const s = slideRef.current;
       if (cmd === "prev") {
         if (s > 0) {
+          setCorte(false);
           setSlide(s - 1);
           setAction(SLIDE_CONFIG[s - 1].actions[0]);
           activate(s - 1);
         }
       } else if (cmd === "next") {
         if (s < total - 1) {
+          setCorte(false);
           setSlide(s + 1);
           setAction(SLIDE_CONFIG[s + 1].actions[0]);
           activate(s + 1);
@@ -168,7 +194,7 @@ export default function Presentation() {
           className="flex h-full"
           style={{ width: `${total * 100}%` }}
           animate={{ x: `-${(100 / total) * slide}%` }}
-          transition={{ duration: PAN_SEC, ease: camera }}
+          transition={{ duration: corte ? 0 : PAN_SEC, ease: camera }}
         >
           {SLIDES.map((S, i) => {
             const isActive = i === slide;

@@ -26,6 +26,11 @@
   /* Deck ILUM · diretoria (src/slides/diretoria/): reaproveita as animações
      de entrada acima; só o cursor da digitação do slide 15 é novo. */
   --animate-dir-caret: dir-caret 1s steps(1) infinite;
+
+  /* Deck Ilum · demo (src/slides/ilum-demo/): a base de design da Intelicity,
+     tirada do pptx de propostas executivas. Montserrat e a paleta do tema;
+     as animações de entrada são as do deck Ilum. */
+  --font-intelicity: 'Montserrat', sans-serif;
 }
 
 /* ── DECK ILUM ── */

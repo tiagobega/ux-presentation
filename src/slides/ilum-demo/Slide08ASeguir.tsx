@@ -1,55 +1,59 @@
+import { Cpu, MapPinned, Rocket, Ruler } from 'lucide-react'
 import type { SlideProps } from '../config'
 import { COR, Cartao, Pagina, Rotulo, delay } from './ui'
 
 /**
- * Slide 8 — O que vem a seguir.
- *
- * Em destaque, chapado em ameixa, o tempo real: Builder e Router estão
- * validados, mas o projeto ainda recebe o mês carregado, não cada foto quando
- * ela chega. Os outros três itens têm o mesmo peso. Nenhum tem data, porque
- * nenhum prazo foi informado.
+ * Slide 9 — Próximos passos: Vision como próximo passo concreto; expansão
+ * condicionada ao alinhamento de prioridades e capacidade da empresa.
+ * Ainda não há projeto real operando pelo Ilum. Sem datas assumidas.
  */
 
 export const ACTIONS = ['Os próximos passos']
 
-const OUTROS = [
-  { termo: 'O Back lendo o Oracle', detalhe: 'os dados já estão idênticos' },
-  { termo: 'A tabela Prata da unicidade', detalhe: 'ADR-0044' },
-  { termo: 'O Builder criando os usuários do banco', detalhe: 'DT-02' },
+const EXPANSAO = [
+  { termo: 'Primeiros projetos', detalhe: 'Levar o Ilum à operação real', Icone: MapPinned },
+  { termo: 'Deploy automático', detalhe: 'O Builder colocando os serviços no ar', Icone: Rocket },
+  { termo: 'IRI', detalhe: 'Integrar o próximo processador', Icone: Ruler },
+  { termo: 'Novos hardwares', detalhe: 'Conectar novas fontes de dados', Icone: Cpu },
 ]
 
 export default function Slide08ASeguir(_: SlideProps) {
   return (
-    <Pagina n={8} eyebrow='A seguir' titulo='O que vem depois da demo'>
-      <div className='grid grid-cols-[1.1fr_1fr] gap-[1.6vw]'>
+    <Pagina n={10} eyebrow='A seguir' titulo='Próximos passos'>
+      <div className='grid grid-cols-[0.85fr_1.35fr] gap-[1.6vw]'>
         <Cartao
           estado='atual'
-          className='px-[2.2vw] py-[2.2vw] flex flex-col justify-center gap-[0.8vw] animate-ilum-rise motion-reduce:animate-none'
+          className='px-[2.2vw] py-[2.2vw] flex flex-col justify-center gap-[1vw] animate-ilum-rise motion-reduce:animate-none'
           style={delay(0.15)}
         >
-          <Rotulo cor='#ffffffb0'>01 · Tempo real</Rotulo>
-          <span className='text-[2.2vw] font-bold leading-[1.15]'>Fotos novas chegando sozinhas</span>
-          <span className='text-[1.3vw] opacity-80'>Hoje o projeto recebe o mês carregado; o próximo é receber cada foto quando ela chega</span>
+          <Rotulo cor='#ffffffb0'>01 · Roteamento</Rotulo>
+          <span className='text-[2.2vw] font-bold leading-[1.15]'>Ligar o Vision e rotear os dados</span>
+          <span className='text-[1.3vw] font-semibold text-white'>SABESP já está aguardando.</span>
+          <span className='text-[1.15vw] leading-[1.5] text-white/80'>Validar o fluxo e as regras no primeiro projeto real.</span>
         </Cartao>
 
-        <div className='flex flex-col gap-[1vw]'>
-          {OUTROS.map((o, i) => (
-            <Cartao
-              key={o.termo}
-              estado='aceso'
-              className='flex-1 px-[1.6vw] py-[1.1vw] animate-ilum-rise motion-reduce:animate-none'
-              style={delay(0.3 + i * 0.1)}
-            >
-              <span className='block text-[1vw] font-bold' style={{ color: COR.malva }}>
-                {String(i + 2).padStart(2, '0')}
-              </span>
-              <span className='block text-[1.55vw] font-bold'>{o.termo}</span>
-              <span className='block mt-[0.2vw] text-[1.05vw]' style={{ color: COR.cinza }}>
-                {o.detalhe}
-              </span>
-            </Cartao>
-          ))}
-        </div>
+        <Cartao estado='aceso' className='px-[2.2vw] py-[2.2vw] flex flex-col gap-[1vw] animate-ilum-rise motion-reduce:animate-none' style={delay(0.2)}>
+          <Rotulo cor={COR.malva}>02 · Expansão</Rotulo>
+          <span className='text-[2vw] font-bold leading-[1.2]'>Alinhar a expansão ao planejamento da empresa</span>
+          <p
+            className='border-l-[0.3vw] px-[1.1vw] py-[0.9vw] text-[1.3vw] font-medium leading-[1.4]'
+            style={{ borderColor: COR.ameixa, backgroundColor: COR.lavanda, color: COR.ameixa }}
+          >
+            O próximo passo exige <strong className='font-bold'>toda a empresa</strong> trabalhando na mesma direção.
+          </p>
+          <span className='text-[1.15vw] leading-[1.5]' style={{ color: COR.cinza }}>Definir prioridades e capacidade das equipes para avançar em:</span>
+          <div className='mt-[0.5vw] grid grid-cols-2 gap-[0.8vw]'>
+            {EXPANSAO.map(({ termo, detalhe, Icone }) => (
+              <div key={termo} className='flex items-start gap-[0.9vw] border bg-white px-[1.1vw] py-[1.2vw]' style={{ borderColor: COR.borda }}>
+                <Icone className='size-[1.8vw] shrink-0 mt-[0.1vw]' strokeWidth={1.5} style={{ color: COR.malva }} aria-hidden />
+                <div>
+                <span className='block text-[1.25vw] font-bold leading-[1.25]' style={{ color: COR.ameixa }}>{termo}</span>
+                <span className='block mt-[0.5vw] text-[1vw] leading-[1.4]' style={{ color: COR.cinza }}>{detalhe}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </Cartao>
       </div>
     </Pagina>
   )

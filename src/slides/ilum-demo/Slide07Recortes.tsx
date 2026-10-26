@@ -122,7 +122,7 @@ export default function Slide07Recortes({ action }: SlideProps) {
   const passa = PASSA[passo]
 
   return (
-    <Pagina n={7} eyebrow='Router' titulo='Cada contrato escolhe o que chega ao projeto' corpo=''>
+    <Pagina n={9} eyebrow='Router' titulo='Cada contrato escolhe o que chega ao projeto' corpo=''>
       <div className='flex flex-1 min-h-0 gap-[2.4vw]'>
         <div className='flex flex-1 min-w-0 flex-col animate-ilum-in motion-reduce:animate-none' style={delay(0.15)}>
           <svg

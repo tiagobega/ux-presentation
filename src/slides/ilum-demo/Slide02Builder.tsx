@@ -1,17 +1,13 @@
-import { useRef } from 'react'
 import { motion, useReducedMotion } from 'motion/react'
 import type { SlideProps } from '../config'
 import { BORDA, LILAS, MALVA, Pilula, ROXO, Rotulo, SUAVE, TINTA, TRANSICAO, aparece, caixa, ponta } from './diagrama'
-import { Pagina, SaidaDaTela } from './ui'
+import { Pagina } from './ui'
 
 /**
- * Slide 2 — O Builder monta o projeto. Abre a parte 1 do deck.
+ * Slide 4 — O que o Builder monta. Continua o fluxo do slide anterior.
  *
- * **Entra por corte, de dentro do Builder.** O slide 1 termina com a tela
- * inteira em ameixa (`TelaParte`); este abre sobre o mesmo quadro e o
- * encolhe até o bloco do Builder, à esquerda do projeto. Para isso o deck
- * marca este slide com `corte` (sem pan) e o alvo do encolhimento é medido
- * no DOM: é o retângulo do bloco no SVG, onde quer que a câmera o ponha.
+ * O mergulho e a tela ameixa ficam no slide de fluxo do Builder. Este entra
+ * pelo pan normal, sem repetir a abertura da parte.
  *
  * Parte do mesmo cartão fechado com que o slide 1 termina (Uberlândia, com
  * Banco · Back · Front) e o faz crescer, uma peça por passo:
@@ -143,12 +139,11 @@ function Peca({ p, passo }: { p: (typeof PECAS)[number]; passo: number }) {
 export default function Slide02Builder({ action }: SlideProps) {
   const passo = Math.max(0, ACTIONS.indexOf(action))
   const reduzido = useReducedMotion()
-  const bloco = useRef<SVGRectElement>(null)
   const aberto = passo >= 1
   const c = aberto ? CARTAO.aberto : CARTAO.fechado
 
   return (
-    <Pagina n={2} eyebrow='Builder' titulo='O que o Builder monta' corpo=''>
+    <Pagina n={4} eyebrow='Builder' titulo='O que o Builder monta' corpo=''>
 
       <motion.svg
         className='flex-1 min-h-0 w-full h-full'
@@ -163,7 +158,7 @@ export default function Slide02Builder({ action }: SlideProps) {
       >
         {/* O Builder, de onde tudo sai. */}
         <g>
-          <rect ref={bloco} x={20} y={200} width={150} height={130} fill={ROXO} />
+          <rect x={20} y={200} width={150} height={130} fill={ROXO} />
           <Rotulo x={40} y={236} cor='#ffffffb0'>
             ILUM
           </Rotulo>
@@ -260,7 +255,6 @@ export default function Slide02Builder({ action }: SlideProps) {
 
       </motion.svg>
 
-      {!reduzido && <SaidaDaTela bloco={bloco} parte='Builder' />}
     </Pagina>
   )
 }

@@ -8,6 +8,8 @@ export const SLIDE_PADDING = 'px-16 pt-10 pb-8'
 
 export interface SlideProps {
   action: string
+  /** O slide está na tela; permite repetir a entrada quando revisitado. */
+  active?: boolean
 }
 
 /** Entrada do menu/dot nav: rótulo do slide + seus steps internos. */

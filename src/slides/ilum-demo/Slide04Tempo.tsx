@@ -63,7 +63,7 @@ export default function Slide04Tempo(_: SlideProps) {
   const larguraBanco = Math.max(...larguras.map((l) => TEMPO.reduce((s, t, i) => s + (t.banco ? l[i] : 0), 0)))
 
   return (
-    <Pagina n={4} eyebrow='Builder' titulo='Do zero ao projeto no ar'>
+    <Pagina n={6} eyebrow='Builder' titulo='Do zero ao projeto no ar'>
       <div className='flex items-end justify-between animate-ilum-in motion-reduce:animate-none' style={delay(0.1)}>
         <div className='flex gap-[4vw]'>
           {ENGINES.map((e, i) => (

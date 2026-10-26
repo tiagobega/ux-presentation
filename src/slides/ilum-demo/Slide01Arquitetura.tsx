@@ -346,7 +346,7 @@ export default function Slide01Arquitetura({ action }: SlideProps) {
   const base = ILUM.y + ILUM.h
 
   return (
-    <Pagina n={1} eyebrow='Arquitetura' titulo='Do campo ao projeto, passando pelo Ilum' corpo=''>
+    <Pagina n={2} eyebrow='Arquitetura' titulo='Do campo ao projeto, passando pelo Ilum' corpo=''>
       <motion.svg
         className='flex-1 min-h-0 w-full h-full'
         initial={false}

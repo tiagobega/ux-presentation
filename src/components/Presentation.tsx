@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import { motion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import { Background } from "./Background";
 import Nav from "./Nav";
 import QROverlay from "./QROverlay";
@@ -29,6 +29,7 @@ function inicio(): { slide: number; action: string } {
 const INICIO = inicio();
 
 export default function Presentation() {
+  const reduzido = useReducedMotion();
   const [slide, setSlide] = useState(INICIO.slide);
   const [action, setAction] = useState<string>(INICIO.action);
   // Slides já visitados ficam montados (estado completo, sem reset ao sair).
@@ -87,19 +88,24 @@ export default function Presentation() {
       setAction(actions[idx - 1]);
     } else if (s > 0) {
       const prevActions = SLIDE_CONFIG[s - 1].actions;
-      setCorte(!!SLIDE_CONFIG[s].corte);
+      const porCorte = !!SLIDE_CONFIG[s].corte;
+      setCorte(porCorte);
       setSlide(s - 1);
       setAction(prevActions[prevActions.length - 1]);
-      activate(s - 1);
+      if (porCorte) setActivated((prev) => (prev.has(s - 1) ? prev : new Set(prev).add(s - 1)));
+      else activate(s - 1);
     }
   }, [activate]);
 
   const gotoSlide = useCallback(
     (i: number) => {
-      setCorte(false);
+      const porCorte = !!SLIDE_CONFIG[i].corte ||
+        (i === slideRef.current - 1 && !!SLIDE_CONFIG[slideRef.current].corte);
+      setCorte(porCorte);
       setSlide(i);
       setAction(SLIDE_CONFIG[i].actions[0]);
-      activate(i);
+      if (porCorte) setActivated((prev) => (prev.has(i) ? prev : new Set(prev).add(i)));
+      else activate(i);
     },
     [activate],
   );
@@ -109,24 +115,18 @@ export default function Presentation() {
       const s = slideRef.current;
       if (cmd === "prev") {
         if (s > 0) {
-          setCorte(false);
-          setSlide(s - 1);
-          setAction(SLIDE_CONFIG[s - 1].actions[0]);
-          activate(s - 1);
+          gotoSlide(s - 1);
         }
       } else if (cmd === "next") {
         if (s < total - 1) {
-          setCorte(false);
-          setSlide(s + 1);
-          setAction(SLIDE_CONFIG[s + 1].actions[0]);
-          activate(s + 1);
+          gotoSlide(s + 1);
         }
       } else {
         const actions = SLIDE_CONFIG[s].actions as readonly string[];
         if ((actions as string[]).includes(cmd)) setAction(cmd);
       }
     },
-    [total, activate],
+    [total, gotoSlide],
   );
 
   useRemoteControl(handleRemote);
@@ -193,8 +193,9 @@ export default function Presentation() {
         <motion.div
           className="flex h-full"
           style={{ width: `${total * 100}%` }}
+          initial={false}
           animate={{ x: `-${(100 / total) * slide}%` }}
-          transition={{ duration: corte ? 0 : PAN_SEC, ease: camera }}
+          transition={{ duration: corte || reduzido ? 0 : PAN_SEC, ease: camera }}
         >
           {SLIDES.map((S, i) => {
             const isActive = i === slide;
@@ -209,7 +210,7 @@ export default function Presentation() {
                 style={{ width: `${100 / total}%` }}
               >
                 {/* Monta só quando visitado pela 1ª vez → anima ao chegar; depois fica completo, sem remontar. */}
-                {activated.has(i) ? <S action={slideAction} /> : null}
+                {activated.has(i) ? <S action={slideAction} active={isActive} /> : null}
               </div>
             );
           })}

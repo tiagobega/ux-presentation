@@ -111,13 +111,13 @@ function Ponta({ passo, desde, children }: { passo: number; desde: number; child
   )
 }
 
-export default function Slide06Router({ action }: SlideProps) {
+export default function Slide06Router({ action, active = true }: SlideProps) {
   const passo = Math.max(0, ACTIONS.indexOf(action))
   const reduzido = useReducedMotion()
   const bloco = useRef<SVGRectElement>(null)
 
   return (
-    <Pagina n={6} eyebrow='Router' titulo='O caminho de um dado' corpo=''>
+    <Pagina n={8} eyebrow='Router' titulo='O caminho de um dado' corpo=''>
       <svg
         viewBox='20 20 1180 490'
         preserveAspectRatio='xMidYMid meet'
@@ -191,7 +191,7 @@ export default function Slide06Router({ action }: SlideProps) {
         {LEGENDAS[passo]}
       </p>
 
-      {!reduzido && <SaidaDaTela bloco={bloco} parte='Router' segura={0.9} />}
+      {!reduzido && active && <SaidaDaTela bloco={bloco} parte='Router' />}
     </Pagina>
   )
 }

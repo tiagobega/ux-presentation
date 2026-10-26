@@ -62,21 +62,21 @@ export function Pagina({
 }) {
   return (
     <section
-      className='relative flex flex-1 min-h-0 flex-col overflow-hidden bg-white font-intelicity px-[4.5vw] pt-[2.4vw] pb-[1.3vw]'
+      className='relative flex flex-1 min-h-0 flex-col overflow-hidden bg-white font-intelicity px-[4.5vw] pt-[1.4vw] pb-[1.3vw]'
       style={{ color: COR.tinta }}
     >
       <header className='flex shrink-0 items-center justify-between'>
-        <img src={logo} alt='Intelicity' className='h-[2.1vw] w-auto' />
+        <img src={logo} alt='Intelicity' className='h-[1.7vw] w-auto' />
         <span className='text-[0.95vw]' style={{ color: COR.cinza }}>
           {ASSUNTO}
         </span>
       </header>
 
-      <div className='shrink-0 mt-[1.6vw] animate-ilum-in motion-reduce:animate-none' style={delay(0.05)}>
+      <div className='shrink-0 mt-[0.7vw] animate-ilum-in motion-reduce:animate-none' style={delay(0.05)}>
         <span className='block text-[0.9vw] font-bold tracking-[0.08em] uppercase' style={{ color: COR.malva }}>
           {eyebrow}
         </span>
-        <h1 className='mt-[0.3vw] text-[2vw] font-bold leading-[1.2] tracking-[-0.01em]'>{titulo}</h1>
+        <h1 className='mt-[0.2vw] text-[2vw] font-bold leading-[1.2] tracking-[-0.01em]'>{titulo}</h1>
         {lead && (
           <p className='mt-[0.9vw] max-w-[84vw] text-[1.6vw] leading-[1.4]' style={{ color: COR.cinza }}>
             {lead}
@@ -84,7 +84,7 @@ export function Pagina({
         )}
       </div>
 
-      <div className={`flex flex-1 min-h-0 flex-col gap-[1.6vw] mt-[1.4vw] ${corpo}`}>{children}</div>
+      <div className={`flex flex-1 min-h-0 flex-col gap-[1.6vw] mt-[0.8vw] ${corpo}`}>{children}</div>
 
       <footer className='flex shrink-0 items-end justify-end pt-[0.8vw] text-[0.85vw]' style={{ color: COR.cinza }}>
         <span>{n}</span>
@@ -200,8 +200,8 @@ type Caixa = { top: number; left: number; width: number; height: number }
  * no desenho (`bloco`, um `rect` do SVG) e some sobre ele. Mede o bloco e a
  * página na montagem; até medir, cobre a página inteira.
  *
- * `segura` é quanto tempo, em segundos, o nome fica na tela antes de sair: no
- * Builder quase nada (o slide 1 já o mostrou), no Router o tempo de ler.
+ * As duas partes usam o mesmo tempo de saída; o slide anterior já apresenta
+ * o nome na tela cheia.
  */
 export function SaidaDaTela({ bloco, parte, segura = 0 }: {
   bloco: RefObject<SVGRectElement | null>

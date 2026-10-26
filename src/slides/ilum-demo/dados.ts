@@ -8,10 +8,8 @@
  * 10 m que antes eram recusadas (ADR-0040). E a rodada dos dois jobs sobre os
  * mesmos bancos, medida e informada pelo apresentador em 25/10.
  *
- * `null` = **a medir**. Os jobs de agrupamento e de camada ainda não rodaram
- * sobre os bancos de hoje (as duas tabelas derivadas saíram vazias, como devem
- * sair do provisionamento). Os slides mostram "a medir" no lugar, nunca um
- * número do run antigo.
+ * Os jobs já rodaram sobre os bancos refeitos. Todos os valores abaixo são
+ * desta rodada; não há campos a medir nem números do run anterior.
  */
 
 /** O recorte: uma cidade, um mês. */
@@ -84,7 +82,13 @@ export const LEITURA_DO_YODA = 1654
 /** O que os jobs entregam: os pontos que o mapa mostra, iguais nas duas engines. */
 export const PONTOS_NO_MAPA = 399_068
 
-type PorEngine = { nome: string; pg: number; ora: number }
+type PorEngine = {
+  nome: string
+  /** Contagem extraída do Yoda para este recorte (seção 3 do relatório). */
+  yoda: number | null
+  pg: number
+  ora: number
+}
 
 /**
  * O resultado nas duas engines: contagem inteira por tabela (seção 3 do
@@ -92,12 +96,12 @@ type PorEngine = { nome: string; pg: number; ora: number }
  * igual linha por linha; é a prova do slide 5.
  */
 export const RESULTADO: PorEngine[] = [
-  { nome: 'Linhas recusadas', pg: 0, ora: 0 },
-  { nome: 'Imagens', pg: 544_129, ora: 544_129 },
-  { nome: 'Detecções', pg: 2_769_828, ora: 2_769_828 },
-  { nome: 'Trechos de 10 m', pg: 763_131, ora: 763_131 },
-  { nome: 'Grupos', pg: 399_077, ora: 399_077 },
-  { nome: 'Pontos na camada', pg: 399_068, ora: 399_068 },
+  { nome: 'Linhas recusadas', yoda: null, pg: 0, ora: 0 },
+  { nome: 'Imagens', yoda: 544_129, pg: 544_129, ora: 544_129 },
+  { nome: 'Detecções', yoda: 2_769_828, pg: 2_769_828, ora: 2_769_828 },
+  { nome: 'Trechos de 10 m', yoda: 763_131, pg: 763_131, ora: 763_131 },
+  { nome: 'Grupos', yoda: null, pg: 399_077, ora: 399_077 },
+  { nome: 'Pontos na camada', yoda: null, pg: 399_068, ora: 399_068 },
 ]
 
 export const fmt = (n: number) => n.toLocaleString('pt-BR')

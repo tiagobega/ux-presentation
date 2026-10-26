@@ -24,7 +24,7 @@ const TOTAIS = [
 
 export default function Slide03Recorte(_: SlideProps) {
   return (
-    <Pagina n={3} eyebrow='Builder' titulo={`${RECORTE.cidade}: uma cidade, ${RECORTE.dias} dias`}>
+    <Pagina n={5} eyebrow='Builder' titulo={`${RECORTE.cidade}: uma cidade, ${RECORTE.dias} dias`}>
       <div className='flex items-baseline gap-[1.2vw] animate-ilum-in motion-reduce:animate-none' style={delay(0.1)}>
         <Rotulo>Período</Rotulo>
         <span className='text-[1.5vw] font-bold'>{RECORTE.periodo}</span>

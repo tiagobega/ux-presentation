@@ -2,6 +2,11 @@
 
 This file provides guidance to Codex (Codex.ai/code) when working with code in this repository.
 
+## Estado atual do deck Ilum · demo
+
+O deck padrão é **Ilum · demo**, em `src/slides/ilum-demo/`, registrado em `src/slides/decks.ts`. A ordem e os passos vêm de `src/slides/ilum-demo/deck.ts`; para adicionar slides, edite o deck, não o `Presentation.tsx`. Há dez slides: equipe, arquitetura, fluxo Builder, expansão do projeto, recorte, tempo, fidelidade, fluxo Router, recortes Router e próximos passos. Nada roda ao vivo; DAGs concluídas, logs e front são mostrados depois do slide 4.
+
+Leia `plano-ilum-demo.md` para o roteiro e `CLAUDE.md` para a arquitetura atual e os mapas dos outros decks. Números em `dados.ts`, do run de 25/10 e dos jobs medidos sobre ele; a passagem `ilum-demo-contexto.md` contém números antigos. Os slides 3 e 8 entram por corte sobre `TelaParte`; `active` permite repetir a saída ao revisitar. Esta seção prevalece sobre as referências históricas do Fleets abaixo, incluindo as instruções antigas para registrar slides.
 ## Commands
 
 ```bash

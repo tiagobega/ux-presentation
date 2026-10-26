@@ -5,7 +5,7 @@ import Nav from "./Nav";
 import QROverlay from "./QROverlay";
 import { useRemoteControl } from "../hooks/useRemoteControl";
 // Esteira e nav vêm do deck ativo (Informs por padrão; `?deck=fleets` troca).
-import { SLIDES, SLIDE_CONFIG } from "../slides/decks";
+import { DECK, SLIDES, SLIDE_CONFIG } from "../slides/decks";
 
 // Easing dramático para o pan da câmera entre slides.
 const camera: [number, number, number, number] = [0.76, 0, 0.24, 1];
@@ -183,10 +183,11 @@ export default function Presentation() {
   const actionIndex = actions.indexOf(action);
   const isFirst = slide === 0 && actionIndex === 0;
   const isLast = slide === total - 1 && actionIndex === actions.length - 1;
+  const fundoBranco = DECK.background === "white";
 
   return (
-    <div className="fixed inset-0 flex flex-col">
-      <Background />
+    <div className={`fixed inset-0 flex flex-col ${fundoBranco ? "bg-white" : ""}`}>
+      {!fundoBranco && <Background />}
 
       {/* Esteira global: todos os slides renderizados lado a lado; a câmera desliza. */}
       <div className="flex-1 relative overflow-hidden z-20">
@@ -206,7 +207,7 @@ export default function Presentation() {
             return (
               <div
                 key={i}
-                className="h-full flex flex-col shrink-0"
+                className={`h-full flex flex-col shrink-0 ${fundoBranco ? "bg-white" : ""}`}
                 style={{ width: `${100 / total}%` }}
               >
                 {/* Monta só quando visitado pela 1ª vez → anima ao chegar; depois fica completo, sem remontar. */}

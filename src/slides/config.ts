@@ -32,6 +32,8 @@ export interface SlideEntry {
  */
 export interface Deck {
   id: string
+  /** Fundo do palco, inclusive enquanto o próximo slide ainda não montou. */
+  background?: 'white' | 'animated'
   /** Assinatura no canto esquerdo da nav. */
   brand: string
   /** Título da aba do navegador. */

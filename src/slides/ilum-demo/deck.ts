@@ -25,6 +25,7 @@ import Slide08ASeguir, { ACTIONS as A08 } from './Slide08ASeguir'
  */
 export const ILUM_DEMO_DECK: Deck = {
   id: 'ilum-demo',
+  background: 'white',
   brand: 'INTELICITY · ILUM',
   title: 'Ilum · Demonstração',
   slides: [
